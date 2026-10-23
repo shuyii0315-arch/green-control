@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-gc="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI GC · Green Control</title>
+<meta name="description" content="Envision Design Challenge 2026 · AI-powered Green Control. Interactive prototype. All data simulated.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><rect width='28' height='28' rx='6' fill='%23111214'/><circle cx='9.6' cy='5.2' r='1.9' fill='%23EDEDED'/><circle cx='14' cy='5.2' r='1.9' fill='%23EDEDED'/><circle cx='18.4' cy='5.2' r='1.9' fill='%23EDEDED'/><circle cx='5.2' cy='9.6' r='1.9' fill='%23EDEDED'/><circle cx='5.2' cy='14' r='1.9' fill='%23EDEDED'/><circle cx='18.4' cy='14' r='1.9' fill='%23EDEDED'/><circle cx='22.8' cy='14' r='1.9' fill='%23EDEDED'/><circle cx='5.2' cy='18.4' r='1.9' fill='%23EDEDED'/><circle cx='22.8' cy='18.4' r='1.9' fill='%23EDEDED'/><circle cx='9.6' cy='22.8' r='1.9' fill='%23EDEDED'/><circle cx='14' cy='22.8' r='1.9' fill='%23EDEDED'/><circle cx='18.4' cy='22.8' r='1.9' fill='%23EDEDED'/><circle cx='14' cy='14' r='1.9' fill='%23FF6B1A'/></svg>">
+<link rel="stylesheet" href="css/app.css">
+<script type="importmap">{ "imports": { "three": "./js/vendor/three.module.js" } }</script>
+</head>
+<body>
+<div id="viewport">
+<div id="app" class="s1">
+
+  <!-- ===== navigation: expanded in S1/S3, a rail in S2 ===== -->
+  <nav id="nav" class="anim" aria-label="Main">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 28 28" aria-hidden="true" id="logo"></svg>
+      <span class="brand-text t-strong">Green Control</span>
+    </div>
+    <button class="bldg">
+      <span class="t-label muted">Building</span>
+      <span class="t-strong">B1 · Shanghai HQ</span>
+      <span class="t-small muted">27 floors · office</span>
+      <svg class="chev" viewBox="0 0 12 12"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
+    </button>
+    <div class="nav-items">
+      <button class="nav-item on" data-ic="grid"><svg viewBox="0 0 18 18"><rect x="2.5" y="2.5" width="5.5" height="5.5" rx="1"/><rect x="10" y="2.5" width="5.5" height="5.5" rx="1"/><rect x="2.5" y="10" width="5.5" height="5.5" rx="1"/><rect x="10" y="10" width="5.5" height="5.5" rx="1"/></svg><span class="nav-label">Overview</span></button>
+      <button class="nav-item" id="nav-eq" data-ic="eq"><svg viewBox="0 0 18 18"><rect x="2" y="5.5" width="14" height="7" rx="3.5"/><path class="fan" d="M6.5 5.5v7M11.5 5.5v7"/><path d="M5 12.5v2M13 12.5v2"/></svg><span class="nav-label">Equipment</span></button>
+      <button class="nav-item" data-ic="list"><svg viewBox="0 0 18 18"><path class="ck" d="M2.8 4.8l1.4 1.4 2.4-2.6"/><path d="M9 5h6.5M9 9.5h6.5M9 14h6.5"/><circle cx="4.5" cy="9.5" r="1"/><circle cx="4.5" cy="14" r="1"/></svg><span class="nav-label">Actions</span><span class="badge" id="badge">1</span></button>
+      <button class="nav-item" data-ic="bars"><svg viewBox="0 0 18 18"><path d="M2.5 15.5h13"/><path class="b1" d="M5 12.5V9"/><path class="b2" d="M9 12.5V4.5"/><path class="b3" d="M13 12.5V7.5"/></svg><span class="nav-label">Reports</span></button>
+    </div>
+    <div class="nav-foot">
+      <span class="avatar">SY</span><span class="who-name t-body">Shuyi</span>
+      <button id="rail" aria-label="Expand menu"><svg viewBox="0 0 18 18"><rect x="2.5" y="3" width="13" height="12" rx="1.5"/><path d="M7 3v12"/><path class="arr" d="M10.5 7.5 12 9l-1.5 1.5"/></svg></button><button id="theme" aria-label="Switch between night and day"><svg viewBox="0 0 18 18"><path d="M14.5 10.6A6 6 0 1 1 7.4 3.5a4.7 4.7 0 0 0 7.1 7.1Z"/></svg></button>
+    </div>
+  </nav>
+
+  <!-- ===== headers ===== -->
+  <header id="head1" class="header anim">
+    <div class="head-row">
+      <h1 class="t-headline">Overview</h1>
+      <div class="head-tools">
+        <div class="seg" id="range"><button class="on">Today</button><button>7 days</button><button>30 days</button></div>
+        <div class="seg" id="zoom"><button data-z="day">Day</button><button class="on" data-z="week">Week</button><button data-z="month">Month</button></div>
+        <button class="btn-ghost" id="ask"><svg class="spark" viewBox="0 0 14 14"><circle cx="7" cy="2.3" r="1.5"/><circle cx="2.3" cy="7" r="1.5"/><circle class="o" cx="7" cy="7" r="1.5"/><circle cx="11.7" cy="7" r="1.5"/><circle cx="7" cy="11.7" r="1.5"/></svg>Ask AI</button>
+      </div>
+    </div>
+    <div class="crumbs sysline">B1<span class="sl">/</span>LIVE <span id="clock">15:40</span></div>
+  </header>
+  <header id="head2" class="header anim">
+    <div class="head-row">
+      <h1 class="t-headline">Chiller 2</h1>
+      <span class="state issue t-small" id="obj-tag"><i></i><span>Issue</span></span>
+    </div>
+    <div class="crumbs sysline">
+      <button class="crumb" id="crumb-b1" title="Back to the overview">B1</button><span class="sl">/</span><button class="crumb" id="crumb-plant" title="Whole plant, design view">Plant</button><span class="sl">/</span><span>CH-02</span>
+    </div>
+  </header>
+
+  <!-- ===== the page's real axes, drawn as dashed guides, each zone numbered ===== -->
+  <div id="grid" aria-hidden="true"><i class="gh t"></i><i class="gh b"></i><i class="gv v1"></i><i class="gv v2"></i><i class="gv v3"></i>
+    <span class="zl z1">01&nbsp;&nbsp;Readings</span><span class="zl z2" id="zl2">02&nbsp;&nbsp;B1 · Live</span><span class="zl z3">03&nbsp;&nbsp;Insights</span><span class="fig" id="fig">Fig. 01 — B1 cutaway, iso 62°</span></div>
+
+  <!-- ===== the stage: one 3D canvas that moves between S1 and S2 ===== -->
+  <section id="stage" class="anim" aria-label="Building B1, live 3D view. Drag to rotate, scroll to zoom.">
+    <div class="dots" aria-hidden="true"></div>
+    <div class="pool" aria-hidden="true"></div>
+    <div id="art" class="assembling" aria-hidden="true">
+      <div id="tilt">
+      <img class="art-bldg" id="art-bldg" src="img/turn/bldg-night-62.webp" alt="">
+      <img class="art-plant" id="art-plant" src="img/turn/plant-night-62.webp" alt="">
+      <svg class="flow" id="flow" viewBox="0 0 1160 758"><path class="fl hot" d="M364 520 L364 206 L384 200"/><path class="fl hot" d="M334 536 L430 536"/></svg>
+      <svg class="flow2" id="flow2" viewBox="0 0 1160 758"><defs><radialGradient id="glow"><stop offset="0" stop-color="#ff6b1a" stop-opacity=".55"/><stop offset="1" stop-color="#ff6b1a" stop-opacity="0"/></radialGradient></defs><ellipse class="glow" cx="384" cy="367" rx="190" ry="60" transform="rotate(17 384 367)" fill="url(#glow)"/><path class="fl hot" d="M559 412 L559 262"/></svg>
+      <svg class="leaders" id="leaders" viewBox="0 0 1160 758"></svg>
+      <div id="art-labels"></div>
+      </div>
+    </div>
+    <canvas id="gl"></canvas>
+    <div id="overlay"></div>
+    <div class="tip" id="tip"></div>
+    <div class="stage-top">
+      <span class="live t-label" id="live-label">Building B1 · live</span>
+      <div class="stage-tools">
+        <div class="seg" id="filter"><button class="on" data-f="all">All</button><button data-f="cooling">Cooling</button><button data-f="power">Power</button><button data-f="storage">Storage</button><button data-f="ev">EV</button></div>
+        <button class="seg-btn t-small" id="mode3d" aria-pressed="false">3D</button>
+        <button class="icon-btn" id="full" aria-label="Full view"><svg viewBox="0 0 14 14"><path class="out" d="M1.5 5V1.5H5M9 1.5h3.5V5M12.5 9v3.5H9M5 12.5H1.5V9"/><path class="in" d="M5 1.5V5H1.5M12.5 5H9V1.5M9 12.5V9h3.5M1.5 9H5v3.5"/></svg></button>
+      </div>
+    </div>
+
+    <!-- readings sit on the drawing, like a figure's readout -->
+    <div id="readings">
+      <div class="reading big"><span class="lab">Cost today</span><span class="t-num" data-v="cost">¥14,210</span><span class="segbar" id="cost-bar"></span><span class="lab accent" id="cost-cap">+4% vs usual</span></div>
+      <div class="spec">
+        <div class="sr"><span>Power now</span><i></i><span><span data-v="power">2,940</span> kW</span></div>
+        <div class="sr"><span>Of limit</span><i></i><span class="accent" id="limit-v">92%</span></div>
+        <div class="sr"><span>Energy today</span><i></i><span><span data-v="energy">18.4</span> MWh</span></div>
+        <div class="sr"><span>Carbon today</span><i></i><span><span data-v="carbon">10.2</span> t</span></div>
+        <div class="sr"><span>Vs target</span><i></i><span>Under</span></div>
+      </div>
+    </div>
+    <div id="evidence"></div>
+    <div id="zoomchip" class="t-small"><span id="zoom-pct">100%</span><button id="zoom-reset" class="link">Reset</button></div>
+  </section>
+
+  <!-- ===== AI: the insights list (S1/S3) grows into the chat panel (S2) ===== -->
+  <aside id="ai" class="anim glass">
+    <div class="view" id="insights"></div>
+    <div class="view" id="chat">
+      <div class="chat-head">
+        <svg class="spark" viewBox="0 0 14 14"><circle cx="7" cy="2.3" r="1.5"/><circle cx="2.3" cy="7" r="1.5"/><circle class="o" cx="7" cy="7" r="1.5"/><circle cx="11.7" cy="7" r="1.5"/><circle cx="7" cy="11.7" r="1.5"/></svg>
+        <span class="t-strong">Green Control</span>
+        <button class="x" id="close" aria-label="Close and go back to the overview"><svg viewBox="0 0 18 18"><path d="M4.5 4.5l9 9M13.5 4.5l-9 9"/></svg></button>
+      </div>
+      <div id="thread" aria-live="polite"></div>
+      <form class="composer" id="composer"><input id="q" placeholder="Ask about Chiller 2…" autocomplete="off"><button class="send" aria-label="Send"><svg viewBox="0 0 14 14"><path d="M7 11.5v-9M3 6.5l4-4 4 4"/></svg></button></form>
+    </div>
+  </aside>
+
+  <!-- ===== actions: what was done, is running and is planned, on one time axis ===== -->
+  <section id="actions" aria-label="Actions">
+    <div class="ac-sum"><span class="ac-big"><span id="ac-count">¥0</span><span id="ac-saved"></span></span><button class="btn-ghost" id="ac-results">Review results <svg viewBox="0 0 14 14"><path d="M2.5 7h9M8 3.5 11.5 7 8 10.5"/></svg></button></div>
+    <div class="ac-mini" id="ac-mini"></div>
+    <div class="ac-table"><div class="ac-head" id="ac-head"></div><div class="ac-body" id="ac-body"></div></div>
+    <div class="ac-tip" id="ac-tip"></div>
+  </section>
+
+  <div id="toast" class="glass" role="status"><svg viewBox="0 0 14 14"><path d="M3 7.3l2.6 2.6L11 4.4"/></svg><span id="toast-text">Plan applied</span><i class="div"></i><button id="toast-undo" class="link">Undo</button></div>
+</div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
