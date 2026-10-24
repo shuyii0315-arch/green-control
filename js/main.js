@@ -586,7 +586,8 @@ $("#theme").addEventListener("click", (e) => {
   root.setProperty("--vx", r.left + r.width / 2 + "px"); root.setProperty("--vy", r.top + r.height / 2 + "px");
   document.startViewTransition(go);
 });
-try { const t = localStorage.getItem("aigc-theme"); if (t && t !== "night") { document.documentElement.dataset.gc = t; scene.setTheme(t); artTheme(t); } } catch (e) {}
+// ?theme=day or ?theme=night opens in that theme (portfolio cards link straight to the look they show)
+try { const q = new URLSearchParams(location.search).get("theme"); const t = q === "day" || q === "night" ? q : localStorage.getItem("aigc-theme"); if (t && t !== "night") { document.documentElement.dataset.gc = t; scene.setTheme(t); artTheme(t); } } catch (e) {}
 $("#filter").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $("#filter").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); scene.setFilter(b.dataset.f); for (const p of artPins) { const off = b.dataset.f !== "all" && p.cat !== b.dataset.f; p.d.classList.toggle("dimmed", off); p.l.classList.toggle("dimmed", off); p.ln.classList.toggle("dimmed", off); } });
 $("#mode3d").addEventListener("click", (e) => { const on = !app.classList.contains("mode3d"); app.classList.toggle("mode3d", on); scene.setActive(on); e.currentTarget.setAttribute("aria-pressed", String(on)); });
 $("#range").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $("#range").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); const r = ranges[b.textContent]; Object.entries(r).forEach(([k, v], j) => roll($(`[data-v="${k}"]`), v, j * 60)); });
