@@ -102,6 +102,7 @@ Read `DESIGN.md` and `tokens.json` first: https://shuyii0315-arch.github.io/gree
 - Square corners. Round only for status dots and spinners.
 - Sans for sentences; mono 11px uppercase for labels, data and time.
 - Reuse a component before making one. If none fits, stop and ask the designer.
+- Each look rule in DESIGN.md says why. Before you break one, read its reason; and check the "Same everywhere, varies by rule" table to see whether what you want to change is allowed to vary. If the case is really new, change that table first, then build.
 - The spark appears only where the AI speaks or acts.
 - Every applied step: a toast with Undo, and a row on the Actions timeline.
 

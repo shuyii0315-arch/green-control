@@ -962,7 +962,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
   <button class="menu-btn" id="menuBtn" aria-label="Open navigation">Menu</button>
   <a class="brand" href="#/overview" aria-label="Green Control Design System, home">
     <svg class="logo" viewBox="0 0 28 28" aria-hidden="true" data-logo></svg>
-    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.5</span>
+    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.6</span>
   </a>
   <div class="right">
     <a class="btn-ghost proto" href="https://shuyii0315-arch.github.io/green-control/" target="_blank" rel="noopener">Prototype ↗</a>
@@ -1398,7 +1398,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 <script type="text/plain" id="f-design"># Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.5.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.6.
 
 ## The one idea
 
@@ -1407,15 +1407,30 @@ The AI may look, compare and suggest. Anything that changes a machine waits for 
 
 ## Look
 
-- Two themes, one set of names. Night (default): black, greys, one orange. Day: paper white, greys, one blue.
-- One accent per theme. It marks the problem and the step in progress. It is never decoration.
-- Square corners everywhere. Round shapes are only status dots and spinners.
-- Floating panels are frosted glass (`surface.glass` + 24px blur). Blocks inside them are flat.
-- Sans (Hanken Grotesk) for sentences. Mono (DM Mono, uppercase, 11px) for labels, data and time.
-- Motion uses one curve (`motion.ease`). Spring only for things that arrive. Respect reduced motion.
-- Colours come in three layers: `primitive.color.*` (raw values) → `color.*` semantic (what it means) → component (`cta-*`, `sel-*`, `badge-bg`). UI code only uses semantic or component tokens. A theme only re-points semantic tokens.
-- Text reaches 4.5:1 on every background it sits on, in both themes. Graphics (meters, dots) reach 3:1.
-- Everything clickable shows a focus ring: 1.5px in the text colour, 2px out.
+Every rule says why. If a case seems to need an exception, read the reason first: it tells you whether the case is really different, or only looks different.
+
+- **Two themes, one set of names.** Night (default): black, greys, one orange. Day: paper white, greys, one blue.
+  - Why: plants are watched around the clock. Night is easy on the eyes in a dark control room; day reads in a bright office. One set of names means a screen is built once and works in both.
+- **One accent per theme. It marks the problem and the step in progress. It is never decoration.**
+  - Why: the person on shift should find what is wrong within a second. Every decorative use of the accent is one more place the eye goes first.
+  - Breaks if ignored: an orange chart line or icon competes with the real fault.
+- **Calm by default: the screen is greys and the drawing.**
+  - Why: most of the time nothing is wrong. A screen that is always busy teaches people to stop looking (alarm fatigue); a calm one makes the one problem stand out.
+- **Square corners everywhere. Round shapes are only status dots and spinners.**
+  - Why: when everything else is square, a round shape means "live state". Square also matches the straight lines of the isometric drawings.
+  - Breaks if ignored: a pill-shaped Apply button reads like a status badge, and round stops meaning anything.
+- **Floating panels are frosted glass (`surface.glass` + 24px blur). Blocks inside them are flat.**
+  - Why: the AI is a layer over the machine, not a separate page, so the machine stays visible behind it. Blocks inside stay flat so their text stays sharp.
+- **Sans (Hanken Grotesk) for sentences. Mono (DM Mono, uppercase, 11px) for labels, data and time.**
+  - Why: numbers line up in mono. And measured data looks different from the AI's sentences, so people can tell a reading from an interpretation at a glance: the same idea as evidence first.
+- **Motion uses one curve (`motion.ease`). Spring only for things that arrive. Respect reduced motion.**
+  - Why: one curve makes every movement feel like the same product. A spring says "this is new" (a toast, a figure assembling), so it is kept for arrivals; used everywhere, nothing would feel new.
+- **Colours come in three layers:** `primitive.color.*` (raw values) → `color.*` semantic (what it means) → component (`cta-*`, `sel-*`, `badge-bg`). UI code only uses semantic or component tokens. A theme only re-points semantic tokens.
+  - Why: a theme or brand change then edits one layer, not every screen.
+- **Text reaches 4.5:1 on every background it sits on, in both themes. Graphics (meters, dots) reach 3:1.**
+  - Why: WCAG AA, and plant screens are often read from a step away.
+- **Everything clickable shows a focus ring: 1.5px in the text colour, 2px out.**
+  - Why: people using a keyboard must always see where they are.
 
 ## Logo
 
@@ -1426,8 +1441,10 @@ A 5×5 dot "G" with one dot in the accent, where the letter turns inward. It sit
 Green Control does not show equipment as a table or an icon. It shows the machine. Start every screen from `shell.html`:
 
 - **Rail** (64px) on the left: logo, icon nav, theme, avatar.
+  - Why: icons only, because people spend a shift on one equipment screen and rarely switch sections. 64px fits a 44px tap target with 10px either side and leaves the most room for the drawing.
 - **Stage** in the middle: title + state tag, mono crumbs (`B1 / PLANT / CH-02`), then the **figure**, then the **evidence row** (one card per check, tagged with the questions of this topic, joined by dashed lines).
 - **Panel** (400px) on the right, frosted: the AI thread, an issue band in the accent, the ask box.
+  - Why: on a 1440px screen it leaves 976px for the drawing, so the machine stays the largest thing. At 16px text, 400px less padding gives about 45 characters a line, short enough to take in a headline at a glance. Below 1024px the panel becomes a bottom sheet and the drawing stays on top.
 
 ### The figure (建模)
 
@@ -1495,6 +1512,21 @@ The AI talks like a colleague reporting to the person on shift: not a chatbot, n
 - **Undo and mistakes:** one line, own it, say the state now. "Undid the BT-01 schedule. The battery is back to a 60% reserve."
 - **Length:** headline 12 words or fewer; body two sentences or fewer. Everything else belongs in the evidence.
 
+## Same everywhere, varies by rule
+
+A screen should never differ by accident, and never be forced to look the same when the situation is different. This table says which is which.
+
+| Same on every screen | Varies, and what decides it |
+|---|---|
+| Rail · stage with the drawing · AI panel | **How many evidence cards:** how many sources the AI actually checked (1 to 4) |
+| Square corners; round only for live state | **The card tags:** the kind of situation (fault, opportunity, unsure) |
+| The accent marks only the problem or the one action | **What the AI may do, and which buttons appear:** the confidence band (80+ plan, 50–79 draft, below 50 check) |
+| The spark appears only where the AI speaks or acts | **How the AI words it:** the same confidence band |
+| Every applied step can be undone; every machine name is a link | **The drawing and the lit part:** which machine, which part is at fault |
+| Only token colours, sizes and radii | **The theme:** night or day re-points the colour meanings, never the structure |
+
+Why this table exists: in 1.2 the evidence row was fixed at three cards. On a saving with nothing broken, agents had to invent a third tag to fill the row: forced sameness. 1.3 moved the card count from the left column to the right, decided by the real checks. When a new case does not fit, change this table first, then build.
+
 ## Rules
 
 1. **Evidence before advice.** No plan appears before at least one evidence chip.
@@ -1513,6 +1545,7 @@ Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Conf
 
 ## Changelog
 
+- **1.6** Every look and layout rule now says why, and what breaks if it is ignored, so a person or an agent can tell a real exception from a mistake. New table: what stays the same on every screen, and what varies and by which rule.
 - **1.5** Added "How the AI speaks": wording per confidence band, words the AI never uses, and how it reports Undo. The first machine check, `gc-check`, found what four rounds of reviewing screens had missed: secondary text (`muted`) fell short of 4.5:1 on raised and chip backgrounds in both themes (now #666662 day, #8f949c night); the component CSS had no keyboard focus ring; the Ask input's send button had none either; two near-identical blacks (#111214, #121214); and `registry.json`'s copy of the theme had been missing the badge colour since 1.1. Colours now have a primitive layer, and one script keeps every copy in sync.
 - **1.4** From the 1.3 test (cooling tower 58%, EV charging 83%): motion token names now match the components; the evidence row tightens its gaps for 3 and 4 cards; the art box keeps any image's proportions; the assemble lines up inside the art box; a sticky action bar; an Opportunity tag; done plan steps; action rows positioned by variables; competing causes in the draft band; the 62° view defined.
 - **1.3** From the 1.2 test (both agents): `gc-tokens.css` now exports space, type, radius, motion and the AI thresholds; evidence badges use one colour everywhere; an art box so labels stay pinned to the drawing at any size; components for the below-50% case (competing causes, suggested check) and an Owner row; the evidence badge is scoped so plan steps keep their hollow 'not yet' state; the evidence row follows the topic's questions instead of a fixed What → Where → Why.
@@ -1624,6 +1657,7 @@ Read `DESIGN.md` and `tokens.json` first: https://shuyii0315-arch.github.io/gree
 - Square corners. Round only for status dots and spinners.
 - Sans for sentences; mono 11px uppercase for labels, data and time.
 - Reuse a component before making one. If none fits, stop and ask the designer.
+- Each look rule in DESIGN.md says why. Before you break one, read its reason; and check the "Same everywhere, varies by rule" table to see whether what you want to change is allowed to vary. If the case is really new, change that table first, then build.
 - The spark appears only where the AI speaks or acts.
 - Every applied step: a toast with Undo, and a row on the Actions timeline.
 
