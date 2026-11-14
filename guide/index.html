@@ -1172,5 +1172,6 @@ html[lang="zh"] .col > .h { font-size: 21px; }
   markIcons(); if (gl) new MutationObserver(markIcons).observe(gl, { childList: true });
   if (false && gl) gl.addEventListener("mousemove", (e) => { const c = e.target.closest(".gc"); if (!c) return; const r = c.getBoundingClientRect(); c.style.setProperty("--mx", (e.clientX - r.left) + "px"); c.style.setProperty("--my", (e.clientY - r.top) + "px"); });
 </script>
+<script>try{if(window.parent!==window)window.parent.postMessage("gc-guide-ready","*")}catch(e){}</script>
 </body>
 </html>
