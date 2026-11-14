@@ -1080,6 +1080,38 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .fr-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .fr-live { width: 1440px; height: 900px; border: 0; display: block; }
 @media (max-width: 900px) { .tb-grid { grid-template-columns: repeat(2, 1fr); } .fr-two, .nest-wrap, .ct-same { grid-template-columns: 1fr; } }
+
+/* motion examples on real screens */
+.mt-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.mt-tile .pbtn { justify-self: start; }
+.mt-plant { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain; }
+.mt-center { position: absolute; inset: 0; display: grid; place-items: center; }
+.mt-fb .cta { transition: transform 120ms var(--ease), filter 120ms var(--ease); }
+.mt-fb.hov .cta { filter: brightness(0.82); }
+.mt-fb.press .cta { transform: scale(0.96); }
+.mt-mark { position: absolute; left: 258px; top: 226px; width: 20px; height: 20px; display: grid; place-items: center; background: var(--badge-bg, var(--accent)); color: var(--on-accent); font: 11px/1 var(--font-mono); }
+.mt-pop { position: absolute; left: 290px; top: 150px; opacity: 0; transform: translateY(6px); transition: opacity 160ms var(--exit), transform 160ms var(--exit); }
+.mt-sm.go .mt-pop { opacity: 1; transform: none; transition: opacity 240ms var(--ease), transform 240ms var(--ease); }
+.mt-panel { position: absolute; top: 0; right: 0; bottom: 0; width: 330px; padding: 16px; background: var(--bg-page); box-shadow: -1px 0 0 var(--line); transform: translateX(102%); transition: transform 280ms var(--exit); }
+.mt-panel .aip { max-width: none; }
+.mt-pn.go .mt-panel { transform: none; transition: transform 420ms var(--ease); }
+.mt-nav { position: absolute; left: 0; top: 0; bottom: 0; width: 200px; padding: 24px 12px; display: grid; gap: 4px; align-content: start; background: var(--bg-surface); box-shadow: 1px 0 0 var(--line); overflow: hidden; transition: width 520ms var(--ease); z-index: 1; }
+.mt-ni { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 10px; font-size: 14px; white-space: nowrap; color: var(--muted); }
+.mt-ni.on { background: var(--bg-raised); color: var(--text); }
+.mt-ni i { width: 14px; height: 14px; flex: none; box-shadow: inset 0 0 0 1.5px currentColor; }
+.mt-ni span { transition: opacity 240ms var(--ease); }
+.mt-lyimg { left: 200px; width: calc(100% - 200px); transition: left 520ms var(--ease), width 520ms var(--ease); }
+.mt-ly.go .mt-nav { width: 58px; }
+.mt-ly.go .mt-ni span { opacity: 0; transition: opacity 160ms var(--exit); }
+.mt-ly.go .mt-lyimg { left: 58px; width: calc(100% - 58px); }
+.mt-toast { position: absolute; left: 50%; top: 20px; opacity: 0; transform: translate(-50%, -24px); transition: opacity 160ms var(--exit), transform 160ms var(--exit); }
+.mt-toast .toast { animation: none; }
+.mt-ar.go .mt-toast { opacity: 1; transform: translate(-50%, 0); transition: opacity 240ms var(--ease), transform 520ms var(--spring); }
+.mt-zoom { transform-origin: 41% 59%; transition: transform 900ms var(--ease); }
+.mt-cm.go .mt-zoom { transform: scale(1.8); }
+.mt-livehead { position: absolute; left: 28px; top: 22px; display: grid; gap: 6px; z-index: 1; }
+.mt-liveline { display: inline-flex; align-items: center; gap: 10px; }
+@media (max-width: 900px) { .mt-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -2981,6 +3013,28 @@ PAGES.frame = () => `${head("Foundations", "Page frame", "Every page is built fr
 <h2 id="switch">From the overview to an equipment page</h2>
 <p class="sub">The real prototype. The menu folds (move 520 ms) while the AI panel slides in (in 420 ms).</p>
 <div class="ct">${cv(1440, 900, `<iframe class="fr-live" title="Green Control prototype" loading="lazy" src="https://shuyii0315-arch.github.io/green-control/?state=s2"></iframe>`)}<button class="pbtn" id="frReplay">Replay</button></div>`;
+
+/* motion examples, built from real screens and components */
+const PLANT = () => `img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp`;
+const MT = [
+  { k: "fb", t: "Hover, press", tm: "120 ms", why: "Past about 0.1 s a hand feels the screen didn't answer.", eg: "In Green Control: the Investigate button.",
+    html: () => `<div class="mt-center"><div style="width:420px">${alertS("is-new")}</div></div>`, seq: [["hov", 0], ["press", 450], ["-press", 700], ["-hov", 1300]] },
+  { k: "sm", t: "A label appears, then leaves", tm: "240 in · 160 out", why: "Short distance, short time. Leaving is one step shorter.", eg: "In Green Control: a reading on the drawing.",
+    html: () => `<img class="mt-plant" src="${PLANT()}" alt=""><span class="mt-mark">3</span><div class="mt-pop">${POP}</div>`, seq: [["go", 0], ["-go", 1600]] },
+  { k: "pn", t: "A panel opens, then closes", tm: "420 in · 280 out", why: "It travels far, so it is slower: you see where it came from.", eg: "In Green Control: the AI panel.",
+    html: () => `<img class="mt-plant" src="${PLANT()}" alt="" style="right:180px"><div class="mt-panel">${AIP_PLAN}</div>`, seq: [["go", 0], ["-go", 1800]] },
+  { k: "ly", t: "The layout changes", tm: "520 ms", why: "The whole page moves; the eye needs time to follow each part.", eg: "In Green Control: the menu folds when an equipment page opens.",
+    html: () => `<div class="mt-nav">${["Overview", "Equipment", "Actions", "Reports"].map((n, i) => `<div class="mt-ni${i === 0 ? " on" : ""}"><i></i><span>${n}</span></div>`).join("")}</div><img class="mt-plant mt-lyimg" src="${PLANT()}" alt="">`, seq: [["go", 0], ["-go", 1800]] },
+  { k: "ar", t: "Something new arrives", tm: "520 ms · spring", why: "The small overshoot says “this is new”. Only arrivals get it.", eg: "In Green Control: the “Plan applied” toast.",
+    html: () => `<img class="mt-plant" src="${PLANT()}" alt=""><div class="mt-toast">${toastS()}</div>`, seq: [["go", 0], ["-go", 1900]] },
+  { k: "cm", t: "The drawing zooms", tm: "900 ms", why: "The biggest thing on screen, so the slowest.", eg: "In Green Control: zooming in on Chiller 2.",
+    html: () => `<img class="mt-plant mt-zoom" src="${PLANT()}" alt="">`, seq: [["go", 0], ["-go", 2000]] },
+  { k: "lp", t: "Still working", tm: "1200 ms loop", why: "One beat per cycle; stops the moment the work stops.", eg: "In Green Control: the AI checking sources.", loop: true,
+    html: () => `<div class="mt-center"><div style="width:340px">${stN("ai-panel", "Checking")}</div></div>` },
+  { k: "am", t: "Live", tm: "2400 ms loop", why: "Slow, so it never pulls the eye away from a fault.", eg: "In Green Control: the live dot next to the time.", loop: true,
+    html: () => `<div class="mt-livehead"><span class="t-headline">Overview</span><span class="t-label muted mt-liveline"><span class="mx-live"></span>B1 / Live 15:40</span></div><img class="mt-plant" src="img/building-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt="" style="top:90px">` },
+];
+const MOTION_TILES = () => `<div class="mt-grid">${MT.map((m) => `<div class="mx mt-tile">${cv(640, 400, m.html(), "mt-st mt-" + m.k)}<div class="mx-head"><span class="t-strong t-small">${m.t}</span><span class="mono t-small muted">${m.tm}</span></div><span class="t-small muted">${m.why}</span><span class="t-small">${m.eg}</span>${m.loop ? '<span class="t-small muted">Runs while the work runs.</span>' : `<button class="pbtn mx-play" data-mt="${m.k}">Play</button>`}</div>`).join("")}</div>`;
 /* MOTION */
 PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement does, not by component: five curves and nine durations. No other numbers.")}
 <div class="grid2">
@@ -2989,7 +3043,7 @@ PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement
 </div>
 <h2 id="durations">Durations by what moves</h2>
 <p class="sub">Leaving is one step shorter than arriving: what arrives needs to be seen, what leaves does not. Press Play on any card.</p>
-<div class="mx-grid"><div class="mx" id="mx-fb"><div class="mx-stage mx-fb"><div class="mx-c"><button class="mx-btn" tabindex="-1">Investigate</button></div></div><div class="mx-head"><span class="t-strong t-small">Hover, press</span><span class="mono t-small muted">120 ms</span></div><span class="t-small muted">Past about 0.1 s a hand feels the screen didn't answer.</span><span class="t-small">In Green Control: the Investigate button.</span><button class="pbtn mx-play" data-mx="fb">Play</button></div><div class="mx" id="mx-sm"><div class="mx-stage mx-sm"><div class="mx-dots"></div><div class="mx-c"><span class="mx-iso"></span><span class="mx-chip">CH-02 · +14%</span></div></div><div class="mx-head"><span class="t-strong t-small">A label appears, then leaves</span><span class="mono t-small muted">240 in · 160 out</span></div><span class="t-small muted">Short distance, short time. Leaving is one step shorter.</span><span class="t-small">In Green Control: a reading on the drawing.</span><button class="pbtn mx-play" data-mx="sm">Play</button></div><div class="mx" id="mx-pn"><div class="mx-stage mx-pn"><div class="mx-page"><i></i><i></i><i style="width:40%"></i></div><div class="mx-panel"><b></b><i></i><i></i><i style="width:50%"></i><u></u></div></div><div class="mx-head"><span class="t-strong t-small">A panel opens, then closes</span><span class="mono t-small muted">420 in · 280 out</span></div><span class="t-small muted">It travels far, so it is slower: you see where it came from.</span><span class="t-small">In Green Control: the AI panel.</span><button class="pbtn mx-play" data-mx="pn">Play</button></div><div class="mx" id="mx-ly"><div class="mx-stage mx-ly"><div class="mx-lay"><div class="mx-nav"><i></i><i></i><i></i></div><div class="mx-main"><span class="mx-iso"></span></div></div></div><div class="mx-head"><span class="t-strong t-small">The layout changes</span><span class="mono t-small muted">520 ms</span></div><span class="t-small muted">The whole page moves; the eye needs time to follow each part.</span><span class="t-small">In Green Control: the menu folds when an equipment page opens.</span><button class="pbtn mx-play" data-mx="ly">Play</button></div><div class="mx" id="mx-ar"><div class="mx-stage mx-ar"><div class="mx-page"><i></i><i></i><i style="width:40%"></i></div><div class="mx-toast">✓ Plan applied</div></div><div class="mx-head"><span class="t-strong t-small">Something new arrives</span><span class="mono t-small muted">520 ms · spring</span></div><span class="t-small muted">The small overshoot says “this is new”. Only arrivals get it.</span><span class="t-small">In Green Control: the “Plan applied” toast.</span><button class="pbtn mx-play" data-mx="ar">Play</button></div><div class="mx" id="mx-cm"><div class="mx-stage mx-cm"><div class="mx-dots"></div><div class="mx-c"><svg class="mx-cam" viewBox="0 0 60 60"><path d="M6 22 30 10l24 12v18L30 52 6 40Z M6 22l24 12 24-12 M30 34v18"/></svg></div></div><div class="mx-head"><span class="t-strong t-small">The drawing zooms</span><span class="mono t-small muted">900 ms</span></div><span class="t-small muted">The biggest thing on screen, so the slowest.</span><span class="t-small">In Green Control: zooming in on Chiller 2.</span><button class="pbtn mx-play" data-mx="cm">Play</button></div><div class="mx" id="mx-lp"><div class="mx-stage mx-lp"><div class="mx-c" style="gap:14px"><span class="mx-spin"></span><span class="mx-think"><i></i><i></i><i></i></span></div></div><div class="mx-head"><span class="t-strong t-small">Still working</span><span class="mono t-small muted">1200 ms loop</span></div><span class="t-small muted">One beat per cycle; stops the moment the work stops.</span><span class="t-small">In Green Control: the AI checking sources.</span></div><div class="mx" id="mx-am"><div class="mx-stage mx-am"><div class="mx-c"><span class="mx-live"></span><span class="t-label muted" style="margin-left:10px">Live</span></div></div><div class="mx-head"><span class="t-strong t-small">Live</span><span class="mono t-small muted">2400 ms loop</span></div><span class="t-small muted">Slow, so it never pulls the eye away from a fault.</span><span class="t-small">In Green Control: the live dot next to the time.</span></div></div>
+${MOTION_TILES()}
 <p class="t-small muted" style="margin-top:12px">Exceptions: one-off sequences such as the figure assembling are written inside their component and marked as exceptions. Before 1.9 the prototype used 38 different durations; all now map to these.</p>
 <h2 id="sequences">Sequences that carry meaning</h2>
 <div class="grid3">
@@ -3420,8 +3474,10 @@ INIT.color = () => {
   $("#cols").innerHTML = N.map((n, i) => `<div><i class="n" style="height:${n}%"></i>${A[i] ? `<i class="a${A[i] > 84 ? " hot" : ""}" style="height:${A[i]}%"></i>` : ""}</div>`).join("") + `<span class="lim" style="bottom:84%"></span>`;
 };
 INIT.motion = () => {
-  const MX = { fb: [["hov", 0], ["press", 450], ["-press", 700], ["-hov", 1200]], sm: [["go", 0], ["-go", 1500]], pn: [["go", 0], ["-go", 1700]], ly: [["go", 0], ["-go", 1700]], ar: [["go", 0], ["-go", 1800]], cm: [["go", 0], ["-go", 2000]] };
-  $$(".mx-play").forEach((b) => { b.onclick = () => { const st = $(".mx-stage.mx-" + b.dataset.mx); (st._t || []).forEach(clearTimeout); st.className = "mx-stage mx-" + b.dataset.mx; st._t = MX[b.dataset.mx].map(([c, t]) => setTimeout(() => c[0] === "-" ? st.classList.remove(c.slice(1)) : st.classList.add(c), t)); }; });
+  fitCanvases();
+  $$(".mx-play[data-mt]").forEach((b) => { b.onclick = () => { const m = MT.find((x) => x.k === b.dataset.mt), st = b.closest(".mt-tile").querySelector(".cv"); st.classList.remove("go", "hov", "press"); playSeq(st, m.seq); }; });
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { const b = e.target.querySelector(".mx-play[data-mt]"); if (b) b.click(); io.unobserve(e.target); } }), { threshold: 0.6 });
+  $$(".mt-tile").forEach((t) => io.observe(t));
   $("#playMotion").onclick = () => { const box = $("#motionTile"); box.style.setProperty("--w", $("#mt1").clientWidth + "px"); box.classList.toggle("motion-go"); };
   const rs = $("#riseStage"); const run = () => { rs.innerHTML = `<div style="display:grid;gap:8px;width:200px">${["Checked 3 sources", "Chiller 2 runs hot", "Confidence 86%"].map((t, i) => `<div class="block rise" style="padding:6px 10px;animation-delay:${i * 70}ms" ><span class="t-small">${t}</span></div>`).join("")}</div>`; };
   run(); rs.onclick = run; rs.style.cursor = "pointer";
@@ -3640,6 +3696,10 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Equipment": "设备",
+  "Actions": "行动",
+  "Reports": "报表",
+  "B1 / Live 15:40": "B1 / 实时 15:40",
   "Container": "容器",
   "Four kinds, on one screen": "四种容器，放在同一个页面上",
   "The equipment page, with all four in place.": "设备页，四种容器都在各自的位置上。",
