@@ -210,11 +210,12 @@ Rules grow from real feedback, not from one person's guess. Sources: the review 
 
 1. Collect every correction: grades marked okay or redo, the problems ticked, graders' notes, and edits the designer made by hand.
 2. Group them. The same problem on several drawings or screens is one rule.
-3. Write each rule as an instruction a future agent can follow, generalised to every similar case ("Light one part only, never a whole assembly", not "fix the charger").
-4. **Attach the reason.** Use the graders' or designer's own words. Never invent one: if nobody said why, propose a reason and mark it *to confirm*.
-5. Add where it came from: batch, how many people, which roles, which drawings.
-6. If a machine could catch it, propose a check for `gc_check.py` instead of a sentence.
-7. Write it into DESIGN.md and add a Changelog line. Remove rules that are now covered by a newer one.
+3. Tag where it comes from: [Industry] (ISA-101, ISA-18.2, WCAG), [Product] or [Task]. If it differs from the industry habit, say so and why.
+4. Write each rule as an instruction a future agent can follow, generalised to every similar case ("Light one part only, never a whole assembly", not "fix the charger").
+5. **Attach the reason.** Use the graders' or designer's own words. Never invent one: if nobody said why, propose a reason and mark it *to confirm*.
+6. Add where it came from: batch, how many people, which roles, which drawings.
+7. If a machine could catch it, propose a check for `gc_check.py` instead of a sentence.
+8. Write it into DESIGN.md and add a Changelog line. Remove rules that are now covered by a newer one.
 
 ### Format
 
