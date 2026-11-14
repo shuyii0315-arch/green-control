@@ -1,7 +1,7 @@
 # Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.9.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.10.
 
 ## The one idea
 
@@ -192,6 +192,40 @@ The rules have been tested with AI agents (see Changelog): can an agent that has
 - **Night as the default.** It differs from ISA-101's light-grey background (see Look). Needs operators on night shifts to confirm.
 
 
+## Containers
+
+Four kinds. A feature puts its content into one of them; it never invents a fifth. [Product]
+
+| Container | When | From | Close | Covers the drawing |
+|---|---|---|---|---|
+| **Panel** | a task with several steps: read, decide, act | desktop: the right edge, 400px; tablet and phone: the bottom | close button or Esc; a grabber only if its height can change | depends on the task |
+| **Popover** | one or two lines about one point on the drawing | next to that point | click anywhere else | never |
+| **Toast** | a receipt for something just done | the top of the work area | leaves after 6 s, waits while hovered | never |
+| **Card** | things listed on the page; does not float | in place | not closed; it changes state | — |
+
+- **One panel at a time.** Opening something from inside a panel opens it one level down in the same panel, with Back at the top left.
+  - Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.
+- **The panel's height, dimming and bottom bar follow the task.** AI investigation and shift handover: half height, no dimming, ask box at the bottom, because the drawing must stay visible. Assign to someone: short and dimmed, a button at the bottom. Filters and alerts: full height, dimmed, because nobody reads the drawing while changing settings.
+- **Only a panel whose height can change gets a grabber.** A fixed-height one gets a close button only.
+- **The alerts floating on the overview are cards, not a panel**, so there is one panel at one width.
+
+## Page frame
+
+Every page is built from four regions: menu, header, main, panel. A page only decides which are open. [Product]
+
+| Page | The person is | Menu | Header tools | Main | Panel |
+|---|---|---|---|---|---|
+| Overview | detecting | open (232px) | time range, Ask AI | building cutaway, alert cards on it | closed |
+| Equipment | diagnosing, responding | folded (64px) | state, path | the machine and its evidence row | AI panel open |
+| Actions | reviewing | open | filters | a list | opens when a row is picked |
+| Reports | reviewing | open | time range, export | charts | closed |
+
+- **The menu folds only on the equipment page.**
+  - Why: only that page keeps a panel open, so it needs the width for the drawing and the panel. Elsewhere an open menu tells people where they are.
+- **The header has a fixed height and the title is always in the same place**; the right side holds only that page's tools. So the eye never hunts for the title.
+- **Main takes the width that is left; no fixed pixel positions.** Control-room monitors, tablets and phones all differ.
+- Going from the overview to an equipment page: the menu folds (`move` 520 ms) while the panel slides in (`in` 420 ms).
+
 ## Components
 
 AI panel (the frame stays the same; what goes inside changes with the situation) · Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Confidence meter · Toast with Undo · Action row · Owner row (team + person on shift + Assign) · Causes list + Suggested check (below 50%) · Art box (keeps labels on the drawing) · Segmented control · Buttons (primary `.cta`, secondary `.pbtn`; square, no pill) · Logo.
@@ -202,6 +236,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.10** New: Containers (panel, popover, toast, card; one panel at a time; the panel in five situations) and Page frame (four regions; which are open on the overview, equipment, actions and reports pages). Fixed the motion examples: a press returns to rest, the toast and the meter replay, loops use `wave` and the `loop` duration.
 - **1.9** Motion is picked by what moves, from one list of curves and durations (`tokens.json` › motion). New: an `exit` curve for anything leaving, `wave` for loops, `linear` for spinners. Every transition in the prototype, the site and the component code now uses these values; `gc-motion` skill rewritten to match.
 - **1.8** Each component is shown in the situations it meets, with one line on what changes, instead of do/don't lists. New: AI panel, one frame for every AI answer (fault, saving, draft, low confidence), on desktop, tablet and phone.
 - **1.7** Rules now say where they come from: [Industry] (ISA-101, ISA-18.2, WCAG), [Product] (evidence first, people decide) or [Task]. Two places where Green Control differs from the industry habit are written down with their reasons. New: screens sorted by what the person is doing (detect, diagnose, respond, review); a plan for testing the rules with operators; open questions.

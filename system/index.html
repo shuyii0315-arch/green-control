@@ -1030,6 +1030,51 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .moseg { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 2px; box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; }
 .moseg span { position: relative; padding: 4px 14px; text-align: center; }
 .moseg i { position: absolute; left: 2px; top: 2px; bottom: 2px; width: calc(50% - 2px); background: var(--sel-bg, var(--bg-raised)); }
+
+/* containers + page frame */
+.ct-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.ct-dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; margin: 0; font-size: 13px; line-height: 19px; }
+.ct-dl dt { color: var(--muted); font: 11px/19px var(--font-mono); text-transform: uppercase; letter-spacing: .05em; }
+.ct-dl dd { margin: 0; }
+.ct .pbtn { justify-self: start; }
+.ct-iso { width: 56px; height: 56px; fill: none; stroke: var(--muted); stroke-width: 1; }
+.ct-panel .mx-panel { transform: translateX(102%); }
+.ct-panel.go .mx-panel { transform: none; transition: transform 420ms var(--ease); }
+.ct-mark { position: absolute; left: 50%; top: 46%; width: 8px; height: 8px; margin: -4px; background: var(--accent); }
+.ct-tip { position: absolute; left: calc(50% + 10px); top: calc(46% - 34px); padding: 6px 8px; font-size: 12px; background: var(--bg-raised); box-shadow: var(--drop); white-space: nowrap; opacity: 0; transform: translateY(4px); transition: opacity 160ms var(--exit), transform 160ms var(--exit); }
+.ct-tip b { font: 11px var(--font-mono); margin-right: 6px; }
+.ct-pop.go .ct-tip { opacity: 1; transform: none; transition: opacity 240ms var(--ease), transform 240ms var(--ease); }
+.ct-toastc.go .mx-toast { opacity: 1; transform: translate(-50%, 0); transition: opacity 240ms var(--ease), transform 520ms var(--spring); }
+.ct-list { position: absolute; inset: 12px; display: grid; gap: 8px; align-content: start; }
+.ct-card { height: 32px; background: var(--bg-raised); display: block; }
+.ct-card.new { box-shadow: inset 2px 0 0 var(--accent); height: 0; opacity: 0; transform: translateY(-8px); transition: height 280ms var(--exit), opacity 280ms var(--exit), transform 280ms var(--exit); }
+.ct-cardc.go .ct-card.new { height: 32px; opacity: 1; transform: none; transition: height 420ms var(--ease), opacity 420ms var(--ease), transform 420ms var(--ease); }
+.ct-flow .ct-p1, .ct-flow .ct-p2 { position: absolute; top: 0; right: 0; bottom: 0; width: 46%; padding: 12px; display: grid; gap: 7px; align-content: start; background: var(--bg-raised); box-shadow: -1px 0 0 var(--line); }
+.ct-flow b, .fa-panel b { height: 7px; width: 60%; background: var(--text); display: block; margin-bottom: 4px; }
+.ct-flow i, .fa-panel i { height: 5px; background: var(--muted); opacity: .5; display: block; }
+.ct-flow u, .fa-panel u { position: absolute; left: 12px; right: 12px; bottom: 12px; height: 16px; box-shadow: inset 0 0 0 1px var(--muted); }
+.ct-row { font-size: 11px; padding: 4px 6px; box-shadow: inset 0 0 0 1px var(--line); }
+.ct-flow.go .ct-row { background: var(--bg-surface); }
+.ct-back { font-size: 11px; color: var(--muted); }
+.ct-flow .ct-p2 { transform: translateX(102%); transition: transform 280ms var(--exit); }
+.ct-flow.go .ct-p2 { transform: none; transition: transform 420ms var(--ease) 300ms; }
+.ct-scenes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.ct-scene { display: grid; gap: 6px; align-content: start; }
+.ct-tab, .fr-svg { width: 100%; height: auto; display: block; outline: 1px solid var(--line); }
+.ct-same { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+.ct-same > div { display: grid; gap: 6px; align-content: start; padding: 14px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.fr-map { display: grid; grid-template-columns: 150px 1fr 220px; grid-template-rows: auto 220px; gap: 1px; background: var(--line); box-shadow: 0 0 0 1px var(--line); }
+.fr-map > div { background: var(--bg-surface); padding: 14px; display: grid; gap: 6px; align-content: start; }
+.fr-nav { grid-row: 1 / 3; } .fr-panel { grid-column: 3; grid-row: 1 / 3; } .fr-main { background: var(--bg-page) !important; }
+.fr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.fr-anim { display: flex; }
+.fa-nav { width: 30%; padding: 12px 10px; display: grid; gap: 8px; align-content: start; background: var(--bg-surface); box-shadow: 1px 0 0 var(--line); transition: width 520ms var(--ease); overflow: hidden; }
+.fa-nav i { height: 6px; background: var(--muted); opacity: .5; display: block; }
+.fa-main { flex: 1; display: grid; place-items: center; }
+.fa-panel { position: relative; width: 0; overflow: hidden; padding: 12px 0; display: grid; gap: 7px; align-content: start; background: var(--bg-raised); box-shadow: -1px 0 0 var(--line); transition: width 280ms var(--exit), padding 280ms var(--exit); }
+.fr-anim.go .fa-nav { width: 9%; }
+.fr-anim.go .fa-panel { width: 40%; padding: 12px; transition: width 420ms var(--ease), padding 420ms var(--ease); }
+@media (max-width: 900px) { .ct-scenes, .fr-grid { grid-template-columns: repeat(2, 1fr); } .ct-same { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1038,7 +1083,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
   <button class="menu-btn" id="menuBtn" aria-label="Open navigation">Menu</button>
   <a class="brand" href="#/overview" aria-label="Green Control Design System, home">
     <svg class="logo" viewBox="0 0 28 28" aria-hidden="true" data-logo></svg>
-    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.9</span>
+    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.10</span>
   </a>
   <div class="right">
     <a class="btn-ghost proto" href="https://shuyii0315-arch.github.io/green-control/" target="_blank" rel="noopener">Prototype ↗</a>
@@ -1545,7 +1590,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 <script type="text/plain" id="f-design"># Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.9.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.10.
 
 ## The one idea
 
@@ -1736,6 +1781,40 @@ The rules have been tested with AI agents (see Changelog): can an agent that has
 - **Night as the default.** It differs from ISA-101's light-grey background (see Look). Needs operators on night shifts to confirm.
 
 
+## Containers
+
+Four kinds. A feature puts its content into one of them; it never invents a fifth. [Product]
+
+| Container | When | From | Close | Covers the drawing |
+|---|---|---|---|---|
+| **Panel** | a task with several steps: read, decide, act | desktop: the right edge, 400px; tablet and phone: the bottom | close button or Esc; a grabber only if its height can change | depends on the task |
+| **Popover** | one or two lines about one point on the drawing | next to that point | click anywhere else | never |
+| **Toast** | a receipt for something just done | the top of the work area | leaves after 6 s, waits while hovered | never |
+| **Card** | things listed on the page; does not float | in place | not closed; it changes state | — |
+
+- **One panel at a time.** Opening something from inside a panel opens it one level down in the same panel, with Back at the top left.
+  - Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.
+- **The panel's height, dimming and bottom bar follow the task.** AI investigation and shift handover: half height, no dimming, ask box at the bottom, because the drawing must stay visible. Assign to someone: short and dimmed, a button at the bottom. Filters and alerts: full height, dimmed, because nobody reads the drawing while changing settings.
+- **Only a panel whose height can change gets a grabber.** A fixed-height one gets a close button only.
+- **The alerts floating on the overview are cards, not a panel**, so there is one panel at one width.
+
+## Page frame
+
+Every page is built from four regions: menu, header, main, panel. A page only decides which are open. [Product]
+
+| Page | The person is | Menu | Header tools | Main | Panel |
+|---|---|---|---|---|---|
+| Overview | detecting | open (232px) | time range, Ask AI | building cutaway, alert cards on it | closed |
+| Equipment | diagnosing, responding | folded (64px) | state, path | the machine and its evidence row | AI panel open |
+| Actions | reviewing | open | filters | a list | opens when a row is picked |
+| Reports | reviewing | open | time range, export | charts | closed |
+
+- **The menu folds only on the equipment page.**
+  - Why: only that page keeps a panel open, so it needs the width for the drawing and the panel. Elsewhere an open menu tells people where they are.
+- **The header has a fixed height and the title is always in the same place**; the right side holds only that page's tools. So the eye never hunts for the title.
+- **Main takes the width that is left; no fixed pixel positions.** Control-room monitors, tablets and phones all differ.
+- Going from the overview to an equipment page: the menu folds (`move` 520 ms) while the panel slides in (`in` 420 ms).
+
 ## Components
 
 AI panel (the frame stays the same; what goes inside changes with the situation) · Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Confidence meter · Toast with Undo · Action row · Owner row (team + person on shift + Assign) · Causes list + Suggested check (below 50%) · Art box (keeps labels on the drawing) · Segmented control · Buttons (primary `.cta`, secondary `.pbtn`; square, no pill) · Logo.
@@ -1746,6 +1825,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.10** New: Containers (panel, popover, toast, card; one panel at a time; the panel in five situations) and Page frame (four regions; which are open on the overview, equipment, actions and reports pages). Fixed the motion examples: a press returns to rest, the toast and the meter replay, loops use `wave` and the `loop` duration.
 - **1.9** Motion is picked by what moves, from one list of curves and durations (`tokens.json` › motion). New: an `exit` curve for anything leaving, `wave` for loops, `linear` for spinners. Every transition in the prototype, the site and the component code now uses these values; `gc-motion` skill rewritten to match.
 - **1.8** Each component is shown in the situations it meets, with one line on what changes, instead of do/don't lists. New: AI panel, one frame for every AI answer (fault, saving, draft, low confidence), on desktop, tablet and phone.
 - **1.7** Rules now say where they come from: [Industry] (ISA-101, ISA-18.2, WCAG), [Product] (evidence first, people decide) or [Task]. Two places where Green Control differs from the industry habit are written down with their reasons. New: screens sorted by what the person is doing (detect, diagnose, respond, review); a plan for testing the rules with operators; open questions.
@@ -2684,10 +2764,11 @@ function moPlay(card) {
 const moSection = (c) => MOTIONS[c.id] ? `<h2 id="motion">Motion</h2><p class="sub">Uses the tokens from <a href="#/motion">Motion</a>; no numbers of its own.</p>
 <div class="mo-grid">${MOTIONS[c.id].map((m, i) => `<div class="mo" data-c="${c.id}" data-i="${i}"><div class="mo-stage${m.tall ? " tall" : ""}"><div class="mo-inner">${m.html}</div></div><div class="mo-cap"><span class="t-strong t-small">${m.l}</span><span class="mono t-small muted">${m.tok}</span></div>${m.loop ? '<span class="t-small muted">Runs while the work runs.</span>' : '<button class="pbtn mo-play">Play</button>'}</div>`).join("")}</div>` : "";
 
+
 /* ---------- pages ---------- */
 const NAV = [
   ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
-  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials"], ["motion", "Motion"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
+  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials"], ["motion", "Motion"], ["containers", "Containers"], ["frame", "Page frame"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
   ["AI behaviour", [["rules", "Rules, states, voice"], ["states", "States & confidence", 1], ["voice", "How the AI speaks", 1]]],
   ["Components", COMPONENTS.map((c) => [c.id, c.name])],
   ["Behind the scenes", [["eval", "Eval"], ["changelog", "Changelog"]]],
@@ -2699,7 +2780,7 @@ const head = (crumb, title, lede, acts = "") => `<header class="ph"><span class=
 const PAGES = {};
 
 /* OVERVIEW */
-PAGES.overview = () => `${head("Green Control · Design System 1.9", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
+PAGES.overview = () => `${head("Green Control · Design System 1.10", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
 <div class="hero-fig"><div class="dots"></div><img src="img/proto-investigate.webp" alt="The Green Control prototype: the chiller plant with three numbered evidence marks, and the AI panel"><span class="cap">Prototype · Investigate Chiller 2</span></div>
 <div class="ostats">${[["15", "components", "6 atoms · 6 molecules · 3 organisms"], ["6", "AI states", "watching to undone"], ["3", "confidence bands", "plan · draft · check"], ["2", "themes", "night and day, one set of names"], ["16", "Figma components", "matched to code"]].map(([n, k, d]) => `<div><span class="t-num">${n}</span><span class="t-small muted">${k}</span></div>`).join("")}</div>
 
@@ -2827,6 +2908,90 @@ PAGES.typography = () => `${head("Foundations", "Typography", "Two families with
   <div><span>Units follow the number, smaller and muted: <span class="t-data">+14%</span> <span class="t-small muted">vs Chiller 1</span>.</span></div>
   <div><span>Machine IDs are mono (<span class="t-data">CH-02</span>); their names are sans (Chiller 2).</span></div>
 </div>`;
+
+/* ---------- CONTAINERS and PAGE FRAME ---------- */
+function playSeq(st, seq) { (st._t || []).forEach(clearTimeout); st._t = seq.map(([c, t]) => setTimeout(() => (c[0] === "-" ? st.classList.remove(c.slice(1)) : st.classList.add(c)), t)); }
+const CT_SEQ = { panel: [["go", 0], ["-go", 1700]], pop: [["go", 0], ["-go", 1500]], toastc: [["go", 0], ["-go", 1800]], cardc: [["go", 0], ["-go", 2200]], flow: [["go", 0], ["-go", 2600]] };
+const ISO = '<svg class="ct-iso" viewBox="0 0 60 60"><path d="M6 22 30 10l24 12v18L30 52 6 40Z M6 22l24 12 24-12 M30 34v18"/></svg>';
+const CONTAINERS = [
+  { k: "panel", n: "Panel", when: "A task with several steps: read, decide, act.", from: "Desktop: the right edge, 400px. Tablet and phone: the bottom.", close: "Close button or Esc. A grabber only if its height can change.", cover: "Depends on the task (see below).", mo: "in 420 · out 280", holds: "AI panel, plan rail, causes, owner row",
+    stage: `<div class="mx-dots"></div><div class="mx-c" style="right:40%">${ISO}</div><div class="mx-panel"><b></b><i></i><i></i><i style="width:50%"></i><u></u></div>` },
+  { k: "pop", n: "Popover", when: "One or two lines about one point on the drawing.", from: "Next to that point.", close: "Click anywhere else.", cover: "Never.", mo: "small-in 240 · small-out 160", holds: "a reading on the drawing",
+    stage: `<div class="mx-dots"></div><div class="mx-c">${ISO}</div><span class="ct-mark"></span><span class="ct-tip"><b>CH-02</b> 0.71 kW/t</span>` },
+  { k: "toastc", n: "Toast", when: "A receipt for something just done.", from: "The top of the work area.", close: "Leaves after 6 s; waits while the pointer is on it.", cover: "Never.", mo: "arrives 520 spring · leaves 160", holds: "toast with Undo",
+    stage: `<div class="mx-page"><i></i><i></i><i style="width:40%"></i></div><div class="mx-toast">✓ Plan applied</div>` },
+  { k: "cardc", n: "Card", when: "Things listed on the page. It does not float.", from: "In place, in the list.", close: "Not closed; it changes state.", cover: "—", mo: "a new card: in 420", holds: "alert card, evidence card",
+    stage: `<div class="ct-list"><span class="ct-card new"></span><span class="ct-card"></span><span class="ct-card"></span></div>` },
+];
+const SCENES_PANEL = [
+  { t: "AI investigation", h: 0.5, grab: true, scrim: false, foot: "input", c: "Half height, no dimming: the drawing must stay visible to check the evidence. Ask box at the bottom." },
+  { t: "Shift handover", h: 0.5, grab: true, scrim: false, foot: "input", c: "Like a comments sheet: notes listed, a text field at the bottom." },
+  { t: "Assign to someone", h: 0.3, grab: false, scrim: true, foot: "button", c: "Short and dimmed: pick a person and it closes. No need to see the drawing." },
+  { t: "Equipment details", h: 0.5, grab: true, scrim: false, foot: "none", c: "Opens at half height; drag up for more readings." },
+  { t: "Filters and alerts", h: 0.9, grab: false, scrim: true, foot: "button", c: "Full height, covers the drawing: nobody reads the drawing while changing settings." },
+];
+function tabletSVG(sc) {
+  const W = 150, H = 200, sh = H * sc.h, sy = H - sh, F = (v) => `style="fill:var(${v})"`;
+  let g = `<svg viewBox="0 0 ${W} ${H}" class="ct-tab"><rect width="${W}" height="${H}" ${F("--bg-page")}/>`;
+  for (let y = 4; y < H; y += 6) for (let x = 4; x < W; x += 6) g += `<circle cx="${x}" cy="${y}" r=".55" ${F("--muted")} opacity=".45"/>`;
+  g += `<path d="M48 70 L75 56 L102 70 L102 100 L75 114 L48 100Z M48 70 L75 84 L102 70 M75 84 V114" style="fill:none;stroke:var(--muted)"/>`;
+  if (sc.scrim) g += `<rect width="${W}" height="${H}" fill="rgba(0,0,0,.5)"/>`;
+  g += `<rect y="${sy}" width="${W}" height="${sh}" ${F("--bg-raised")}/><rect y="${sy}" width="${W}" height="1" ${F("--line")}/>`;
+  if (sc.grab) g += `<rect x="${W / 2 - 12}" y="${sy + 4}" width="24" height="3" ${F("--muted")}/>`;
+  const hy = sy + (sc.grab ? 18 : 14);
+  g += `<rect x="10" y="${hy - 4}" width="44" height="5" ${F("--text")}/><path d="M${W - 16} ${hy - 5} l6 6 m0 -6 l-6 6" style="stroke:var(--text);stroke-width:1.2"/>`;
+  const bot = H - (sc.foot === "none" ? 0 : 20) - 10;
+  for (let y = hy + 10; y < bot; y += 10) g += `<rect x="10" y="${y}" width="${W - 20 - ((y * 7) % 40)}" height="4" ${F("--line")}/>`;
+  if (sc.foot === "input") g += `<rect x="8" y="${H - 22}" width="${W - 16}" height="16" style="fill:none;stroke:var(--muted)"/><rect x="${W - 22}" y="${H - 20}" width="12" height="12" ${F("--text")}/>`;
+  if (sc.foot === "button") g += `<rect x="8" y="${H - 22}" width="${W - 16}" height="16" ${F("--accent")}/>`;
+  return g + "</svg>";
+}
+PAGES.containers = () => `${head("Foundations", "Containers", "Four kinds of container. Every feature puts its content into one of them, the way a phone app's one bottom sheet carries comments, sharing and settings.")}
+<h2 id="kinds">Four kinds</h2>
+<p class="sub">Press Play to see each one arrive and leave.</p>
+<div class="ct-grid">${CONTAINERS.map((c) => `<div class="mx ct"><div class="mx-stage ct-${c.k}">${c.stage}</div><div class="mx-head"><span class="t-strong">${c.n}</span><span class="mono t-small muted">${c.mo}</span></div>
+<dl class="ct-dl"><dt>When</dt><dd>${c.when}</dd><dt>From</dt><dd>${c.from}</dd><dt>Close</dt><dd>${c.close}</dd><dt>Covers the drawing</dt><dd>${c.cover}</dd><dt>Holds</dt><dd>${c.holds}</dd></dl><button class="pbtn ct-play" data-ct="${c.k}">Play</button></div>`).join("")}</div>
+<h2 id="one-panel">One panel at a time</h2>
+<div class="grid2"><div class="mx ct"><div class="mx-stage ct-flow"><div class="mx-dots"></div><div class="mx-c" style="right:46%">${ISO}</div><div class="ct-p1"><b></b><i></i><i></i><span class="ct-row">Maintenance B ›</span><u></u></div><div class="ct-p2"><span class="ct-back">‹ Back</span><b></b><i></i><i style="width:60%"></i><u></u></div></div><button class="pbtn ct-play" data-ct="flow">Play</button></div>
+<div class="tile"><span class="t-strong">Open something from inside a panel, and it opens one level down in the same panel, with Back at the top left.</span><span class="t-small muted">Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.</span><span class="t-strong" style="margin-top:12px">The alerts floating on the overview are cards, not a panel.</span><span class="t-small muted">Why: they are a list, not a conversation. This keeps one panel, at one width: 400px.</span></div></div>
+<h2 id="panel-scenes">The panel in five situations</h2>
+<p class="sub">Shown on a tablet. Same container, different content, like comments, sharing and settings in one sheet.</p>
+<div class="ct-scenes">${SCENES_PANEL.map((sc) => `<div class="ct-scene">${tabletSVG(sc)}<span class="t-strong t-small">${sc.t}</span><span class="t-small muted">${sc.c}</span></div>`).join("")}</div>
+<div class="ct-same"><div><span class="t-label">Stays the same</span><span class="t-small">Header with title and close · frosted glass · rises from the bottom · a fixed bar at the bottom · its motion.</span></div><div><span class="t-label">Changes with the situation</span><span class="t-small">Height · grabber or not · dimming or not · ask box or button at the bottom.</span></div><div><span class="t-label">Grabber rule</span><span class="t-small">Only a panel whose height can change gets a grabber. A fixed-height one gets a close button only.</span></div></div>`;
+
+const FRAMES = [
+  { id: "overview", t: "Overview", task: "Detect: what is wrong", nav: 232, panel: 0, cards: true, main: "bldg", tools: "Time range, Ask AI", m: "The building cutaway; alert cards float on it", p: "Closed" },
+  { id: "equipment", t: "Equipment", task: "Diagnose and respond", nav: 64, panel: 400, main: "eq", tools: "State, path", m: "The machine and its evidence row", p: "AI panel open" },
+  { id: "actions", t: "Actions", task: "Review: what was done", nav: 232, panel: 400, main: "list", tools: "Filters", m: "A list", p: "Opens when a row is picked" },
+  { id: "reports", t: "Reports", task: "Review: what was saved", nav: 232, panel: 0, main: "chart", tools: "Time range, Export", m: "Charts", p: "Closed" },
+];
+function frameSVG(f) {
+  const S = 0.17, W = 1440 * S, H = 900 * S, nv = f.nav * S, pn = f.panel * S, hh = 84 * S + 6, F = (v) => `style="fill:var(${v})"`;
+  let g = `<svg viewBox="0 0 ${W} ${H}" class="fr-svg"><rect width="${W}" height="${H}" ${F("--bg-page")}/><rect width="${nv}" height="${H}" ${F("--bg-surface")}/><rect x="${nv}" width="1" height="${H}" ${F("--line")}/>`;
+  for (let i = 0; i < 4; i++) g += f.nav > 100 ? `<rect x="6" y="${26 + i * 9}" width="${nv - 16}" height="4" ${F(i ? "--line" : "--muted")}/>` : `<rect x="${nv / 2 - 2.5}" y="${26 + i * 9}" width="5" height="5" ${F(i === 1 ? "--muted" : "--line")}/>`;
+  const mx = nv + 8, mw = W - nv - pn - 16;
+  g += `<rect x="${mx}" y="8" width="40" height="5" ${F("--text")}/><rect x="${mx + mw - 34}" y="8" width="34" height="6" style="fill:none;stroke:var(--muted)"/><rect x="${mx - 8}" y="${hh}" width="${W - nv - pn}" height="1" ${F("--line")}/>`;
+  const my = hh + 8, mh = H - my - 8;
+  if (f.main === "bldg" || f.main === "eq") {
+    const cx = mx + mw / 2, cy = my + mh / 2 - (f.main === "eq" ? 8 : 0), r = f.main === "eq" ? 26 : 32;
+    g += `<path d="M${cx - r} ${cy - r / 3} L${cx} ${cy - r} L${cx + r} ${cy - r / 3} L${cx + r} ${cy + r / 2} L${cx} ${cy + r} L${cx - r} ${cy + r / 2}Z" style="fill:none;stroke:var(--muted)"/>`;
+    if (f.main === "eq") for (let i = 0; i < 3; i++) g += `<rect x="${mx + i * (mw / 3) + 2}" y="${my + mh - 16}" width="${mw / 3 - 6}" height="14" ${F("--bg-raised")}/>`;
+    if (f.cards) for (let i = 0; i < 2; i++) g += `<rect x="${mx + mw - 58}" y="${my + 4 + i * 26}" width="58" height="22" ${F("--bg-raised")}/>${i ? "" : `<rect x="${mx + mw - 58}" y="${my + 4}" width="2" height="22" ${F("--accent")}/>`}`;
+  }
+  if (f.main === "list") for (let i = 0; i < 8; i++) g += `<rect x="${mx}" y="${my + i * 13}" width="${mw}" height="10" ${F(i === 2 ? "--line" : "--bg-surface")}/>`;
+  if (f.main === "chart") for (let i = 0; i < 12; i++) { const h = 20 + ((i * 37) % 60); g += `<rect x="${mx + i * (mw / 12) + 2}" y="${my + mh - h}" width="${mw / 12 - 5}" height="${h}" ${F(i === 7 ? "--accent" : "--line")}/>`; }
+  if (pn) { g += `<rect x="${W - pn}" width="${pn}" height="${H}" ${F("--bg-raised")}/><rect x="${W - pn}" width="1" height="${H}" ${F("--line")}/><rect x="${W - pn + 6}" y="8" width="${pn - 30}" height="5" ${F("--text")}/>`; for (let y = 22; y < H - 26; y += 9) g += `<rect x="${W - pn + 6}" y="${y}" width="${pn - 12 - ((y * 5) % 18)}" height="3" ${F("--line")}/>`; g += `<rect x="${W - pn + 6}" y="${H - 18}" width="${pn - 12}" height="11" style="fill:none;stroke:var(--muted)"/>`; }
+  return g + "</svg>";
+}
+PAGES.frame = () => `${head("Foundations", "Page frame", "Every page is built from the same four regions. A page only decides which are open.")}
+<h2 id="regions">Four regions</h2>
+<div class="fr-map"><div class="fr-nav"><span class="t-label">1 · Menu</span><span class="t-small muted">232px open, 64px folded</span></div><div class="fr-head"><span class="t-label">2 · Header</span><span class="t-small muted">Fixed height. Title always in the same place; the page's own tools on the right.</span></div><div class="fr-main"><span class="t-label">3 · Main</span><span class="t-small muted">Takes the width that is left. No fixed pixel positions.</span></div><div class="fr-panel"><span class="t-label">4 · Panel</span><span class="t-small muted">400px, one at a time</span></div></div>
+<h2 id="pages">Four pages</h2>
+<div class="fr-grid">${FRAMES.map((f) => `<div class="ct-scene">${frameSVG(f)}<span class="t-strong t-small">${f.t}</span><span class="t-small muted">${f.task}</span></div>`).join("")}</div>
+<table class="table" style="margin-top:20px"><thead><tr><th>Page</th><th>The person is…</th><th>Menu</th><th>Header tools</th><th>Main</th><th>Panel</th></tr></thead><tbody>${FRAMES.map((f) => `<tr><td>${f.t}</td><td>${f.task}</td><td>${f.nav > 100 ? "Open" : "Folded"}</td><td>${f.tools}</td><td>${f.m}</td><td>${f.p}</td></tr>`).join("")}</tbody></table>
+<h2 id="switch">From the overview to an equipment page</h2>
+<div class="grid2"><div class="mx ct"><div class="mx-stage fr-anim"><div class="fa-nav"><i></i><i></i><i></i></div><div class="fa-main">${ISO}</div><div class="fa-panel"><b></b><i></i><i></i><u></u></div></div><button class="pbtn ct-play" data-ct="flow">Play</button></div>
+<div class="tile"><span class="t-strong">The menu folds (move 520 ms) while the AI panel slides in (in 420 ms).</span><span class="t-small muted">Why the menu folds only here: only the equipment page keeps a panel open, so it needs the width for the drawing and the panel. Other pages have room, and an open menu tells people where they are.</span></div></div>`;
 
 /* MOTION */
 PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement does, not by component: five curves and nine durations. No other numbers.")}
@@ -3106,6 +3271,7 @@ PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and wit
 
 /* TEST */
 const CHANGELOG = [
+  { v: "1.10", t: "Containers and the page frame", why: "Components had rules; where they sit and how a page is put together did not.", items: ["Containers: four kinds (panel, popover, toast, card), one panel at a time, and the panel in five situations with the grabber rule.", "Page frame: four regions, and which are open on the overview, equipment, actions and reports pages.", "Motion examples fixed: a press returns to rest, the toast and the meter replay, loops use the wave curve."], img: [] },
   { v: "1.9", t: "One rhythm for everything that moves", why: "The docs said one curve, but the prototype used 38 durations and six curves; the site and the motion skill each listed different numbers again.", items: ["Motion is picked by what moves: hover, a chip, a panel, the layout, the drawing, a loop.", "New: an exit curve, so what leaves doesn't linger; leaving is one step shorter than arriving.", "Every transition in the prototype, this site and the component code now uses only these values.", "Motion has its own page under Foundations, and each component page shows which tokens it uses, playable on the component itself."], img: [] },
   { v: "1.8", t: "Components shown where they are used", why: "A do/don't list says little. One sheet on a phone app serves comments, sharing and settings; a component page should show the same: one part, many situations.", items: ["Each component page now shows the component in each situation it meets, with one line on what changes.", "New: AI panel. One frame for every AI answer: a fault, a saving, a draft, a low-confidence check.", "The AI panel shows how it fits a desktop, a tablet and a phone."], img: [] },
   { v: "1.7", t: "Reasons tied to control-room practice", why: "Found by asking where each rule comes from: the industry habit, the product principle, or what the person on shift is doing.", items: ["Color, Evidence card and Alert card now say which control-room guidance (ISA-101, ISA-18.2) their rule follows.", "The two places Green Control differs from that guidance are written down with reasons: night as the default theme, one accent instead of one colour per priority.", "DESIGN.md tags every rule with its source and adds a plan for testing the rules with operators.", "Open question: when two faults arrive at once, which one gets the accent?"], img: [] },
@@ -3195,6 +3361,8 @@ PAGES.voice = () => `${head("AI behaviour", "How the AI speaks", "A colleague re
 
 /* ---------- page init hooks ---------- */
 const INIT = {};
+INIT.containers = () => { $$(".ct-play").forEach((b) => (b.onclick = () => playSeq(b.closest(".ct").querySelector(".mx-stage"), CT_SEQ[b.dataset.ct]))); };
+INIT.frame = () => { $$(".ct-play").forEach((b) => (b.onclick = () => playSeq(b.closest(".ct").querySelector(".mx-stage"), CT_SEQ[b.dataset.ct]))); };
 INIT.workflow = INIT.skills = () => { if (INIT.agents) INIT.agents(); $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
 INIT.howto = () => {
   const draw = () => { const r = ROLES_HT[htRole];
@@ -3484,6 +3652,113 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Containers and the page frame": "容器和页面框架",
+  "Components had rules; where they sit and how a page is put together did not.": "组件有规则了，但组件放在哪里、页面怎么搭，还没有。",
+  "Containers: four kinds (panel, popover, toast, card), one panel at a time, and the panel in five situations with the grabber rule.": "容器：四种（面板、小卡、Toast、卡片），一次只开一个面板，面板的五个场景和拖动条规则。",
+  "Page frame: four regions, and which are open on the overview, equipment, actions and reports pages.": "页面框架：四个区，以及总览、设备、行动、报表四页各开哪些区。",
+  "Motion examples fixed: a press returns to rest, the toast and the meter replay, loops use the wave curve.": "修好了动效示例：按下后会回弹，Toast 和把握度能重新播放，循环动画改用往返曲线。",
+  "Containers": "容器",
+  "Page frame": "页面框架",
+  "Four kinds of container. Every feature puts its content into one of them, the way a phone app's one bottom sheet carries comments, sharing and settings.": "一共四种容器。每个功能都把内容放进其中一种，就像手机 App 里同一个底部弹层装评论、分享和设置。",
+  "Four kinds": "四种容器",
+  "Press Play to see each one arrive and leave.": "点“播放”，看每一种怎么出现、怎么离开。",
+  "Panel": "面板",
+  "Popover": "小卡",
+  "Toast": "Toast",
+  "Card": "卡片",
+  "When": "何时用",
+  "From": "从哪出来",
+  "Close": "怎么关",
+  "Covers the drawing": "挡不挡图纸",
+  "Holds": "装什么",
+  "A task with several steps: read, decide, act.": "要看、要决定、要动手的多步任务。",
+  "Desktop: the right edge, 400px. Tablet and phone: the bottom.": "电脑：右边，400px。平板和手机：底部。",
+  "Close button or Esc. A grabber only if its height can change.": "关闭按钮或 Esc。只有能改高度的才有拖动条。",
+  "Depends on the task (see below).": "看任务（见下）。",
+  "in 420 · out 280": "进 420 · 出 280",
+  "AI panel, plan rail, causes, owner row": "AI 面板、计划步骤、可能原因、负责人",
+  "One or two lines about one point on the drawing.": "关于图上某一个点的一两行。",
+  "Next to that point.": "那个点旁边。",
+  "Click anywhere else.": "点别处。",
+  "Never.": "不挡。",
+  "small-in 240 · small-out 160": "进 240 · 出 160",
+  "a reading on the drawing": "图纸上的一个读数",
+  "A receipt for something just done.": "刚做完一件事的回执。",
+  "The top of the work area.": "工作区顶部。",
+  "Leaves after 6 s; waits while the pointer is on it.": "6 秒后自己离开；鼠标停在上面时等待。",
+  "arrives 520 spring · leaves 160": "到达 520 弹簧 · 离开 160",
+  "toast with Undo": "带撤销的 Toast",
+  "Things listed on the page. It does not float.": "在页面里排着的东西，不浮起来。",
+  "In place, in the list.": "就在列表里。",
+  "Not closed; it changes state.": "不关闭，只改变状态。",
+  "a new card: in 420": "新卡片：进 420",
+  "alert card, evidence card": "提醒卡、证据卡",
+  "One panel at a time": "同一时间只开一个面板",
+  "Open something from inside a panel, and it opens one level down in the same panel, with Back at the top left.": "在面板里点开别的东西，就在同一个面板里进下一层，左上角有返回。",
+  "Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.": "原因：两个面板并排会把图纸挤没，而图纸正是值班的人在盯的东西。",
+  "The alerts floating on the overview are cards, not a panel.": "总览上浮在图上的提醒，是卡片，不是面板。",
+  "Why: they are a list, not a conversation. This keeps one panel, at one width: 400px.": "原因：它们只是一列提醒，不是对话。这样面板只有一种，宽度只有一个：400px。",
+  "Maintenance B ›": "维修 B 组 ›",
+  "‹ Back": "‹ 返回",
+  "The panel in five situations": "面板的五个场景",
+  "Shown on a tablet. Same container, different content, like comments, sharing and settings in one sheet.": "以平板为例。同一个容器，装不同内容，就像同一个弹层装评论、分享和设置。",
+  "AI investigation": "AI 调查",
+  "Shift handover": "交接班留言",
+  "Assign to someone": "派给同事",
+  "Equipment details": "设备详情",
+  "Filters and alerts": "筛选与提醒设置",
+  "Half height, no dimming: the drawing must stay visible to check the evidence. Ask box at the bottom.": "半高，不加暗色：要对照图纸看证据，图纸必须露着。最下面是提问框。",
+  "Like a comments sheet: notes listed, a text field at the bottom.": "和评论区一样：留言列表，最下面是输入框。",
+  "Short and dimmed: pick a person and it closes. No need to see the drawing.": "很矮，加一层暗色：选完人就关，不需要看图。",
+  "Opens at half height; drag up for more readings.": "半高打开，往上拉看更多读数。",
+  "Full height, covers the drawing: nobody reads the drawing while changing settings.": "全高，盖住图纸：改设置的时候没人看图。",
+  "Stays the same": "不变的",
+  "Changes with the situation": "随场景变的",
+  "Grabber rule": "拖动条规则",
+  "Header with title and close · frosted glass · rises from the bottom · a fixed bar at the bottom · its motion.": "头部（标题 + 关闭）· 磨砂玻璃 · 从底部升起 · 最下面固定一栏 · 进出动效。",
+  "Height · grabber or not · dimming or not · ask box or button at the bottom.": "高度 · 有没有拖动条 · 加不加暗色 · 最下面放提问框还是按钮。",
+  "Only a panel whose height can change gets a grabber. A fixed-height one gets a close button only.": "能改高度的面板才有拖动条。高度固定的只给关闭按钮。",
+  "Every page is built from the same four regions. A page only decides which are open.": "每一页都由同样四个区拼成。每页只决定哪些区打开。",
+  "Four regions": "四个区",
+  "1 · Menu": "1 · 导航",
+  "2 · Header": "2 · 页头",
+  "3 · Main": "3 · 主区",
+  "4 · Panel": "4 · 面板",
+  "232px open, 64px folded": "展开 232px，收起 64px",
+  "Fixed height. Title always in the same place; the page's own tools on the right.": "高度固定。标题永远在同一位置；右边放这一页自己的工具。",
+  "Takes the width that is left. No fixed pixel positions.": "用剩下的宽度，不写死像素位置。",
+  "400px, one at a time": "400px，一次只开一个",
+  "Four pages": "四个页面",
+  "Overview": "总览",
+  "Equipment": "设备",
+  "Actions": "行动",
+  "Reports": "报表",
+  "Detect: what is wrong": "发现：哪里不对",
+  "Diagnose and respond": "诊断、处理",
+  "Review: what was done": "复盘：做过什么",
+  "Review: what was saved": "复盘：省了多少",
+  "Page": "页面",
+  "The person is…": "值班的人在…",
+  "Menu": "导航",
+  "Header tools": "页头右边",
+  "Main": "主区",
+  "Open": "展开",
+  "Folded": "收起",
+  "Time range, Ask AI": "时间段、问 AI",
+  "State, path": "状态、路径",
+  "Filters": "筛选",
+  "Time range, Export": "时间段、导出",
+  "The building cutaway; alert cards float on it": "整栋楼的剖面图，提醒卡浮在上面",
+  "The machine and its evidence row": "设备图和证据行",
+  "A list": "列表",
+  "Charts": "图表",
+  "Closed": "关",
+  "AI panel open": "AI 面板打开",
+  "Opens when a row is picked": "选中一行才打开",
+  "From the overview to an equipment page": "从总览进入设备页",
+  "The menu folds (move 520 ms) while the AI panel slides in (in 420 ms).": "导航收起（布局变化 520 ms），同时 AI 面板滑进来（进 420 ms）。",
+  "Why the menu folds only here: only the equipment page keeps a panel open, so it needs the width for the drawing and the panel. Other pages have room, and an open menu tells people where they are.": "为什么只有这里收起导航：只有设备页常开面板，宽度要留给图纸和面板。其他页面不缺宽度，展开的导航让人知道自己在哪。",
+  "✓ Plan applied": "✓ 方案已执行",
   "Motion has its own page under Foundations, and each component page shows which tokens it uses, playable on the component itself.": "动效在“基础”下单独成页；每个组件页写明它用哪些 token，点“播放”就能在组件本身上看到。",
   "Materials": "材质",
   "Three surfaces and three particle effects.": "三种表面、三种粒子效果。",
@@ -4708,7 +4983,7 @@ segInd(document);
  "What's wrong, where, what it costs, and one way in.": "出了什么问题、在哪、多花多少钱，再给一个入口。",
  "A plan, one step at a time.": "一步一步的方案。",
  "Unsure? List the causes and the one check that tells them apart.": "没把握时：列出可能原因，和能分清它们的那项检查。",
- "Green Control · Design System 1.9": "Green Control · 设计系统 1.9",
+ "Green Control · Design System 1.10": "Green Control · 设计系统 1.10",
  "How Green Control looks and how its AI behaves. Built for people and for coding agents.": "Green Control 的视觉规范和 AI 行为规范。设计师、工程师和 AI 编程工具都能直接用。",
  "Figma components": "个 Figma 组件",
  "matched to code": "和代码一一对应",
