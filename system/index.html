@@ -257,7 +257,7 @@ html[lang="zh-CN"] .specimen { grid-template-columns: 1fr; }
 .motion-go .motion-track.ex i { opacity: 0; }
 .motion-go .motion-track i { transform: translateX(calc(var(--w, 200px) - 26px)); }
 .scanbox { position: relative; width: 18px; height: 18px; display: grid; place-items: center; background: var(--badge-bg); color: var(--on-accent); font: 11px/1 var(--font-mono); }
-.scanbox::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: scan 1200ms var(--ease) infinite; }
+.scanbox::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: scan 1200ms var(--wave) infinite; }
 @keyframes scan { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
 .drawbox { position: relative; padding: 14px 16px; }
 .drawbox svg { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); overflow: visible; pointer-events: none; }
@@ -300,7 +300,7 @@ html[lang="zh-CN"] .specimen { grid-template-columns: 1fr; }
 .afloor.on { color: var(--text); }
 .amark { position: absolute; width: 18px; height: 18px; display: grid; place-items: center; background: var(--badge-bg); color: var(--on-accent); font: 11px/1 var(--font-mono); transform: translate(-50%, -50%); pointer-events: auto; cursor: default; }
 .amark.hl { outline: 1.5px solid var(--accent); outline-offset: 4px; }
-.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: scan 1200ms var(--ease) infinite; }
+.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: scan 1200ms var(--wave) infinite; }
 .figcap { position: absolute; right: 14px; bottom: 10px; font: 10px/14px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .evrow { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 48px; margin-top: 28px; }
 .qrows { display: grid; border-top: 1px solid var(--line); }
@@ -650,7 +650,7 @@ a.link { cursor: pointer; transition: text-decoration-thickness 160ms var(--ease
 .echip.is-stale { opacity: 0.6; }
 .ev.is-linked { box-shadow: inset 0 1px 0 var(--edge-hi), 0 0 0 1.5px var(--accent); }
 .ev.is-stale { opacity: 0.55; }
-.conf.is-updating .conf-bar i { animation: shimmer 1.2s var(--ease) infinite; }
+.conf.is-updating .conf-bar i { animation: shimmer 1.2s var(--wave) infinite; }
 .conf.is-updating .conf-bar i:nth-child(2n) { animation-delay: 120ms; }
 @keyframes shimmer { 50% { opacity: 0.35; } }
 .toast { position: relative; overflow: hidden; }
@@ -670,7 +670,7 @@ a.link { cursor: pointer; transition: text-decoration-thickness 160ms var(--ease
 .alert.is-new { box-shadow: inset 2px 0 0 var(--accent), inset 0 1px 0 var(--edge-hi); }
 
 .alert.is-resolved { opacity: 0.7; }
-.spark.is-thinking circle.o { animation: pulse 1200ms var(--ease) infinite; transform-origin: 7px 7px; }
+.spark.is-thinking circle.o { animation: pulse 1200ms var(--wave) infinite; transform-origin: 7px 7px; }
 @keyframes pulse { 50% { transform: scale(1.6); opacity: 0.6; } }
 .gc-check { padding: 16px; display: grid; gap: 10px; width: 100%; max-width: 360px; }
 .gc-causes { display: grid; }
@@ -920,9 +920,9 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 
 .alert.is-new::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); transform-origin: top; animation: edgeIn 520ms var(--ease) both; }
 @keyframes edgeIn { from { transform: scaleY(0); } }
-.state.busy i { animation: breathe 1.2s var(--ease) infinite; }
+.state.busy i { animation: breathe 1.2s var(--wave) infinite; }
 @keyframes breathe { 50% { opacity: 0.25; transform: scale(0.7); } }
-.spark.is-thinking circle { animation: dot 1200ms var(--ease) infinite; transform-box: fill-box; transform-origin: center; }
+.spark.is-thinking circle { animation: dot 1200ms var(--wave) infinite; transform-box: fill-box; transform-origin: center; }
 .spark.is-thinking circle:nth-child(2) { animation-delay: 140ms; } .spark.is-thinking circle:nth-child(3) { animation-delay: 280ms; }
 .spark.is-thinking circle:nth-child(4) { animation-delay: 420ms; } .spark.is-thinking circle:nth-child(5) { animation-delay: 560ms; }
 @keyframes dot { 30% { transform: scale(1.5); } 60% { transform: scale(1); } }
@@ -932,7 +932,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .toast { animation: toastRise 520ms var(--spring) both; }
 @keyframes toastRise { from { opacity: 0; transform: translateY(10px) scale(0.97); filter: blur(4px); } }
 .acrow .bar i { transition: width 520ms var(--ease); }
-.acrow:not(.is-done):not(.is-failed):not(.is-planned):not(.is-undone) .bar i { background: linear-gradient(90deg, var(--accent) 0 40%, color-mix(in srgb, var(--accent) 55%, var(--bg-page)) 50%, var(--accent) 60% 100%); background-size: 250% 100%; animation: flow 2400ms linear infinite; }
+.acrow:not(.is-done):not(.is-failed):not(.is-planned):not(.is-undone) .bar i { background: linear-gradient(90deg, var(--accent) 0 40%, color-mix(in srgb, var(--accent) 55%, var(--bg-page)) 50%, var(--accent) 60% 100%); background-size: 250% 100%; animation: flow 1200ms linear infinite; }
 @keyframes flow { from { background-position: 100% 0; } to { background-position: -150% 0; } }
 .pl-item .num { transition: background 280ms var(--ease), color 280ms var(--ease), box-shadow 280ms var(--ease); }
 .pl-item.on .num { animation: pop 420ms var(--spring) both; }
@@ -953,7 +953,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .state .sg.sg-fill { fill: currentColor; stroke: none; }
 .state.opportunity .sg.sg-fill { fill: var(--accent); stroke: none; }
 .state.watch .sg { opacity: 0.85; }
-.state .sg-busy { animation: busyFade 1.2s var(--ease) infinite; }
+.state .sg-busy { animation: busyFade 1.2s var(--wave) infinite; }
 @keyframes busyFade { 50% { opacity: 0.25; } }
 @media (prefers-reduced-motion: reduce) { .state .sg-busy { animation: none; } }
 /* scenes: a component in each situation it meets */
@@ -2278,7 +2278,7 @@ gcAssemble(document.querySelector(".gc-art"));
 
 /* numbered marks: where each piece of evidence was read on the machine; same number as the chip */
 .amark { position: absolute; width: 18px; height: 18px; display: grid; place-items: center; background: var(--badge-bg); color: var(--on-accent); font: 11px/1 "DM Mono", monospace; transform: translate(-50%, -50%); }
-.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: gcScan 1200ms var(--ease) infinite; }
+.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: gcScan 1200ms var(--wave) infinite; }
 @keyframes gcScan { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
 
 /* linked highlight: hovering a chip, a card or a mark draws a border around all three */
@@ -2644,10 +2644,10 @@ const SCENES = {
 /* ---------- each component's motion: which tokens it uses, playable on its own markup ---------- */
 const stN = (id, name) => { const st = CMP(id).states.find((x) => x[0] === name); return st ? st[2] : CMP(id).html; };
 const MO_IN = (t) => ({ a: "opacity:0;transform:translateY(10px)", b: "opacity:1;transform:none", tin: `opacity ${t}ms var(--ease), transform ${t}ms var(--ease)`, tout: "opacity 280ms var(--exit), transform 280ms var(--exit)", hold: 1500 });
-const MO_PRESS = { a: "", b: "transform:scale(0.97);filter:brightness(0.82)", tin: "transform 120ms var(--ease), filter 120ms var(--ease)", tout: "transform 240ms var(--spring), filter 120ms var(--ease)", hold: 320 };
+const MO_PRESS = { a: "", b: "transform:scale(0.97);filter:brightness(0.82)", tin: "transform 120ms var(--ease), filter 120ms var(--ease)", tout: "transform 240ms var(--spring), filter 120ms var(--ease)", hold: 320, rest: "a" };
 const MOTIONS = {
   button: [{ l: "Press", tok: "feedback 120 ms · ease; springs back in 240 ms", html: '<button class="pbtn primary">Apply</button>', sel: "button", ...MO_PRESS }],
-  segmented: [{ l: "The selection slides", tok: "small-in 240 ms · ease", html: '<div class="moseg"><i></i><span>Night</span><span>Day</span></div>', sel: ".moseg i", a: "", b: "transform:translateX(100%)", tin: "transform 240ms var(--ease)", tout: "transform 240ms var(--ease)", hold: 900 }],
+  segmented: [{ l: "The selection slides", tok: "small-in 240 ms · ease", html: '<div class="moseg"><i></i><span>Night</span><span>Day</span></div>', sel: ".moseg i", a: "", b: "transform:translateX(100%)", tin: "transform 240ms var(--ease)", tout: "transform 240ms var(--ease)", hold: 900, rest: "a" }],
   "ask-input": [{ l: "Focus", tok: "feedback 120 ms · ease", html: askBox(), sel: ".askbox", cls: "is-focus", hold: 1200 }],
   "state-tag": [{ l: "Investigating", tok: "loop 1200 ms · wave", loop: true, html: stateTag("busy", "Investigating") }],
   "object-link": [{ l: "Hover: the dot grows", tok: "feedback 120 ms; the dot uses the spring", html: link("Chiller 2"), sel: ".link", cls: "is-hover", hold: 1200 }],
@@ -2667,19 +2667,18 @@ function moPlay(card) {
   const m = MOTIONS[card.dataset.c][+card.dataset.i], st = card.querySelector(".mo-stage");
   (st._t || []).forEach(clearTimeout); st._t = [];
   if (m.stag) {
-    const els = [...st.querySelectorAll(m.stag)];
-    els.forEach((e) => { e.style.transition = "none"; e.style.cssText += ";" + m.a; });
-    requestAnimationFrame(() => requestAnimationFrame(() => els.forEach((e, i) => { e.style.transition = m.tin; e.style.transitionDelay = i * m.step + "ms"; e.style.opacity = ""; })));
+    confBars(st);
+    st.querySelectorAll(m.stag).forEach((e, i) => { e.style.animation = `segIn 240ms var(--ease) ${i * m.step}ms both`; });
     return;
   }
   const el = st.querySelector(m.sel || ".mo-inner > *");
   if (m.cls) { el.classList.add(m.cls); st._t.push(setTimeout(() => el.classList.remove(m.cls), m.hold)); return; }
   const set = (css) => { if (m.a) m.a.split(";").forEach((d) => { const k = d.split(":")[0]; if (k) el.style.removeProperty(k); }); if (m.b) m.b.split(";").forEach((d) => { const k = d.split(":")[0]; if (k) el.style.removeProperty(k); }); el.style.cssText += ";" + css; };
-  el.style.transition = "none"; set(m.a);
+  el.style.animation = "none"; el.style.transition = "none"; set(m.a);
   requestAnimationFrame(() => requestAnimationFrame(() => {
     el.style.transition = m.tin; set(m.b);
     st._t.push(setTimeout(() => { el.style.transition = m.tout; set(m.a); }, m.hold));
-    st._t.push(setTimeout(() => { el.style.transition = "none"; set(m.b); }, m.hold + 700));
+    if (m.rest !== "a") st._t.push(setTimeout(() => { el.style.transition = "none"; set(m.b); }, m.hold + 700));
   }));
 }
 const moSection = (c) => MOTIONS[c.id] ? `<h2 id="motion">Motion</h2><p class="sub">Uses the tokens from <a href="#/motion">Motion</a>; no numbers of its own.</p>

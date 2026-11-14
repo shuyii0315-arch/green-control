@@ -27,6 +27,7 @@
   --gc-ease: var(--gc-motion-ease);
   --gc-spring: var(--gc-motion-spring);
   --gc-exit: var(--gc-motion-exit);
+  --gc-wave: var(--gc-motion-wave);
   --gc-type-ui: 400 14px/20px var(--gc-font-sans);
   --gc-radius-none: 0px;
   --gc-radius-dot: 99px;

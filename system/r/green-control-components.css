@@ -24,7 +24,7 @@
   --badge-bg: var(--gc-badge-bg);
   --font-mono: "DM Mono", ui-monospace, monospace;
   --ease: var(--gc-ease, cubic-bezier(0.2, 0, 0, 1));
-  --spring: var(--gc-spring, cubic-bezier(0.34, 1.56, 0.64, 1));
+  --spring: var(--gc-spring, cubic-bezier(0.34, 1.56, 0.64, 1)); --exit: var(--gc-exit, cubic-bezier(0.4, 0, 1, 1)); --wave: var(--gc-wave, cubic-bezier(0.45, 0, 0.55, 1));
 }
 .glass { background: linear-gradient(var(--sheen), transparent 60%), var(--glass); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: inset 0 1px 0 var(--edge-hi), var(--drop); }
 .block { background: linear-gradient(var(--sheen), transparent 60%), var(--glass-raised); box-shadow: inset 0 1px 0 var(--edge-hi); }
@@ -148,9 +148,9 @@
 .alert.glass:hover, .alert.glass.is-hover { box-shadow: inset 0 1px 0 var(--edge-hi), 0 22px 48px rgba(0,0,0,0.16); }
 .alert.is-new::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); transform-origin: top; animation: edgeIn 520ms var(--ease) both; }
 @keyframes edgeIn { from { transform: scaleY(0); } }
-.state.busy i { animation: breathe 1.2s var(--ease) infinite; }
+.state.busy i { animation: breathe 1.2s var(--wave) infinite; }
 @keyframes breathe { 50% { opacity: 0.25; transform: scale(0.7); } }
-.spark.is-thinking circle { animation: dot 1200ms var(--ease) infinite; transform-box: fill-box; transform-origin: center; }
+.spark.is-thinking circle { animation: dot 1200ms var(--wave) infinite; transform-box: fill-box; transform-origin: center; }
 .spark.is-thinking circle:nth-child(2) { animation-delay: 140ms; } .spark.is-thinking circle:nth-child(3) { animation-delay: 280ms; }
 .spark.is-thinking circle:nth-child(4) { animation-delay: 420ms; } .spark.is-thinking circle:nth-child(5) { animation-delay: 560ms; }
 @keyframes dot { 30% { transform: scale(1.5); } 60% { transform: scale(1); } }
@@ -160,7 +160,7 @@
 .toast { animation: toastRise 520ms var(--spring) both; }
 @keyframes toastRise { from { opacity: 0; transform: translateY(10px) scale(0.97); filter: blur(4px); } }
 .acrow .bar i { transition: width 520ms var(--ease); }
-.acrow:not(.is-done):not(.is-failed):not(.is-planned):not(.is-undone) .bar i { background: linear-gradient(90deg, var(--accent) 0 40%, color-mix(in srgb, var(--accent) 55%, var(--bg-page)) 50%, var(--accent) 60% 100%); background-size: 250% 100%; animation: flow 2400ms linear infinite; }
+.acrow:not(.is-done):not(.is-failed):not(.is-planned):not(.is-undone) .bar i { background: linear-gradient(90deg, var(--accent) 0 40%, color-mix(in srgb, var(--accent) 55%, var(--bg-page)) 50%, var(--accent) 60% 100%); background-size: 250% 100%; animation: flow 1200ms linear infinite; }
 @keyframes flow { from { background-position: 100% 0; } to { background-position: -150% 0; } }
 .pl-item .num { transition: background 280ms var(--ease), color 280ms var(--ease), box-shadow 280ms var(--ease); }
 .pl-item.on .num { animation: pop 420ms var(--spring) both; }

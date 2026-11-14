@@ -55,7 +55,7 @@
 
 /* numbered marks: where each piece of evidence was read on the machine; same number as the chip */
 .amark { position: absolute; width: 18px; height: 18px; display: grid; place-items: center; background: var(--badge-bg); color: var(--on-accent); font: 11px/1 "DM Mono", monospace; transform: translate(-50%, -50%); }
-.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: gcScan 1200ms var(--ease) infinite; }
+.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: gcScan 1200ms var(--wave) infinite; }
 @keyframes gcScan { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
 
 /* linked highlight: hovering a chip, a card or a mark draws a border around all three */

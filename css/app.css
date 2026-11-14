@@ -188,7 +188,7 @@ h1, h3 { margin: 0; font-weight: inherit; }
 .pin .ring { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 99px; border: 1px solid var(--text); }
 .pin .core { position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 99px; background: var(--text); }
 .pin.hot .core { background: var(--accent); }
-.pin.hot .ring { border-color: var(--accent); animation: ping 2400ms var(--ease) infinite; }
+.pin.hot .ring { border-color: var(--accent); animation: ping 2400ms var(--wave) infinite; }
 @keyframes ping { 0% { transform: scale(0.7); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
 .pin .lab { display: flex; gap: 8px; align-items: center; padding: 0 8px; white-space: nowrap; font-family: "DM Mono", monospace; font-size: 12px; }
 .pin .lab .k { letter-spacing: 0.04em; text-transform: uppercase; }
@@ -339,8 +339,8 @@ h1, h3 { margin: 0; font-weight: inherit; }
 .adot.hot { width: 12px; height: 12px; background: var(--accent); }
 .adot.hot::after { content: ""; position: absolute; left: -8px; top: -8px; width: 28px; height: 28px; border-radius: 99px; box-shadow: inset 0 0 0 1px var(--text); }
 /* the one problem calls for attention: a heartbeat on arrival, then a slow ripple until it is handled */
-.adot.hot { animation: beat 2400ms 1.2s var(--ease) infinite; }
-.adot.hot::before { content: ""; position: absolute; inset: 0; border-radius: 99px; background: var(--accent); animation: ripple 2400ms 1.2s var(--ease) infinite; opacity: 0; }
+.adot.hot { animation: beat 2400ms 1.2s var(--wave) infinite; }
+.adot.hot::before { content: ""; position: absolute; inset: 0; border-radius: 99px; background: var(--accent); animation: ripple 2400ms 1.2s var(--wave) infinite; opacity: 0; }
 @keyframes beat { 0%, 36%, 100% { transform: translate(-50%, -50%) scale(1); } 9% { transform: translate(-50%, -50%) scale(1.5); } 18% { transform: translate(-50%, -50%) scale(0.92); } 27% { transform: translate(-50%, -50%) scale(1.25); } }
 @keyframes ripple { 0% { transform: scale(1); opacity: 0.6; } 60%, 100% { transform: scale(4.2); opacity: 0; } }
 #app.fixed .adot.hot, #app.fixed .adot.hot::before { animation: none; }
@@ -408,7 +408,7 @@ h1, h3 { margin: 0; font-weight: inherit; }
 .row.block:hover .chev { transform: translateX(3px); }
 
 /* AI thinking: the AI mark itself works */
-.spark.thinking circle { transform-box: fill-box; transform-origin: center; animation: think 1200ms var(--ease) infinite; }
+.spark.thinking circle { transform-box: fill-box; transform-origin: center; animation: think 1200ms var(--wave) infinite; }
 .spark.thinking circle:nth-child(1) { animation-delay: 0ms; }
 .spark.thinking circle:nth-child(4) { animation-delay: 140ms; }
 .spark.thinking circle:nth-child(5) { animation-delay: 280ms; }
@@ -438,7 +438,7 @@ h1, h3 { margin: 0; font-weight: inherit; }
 
 /* the machine spot being looked at */
 .amark.scan { animation: none; }
-.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: scan 1200ms var(--ease) infinite; }
+.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: scan 1200ms var(--wave) infinite; }
 @keyframes scan { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
 .amark.show { animation: popIn 420ms var(--spring) both; }
 /* linked highlight: a border draws itself around the card (and its mark) from one corner, clockwise */
@@ -557,7 +557,7 @@ h1, h3 { margin: 0; font-weight: inherit; }
 #art.built .art-bldg { transition: opacity 520ms var(--ease), transform 900ms var(--ease), filter 520ms var(--ease); }
 #art.built #art-labels > .alab { animation: popIn 420ms var(--spring) both; }
 #art.built #art-labels > .adot { animation: fadeIn 420ms var(--ease) both; }
-#art.built #art-labels > .adot.hot { animation: fadeIn 420ms var(--ease) both, beat 2400ms 1.2s var(--ease) infinite; }
+#art.built #art-labels > .adot.hot { animation: fadeIn 420ms var(--ease) both, beat 2400ms 1.2s var(--wave) infinite; }
 @keyframes fadeIn { from { opacity: 0; } }
 #app.fixed #art.built #art-labels > .adot.hot { animation: none; }
 #art.built #art-labels > :nth-child(n+3) { animation-delay: 120ms; } #art.built #art-labels > :nth-child(n+5) { animation-delay: 240ms; } #art.built #art-labels > :nth-child(n+7) { animation-delay: 360ms; }
