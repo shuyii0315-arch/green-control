@@ -2165,7 +2165,7 @@ ${guide("05", "Screens built from the package", "built")}
 <div class="grid2" id="builtGrid">${[["test-v12-battery", "Battery BT-01 · plan · 88%"], ["test-v13-tower", "Cooling tower CT-2 · draft · 58%"], ["test-v12-elevator", "Elevator EL-04 · check only · 41%"], ["test-v13-ev", "EV-B2 charging · opportunity · 83%"]].map(([f, t]) => `<div class="shot"><figure><img src="img/${f}.webp" alt="${t}" data-zoom></figure><span class="t-label muted">${t}</span></div>`).join("")}</div>
 
 ${guide("06", "Where to start", "start")}
-<div class="ostart"><a href="#/howto" class="ftile"><span class="t-strong">How to use</span><span class="t-small muted">One thing per role.</span></a><a href="#/skills" class="ftile"><span class="t-strong">Skills</span><span class="t-small muted">Seven jobs an AI can do with this system.</span></a><a href="#/changelog" class="ftile"><span class="t-strong">Changelog</span><span class="t-small muted">What each version fixed.</span></a></div>`;
+<div class="ostart"><a href="#/howto" class="ftile"><span class="t-strong">How to use</span><span class="t-small muted">One thing per role.</span></a><a href="#/skills" class="ftile"><span class="t-strong">Skills</span><span class="t-small muted">Twelve jobs an AI can do with this system.</span></a><a href="#/changelog" class="ftile"><span class="t-strong">Changelog</span><span class="t-small muted">What each version fixed.</span></a></div>`;
 
 /* LOGO */
 PAGES.logo = () => `${head("Foundations", "Logo", "A 5×5 grid of dots drawn as a G.")}
@@ -2345,7 +2345,7 @@ const RULES = [
   ["R4", "Say less when unsure", "Below 50%: a check, never a fix."],
   ["R5", "Name the object", "Machines and teams are links."],
 ];
-const aiTabs = (cur) => `<div class="seg ai-tabs" role="tablist">${[["rules", "Rules"], ["states", "States & confidence"], ["voice", "How the AI speaks"]].map(([id, t]) => `<a role="tab" href="#/${id}" aria-selected="${id === cur}" class="${id === cur ? "on" : ""}">${t}</a>`).join("")}</div>`;
+const aiTabs = (cur) => `<div class="seg ai-tabs" role="tablist">${[["rules", "The five rules"], ["states", "States & confidence"], ["voice", "How the AI speaks"]].map(([id, t]) => `<a role="tab" href="#/${id}" aria-selected="${id === cur}" class="${id === cur ? "on" : ""}">${t}</a>`).join("")}</div>`;
 PAGES.rules = () => `${head("AI behaviour", "Five rules that come before any pixel", "They decide what the AI is allowed to show and do.")}${aiTabs("rules")}
 <div class="rules">${RULES.map(([k, t, w]) => `<div class="rule"><span class="t-label accent">${k}</span><span class="t-strong">${t}</span><span class="why2 muted">${w}</span></div>`).join("")}</div>
 <h2 id="bands">Confidence decides what the AI may do</h2>
@@ -2459,7 +2459,7 @@ const FIGMA_URL = "https://www.figma.com/design/YuKDlrrGoOLavJtw0nGLIk";
 const GUIDE_URL = "https://shuyii0315-arch.github.io/green-control/guide/";
 const DESK_URL = "https://claude.ai/artifact/DaDH57wtk9uPkbrXJqhqVQ";
 const ROLES_HT = {
-  design: { take: "Figma library + seven skills", what: "Draft in Figma with the library. Then let AI build the real screen with the skills.", act: `<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="cta" href="${FIGMA_URL}" target="_blank" rel="noopener">Open the Figma library</a><a class="pbtn" href="#/skills" style="text-decoration:none;color:inherit">See the AI workflow</a></div>`, then: ["Draft from library components, night and day.", "Install the skills once; ask AI for the screen in one sentence.", "Grade what it makes in the review desk. A gap means a rule is missing: change the rule, not one screen."] },
+  design: { take: "Figma library + the skills", what: "Draft in Figma with the library. Then let AI build the real screen with the skills.", act: `<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="cta" href="${FIGMA_URL}" target="_blank" rel="noopener">Open the Figma library</a><a class="pbtn" href="#/skills" style="text-decoration:none;color:inherit">See the skills</a></div>`, then: ["Draft from library components, night and day.", "Install the skills once; ask AI for the screen in one sentence.", "Grade what it makes in the review desk. A gap means a rule is missing: change the rule, not one screen."] },
   eng: { take: "One install command", what: "The theme and components go straight into a shadcn project.", act: `<div class="install" style="margin:0"><span class="t-data muted">$</span><code class="t-data" id="htCmd"></code><button class="pbtn" id="htCopyCmd">Copy</button></div>`, then: ["Every state is a prop, so nothing gets left out.", "Change tokens.json, run build_tokens.py: every copy updates.", "CI runs gc-check on every change."] },
 };
 const HT_STEPS = [
@@ -2473,7 +2473,7 @@ let htRole = "design";
 PAGES.howto = () => `${head("Start", "How to use", "Pick who you are. Each role takes one thing.")}
 <div class="seg ht-seg" id="htSeg" role="group" aria-label="Role">${[["design", "Designer"], ["eng", "Engineer"]].map(([k, l]) => `<button data-r="${k}" aria-pressed="${k === htRole}">${l}</button>`).join("")}</div>
 <div class="ht-card" id="role"></div>
-<a class="ht-loop" href="#/skills"><span class="t-strong">The whole loop, with the skill for each step</span><span class="t-small muted">AI workflow →</span></a>
+<a class="ht-loop" href="#/skills"><span class="t-strong">The whole loop, with the skill for each step</span><span class="t-small muted">Skills →</span></a>
 <h2 id="learn">Learning it as a team</h2>
 <ol class="ht-steps ht-3">
   <li><span class="t-label accent">15 min</span><b>Understand it</b><span class="t-small muted">Tokens, skill, MCP and checks, in pictures.</span><a class="t-data" href="${GUIDE_URL}" target="_blank" rel="noopener">The guide →</a></li>
@@ -2569,16 +2569,16 @@ PAGES.skills = PAGES.workflow = () => {
     ["Decide", "AI", "/gc-confidence · /gc-evidence"],
     ["Build", "AI", "/gc-build-screen · draw · voice"],
     ["Check", "AI + a machine", "/gc-review · gc-check"],
-    ["Grade", "People", "review desk"],
+    ["Grade", "People · review desk", ""],
     ["Fix the rules", "AI suggests, you OK", "/gc-learn-rule"],
   ];
   const R = 150, cx = 260, cy = 190;
   const pts = steps.map((_, i) => { const a = -Math.PI / 2 + i * (Math.PI * 2 / 6); return [cx + R * Math.cos(a), cy + R * Math.sin(a)]; });
   const nodes = steps.map(([s, who, tool], i) => { const [x, y] = pts[i]; const left = x < cx - 10, right = x > cx + 10; const anchor = left ? "end" : right ? "start" : "middle"; const tx = left ? x - 30 : right ? x + 30 : x; const top = y < cy - R + 5, bottom = y > cy + R - 5; const ly = top ? y - 50 : bottom ? y + 40 : y - 4;
-    return `<circle cx="${x}" cy="${y}" r="20" class="wf-dot${[1, 2, 3, 5].includes(i) ? " on" : ""}"/><text x="${x}" y="${y + 5}" text-anchor="middle" class="wf-n">${i + 1}</text><text x="${tx}" y="${ly}" text-anchor="${anchor}" class="wf-s">${s}</text><text x="${tx}" y="${ly + 18}" text-anchor="${anchor}" class="wf-w"><tspan>${who}</tspan><tspan data-notr> · ${tool}</tspan></text>`; }).join("");
+    return `<circle cx="${x}" cy="${y}" r="20" class="wf-dot${[1, 2, 3, 5].includes(i) ? " on" : ""}"/><text x="${x}" y="${y + 5}" text-anchor="middle" class="wf-n">${i + 1}</text><text x="${tx}" y="${ly}" text-anchor="${anchor}" class="wf-s">${s}</text><text x="${tx}" y="${ly + 18}" text-anchor="${anchor}" class="wf-w"><tspan>${who}</tspan>${tool ? `<tspan data-notr> · ${tool}</tspan>` : ""}</text>`; }).join("");
   return `${head("Start", "Skills", "Twelve small instructions for an AI, one job each. Five for components, seven for the AI loop.")}
 <div class="codebox"><div class="codebox-head"><span class="t-data muted">Install all twelve</span><button class="pbtn" data-snip="npx skills add shuyii0315-arch/green-control">Copy</button></div><pre>npx skills add shuyii0315-arch/green-control</pre></div>
-<p class="t-small muted" style="margin-top:10px">Then ask in plain words. The AI picks the skill that fits; you can also call one by name, like <span class="t-data">/gc-review</span>.</p>
+<p class="t-small muted" style="margin-top:10px">Then ask in plain words. The AI picks the skill that fits; you can also call one by name, like <span class="t-data">/gc-review</span></p>
 <h2 id="craft">For components</h2><p class="sub">How a part moves, which states it needs, how it holds up to bad data, keyboards and small screens. They work on all 15 components.</p>
 <div class="sk-list">${CRAFT.map(skRow).join("").replace('<details class="sk">', '<details class="sk" open>')}</div>
 <h2 id="loop">For the AI loop</h2><p class="sub">Six steps from rule to screen and back. Four of them have skills.</p>
@@ -2982,7 +2982,7 @@ segInd(document);
  "80% and up: a plan. 50 to 79: a draft. Below 50: only a check. People apply, everything can be undone.": "80% 及以上：给方案。50 到 79：给草案。低于 50：只建议检查。都由人来执行，每一步都能撤销。",
  "80+ · apply, step by step": "80+ · 一步一步执行",
  "A 5×5 dot G, one dot lit.": "5×5 点阵组成的 G，亮一个点。",
- "A 5×5 grid of dots drawn as a G. One dot is in the accent, where the letter turns inward: the same rule as the screens, where one thing at a time carries the signal.": "用 5×5 的点画出 G。字母往里拐的地方有一个点用强调色，和界面的规则一样：同一时间只有一处带信号色。",
+ "A 5×5 grid of dots drawn as a G. One dot is in the accent, where the letter turns inward: the same rule as the screens, where one thing at a time carries the signal.": "用 5×5 的点画出 G。字母往里拐的地方有一个点用信号色，和界面的规则一样：同一时间只有一处带信号色。",
  "A Figma library with the same tokens as variables (night and day) and every component state as variants.": "新增 Figma 组件库：token 做成变量（分日间、夜间），每个组件的状态都做成变体。",
  "A Workflow page: the six-step loop for building with AI, one real loop, and what AI may change.": "新增 AI 工作流页：用 AI 做设计系统的六步循环、一次真实的循环，以及哪些事只有人能做。",
  "A colleague reporting to the person on shift: not a chatbot, not a salesperson. Seen → means → do, in that order, with numbers and names instead of adjectives.": "像同事向值班的人汇报，不像聊天机器人，也不像销售。先说看到了什么，再说意味着什么，最后说该做什么；用数字和设备名，不用形容词。",
@@ -2994,7 +2994,7 @@ segInd(document);
  "A new reading is coming in.": "有新的读数进来了。",
  "A package an agent can follow": "一套 AI 照着就能做出页面的包",
  "A person tapped Apply; Undo is offered.": "人点了“执行”，同时给出撤销。",
- "A plan, one step at a time. Only the current step is in the accent and has a button.": "方案一次只走一步。只有当前这一步用强调色，也只有它带按钮。",
+ "A plan, one step at a time. Only the current step is in the accent and has a button.": "方案一次只走一步。只有当前这一步用信号色，也只有它带按钮。",
  "A reading without a source.": "没有来源的读数。",
  "A ring pulses on the mark while the AI reads that source. Stops when the chip lands.": "AI 读这个来源时，标记上会有一圈在跳。证据标签出现后停下。",
  "A row in the Alerts list. Tap opens the thread. The action spans the width.": "告警列表里的一行。点开进入对话。操作按钮占满整行。",
@@ -3003,7 +3003,7 @@ segInd(document);
  "A script · build_tokens.py": "脚本 · build_tokens.py",
  "A shadcn registry item. One command copies the component into your project, with the theme. States are props, so an agent can't leave them out.": "一个 shadcn registry 条目。一行命令就能把组件和主题一起装进你的项目。状态都写成 props，AI 不会漏。",
  "A soft radial glow (": "一团柔和的径向光晕（",
- "A square dot and a word that say what state an object is in. Only Issue and Opportunity take the accent.": "一个方点加一个词，说明对象处于什么状态。只有“问题”和“机会”用强调色。",
+ "A square dot and a word that say what state an object is in. Only Issue and Opportunity take the accent.": "一个方点加一个词，说明对象处于什么状态。只有“问题”和“机会”用信号色。",
  "A sticky action bar keeps Apply in reach when the thread is long.": "对话很长时，底部固定的操作栏让“执行”一直在手边。",
  "A strip; tap to open full screen": "一条横条，点开就是全屏",
  "AI behaviour": "AI 行为",
@@ -3019,9 +3019,9 @@ segInd(document);
  "AI · SKILL.md · MCP": "AI · SKILL.md · MCP",
  "About ¥250 a day above normal": "每天比平时多花约 ¥250",
  "Above the keyboard; the send button stays 44px.": "在键盘上方；发送按钮保持 44px。",
- "Accent 0.5%": "强调色 0.5%",
- "Accent on page": "强调色放在页面底色上",
- "Accent on the issue state only.": "只有“问题”状态用强调色。",
+ "Accent 0.5%": "信号色 0.5%",
+ "Accent on page": "信号色放在页面底色上",
+ "Accent on the issue state only.": "只有“问题”状态用信号色。",
  "Action row": "操作行",
  "After each check lands.": "每项检查完成之后。",
  "After every applied step.": "每执行完一步之后。",
@@ -3187,7 +3187,7 @@ segInd(document);
  "Errors that need a decision.": "需要人拿主意的错误。",
  "Every clickable component has a keyboard focus ring; so does the Ask input's send button.": "所有能点的组件都加了键盘焦点框，提问框的发送按钮也加了。",
  "Every equipment screen is built around an isometric drawing of the machine, made with the anatomy-figure skill, one part lit.": "每个设备页面都围绕一张设备的等轴测图来做，用 anatomy-figure skill 画，点亮一个零件。",
- "Every equipment screen is built around an isometric drawing of the machine, on a dot field, with one part lit in the accent.": "每个设备页面都围绕一张设备的等轴测图来做，放在点阵底上，出问题的零件用强调色点亮。",
+ "Every equipment screen is built around an isometric drawing of the machine, on a dot field, with one part lit in the accent.": "每个设备页面都围绕一张设备的等轴测图来做，放在点阵底上，出问题的零件用信号色点亮。",
  "Every state this part can be in, side by side. The live one above also responds to hover, focus and press. Switch Night / Day at the top to see both themes.": "这个部件的所有状态并排放在这里。上面那个能直接操作，悬停、聚焦、按下都有反应。在顶部切换夜间 / 日间，可以看两种主题。",
  "Every version after 1.0 came from watching coding agents use the package to build screens the prototype never had. Where they got stuck is what changed.": "1.0 之后的每一版，都来自观察 coding agent 用这个包去做原型里没有的页面。它们在哪卡住，就改哪里。",
  "Everything is undoable": "每一步都能撤销",
@@ -3213,7 +3213,7 @@ segInd(document);
  "Fills with the raised surface.": "用浮起一层的底色填充。",
  "First": "一开始",
  "First version": "第一版",
- "Five dots, the centre one in the accent. It marks where the AI speaks or acts, and nothing else.": "五个点，中间那个用强调色。它只出现在 AI 说话或动手的地方，别处不用。",
+ "Five dots, the centre one in the accent. It marks where the AI speaks or acts, and nothing else.": "五个点，中间那个用信号色。它只出现在 AI 说话或动手的地方，别处不用。",
  "Five rules and three confidence bands for the AI.": "给 AI 的五条规则和三档把握度。",
  "Five rules that come before any pixel": "比画面更重要的五条规则",
  "Five signals used by an independent 2026 audit of 37 design systems. The leaders score 3 of 5.": "这五项指标来自 2026 年一份对 37 套设计系统的独立评估。做得最好的也只拿到 3 分（满分 5 分）。",
@@ -3241,14 +3241,14 @@ segInd(document);
  "Give it five things. It gives back the screen and a check result.": "给它五项信息，它交回页面和检查结果。",
  "Glass, dot field, pool, the assemble.": "玻璃面板、点阵底、光晕、粒子聚合。",
  "Great news": "好消息",
- "Green Control shows the machine, not an icon of it. Every equipment screen is built around an isometric line drawing of the real thing, drawn with the anatomy-figure skill, with exactly one part lit in the accent.": "Green Control 展示的是设备本身，不是一个图标。每个设备页面都围绕一张真实设备的等轴测线稿来做，用 anatomy-figure skill 画，只有出问题的零件用强调色点亮。",
+ "Green Control shows the machine, not an icon of it. Every equipment screen is built around an isometric line drawing of the real thing, drawn with the anatomy-figure skill, with exactly one part lit in the accent.": "Green Control 展示的是设备本身，不是一个图标。每个设备页面都围绕一张真实设备的等轴测线稿来做，用 anatomy-figure skill 画，只有出问题的零件用信号色点亮。",
  "Green Control · Design System 1.4": "Green Control · 设计系统 1.5",
  "Green Control · Design System Library": "Green Control · 设计系统组件库",
- "Grey: ease, for every move. Accent: spring, for arrivals.": "灰色：缓动，所有移动都用它。强调色：弹簧，只用在出现。",
+ "Grey: ease, for every move. Accent: spring, for arrivals.": "灰色：缓动，所有移动都用它。信号色：弹簧，只用在出现。",
  "Greys and one signal per theme.": "一套灰色，每个主题配一个信号色。",
  "Grid": "网格",
  "Guide · structure": "参考线 · 结构",
- "Hatched is normal for the hour, grey is actual. Only the hour over the limit turns accent.": "斜线是这个时段的正常值，灰色是实际值。只有超限的那个小时变成强调色。",
+ "Hatched is normal for the hour, grey is actual. Only the hour over the limit turns accent.": "斜线是这个时段的正常值，灰色是实际值。只有超限的那个小时变成信号色。",
  "Headline": "标题",
  "Hover": "悬停",
  "Hover links chip, card and mark.": "悬停时，标签、卡片和标记一起亮。",
@@ -3290,7 +3290,7 @@ segInd(document);
  "Its chip or mark is hovered: the border draws in.": "悬停它的标签或标记时，边框会描出来。",
  "Keep one dot pitch clear on every side. Below 16px the dots merge; use the name alone.": "四周各留一个点距的空白。小于 16px 时点会糊在一起，这时只用文字。",
  "Keep watching": "继续观察",
- "Key in caps, value muted; the hot label's value takes the accent. Floors go on the left edge with a short hairline.": "键名大写，数值偏淡；出问题的那个标注，数值用强调色。楼层写在左边，配一条短线。",
+ "Key in caps, value muted; the hot label's value takes the accent. Floors go on the left edge with a short hairline.": "键名大写，数值偏淡；出问题的那个标注，数值用信号色。楼层写在左边，配一条短线。",
  "Keyboard ring on the option; arrows move it.": "选项上显示键盘焦点框，用方向键切换。",
  "Keyboard ring.": "键盘焦点框。",
  "Label": "标签",
@@ -3352,7 +3352,7 @@ segInd(document);
  "No number, no object, cheerful, says nothing about what to do.": "没有数字，没说哪台设备，语气轻飘，也没说该做什么。",
  "No plan appears until at least one source has been checked and shown as a numbered chip.": "至少查过一个来源、并显示成带编号的标签之前，不出现任何方案。",
  "No plan. \"Ask a technician to check …\" + Assign": "不给方案。“请技术员检查……” + 派人",
- "No plan; accent warns.": "不给方案；用强调色提醒。",
+ "No plan; accent warns.": "不给方案；用信号色提醒。",
  "No server of its own; shadcn's MCP server can read the registry once hosted.": "没有自己的服务器；网站上线后，shadcn 的 MCP 服务器就能读这个 registry。",
  "Normal; nothing needs a person.": "正常，不需要人处理。",
  "Not available for this machine.": "这台设备不可用。",
@@ -3364,12 +3364,12 @@ segInd(document);
  "Number": "数字",
  "Numbers are tabular, so columns and live values don't jump.": "数字用等宽数字，表格和实时数值不会跳。",
  "Object link": "对象链接",
- "On a real screen the accent is a sliver. If it covers more than one object, something else is shouting.": "在真实页面里，强调色只占一小条。要是它盖住了不止一个对象，说明有别的东西在抢眼。",
+ "On a real screen the accent is a sliver. If it covers more than one object, something else is shouting.": "在真实页面里，信号色只占一小条。要是它盖住了不止一个对象，说明有别的东西在抢眼。",
  "On raw readings.": "用在原始读数上。",
  "On screen in this state": "这个状态下屏幕上有什么",
  "On the drawing": "在设备图上",
  "On this page": "本页内容",
- "One accent dot, at row 3, column 3: the point the eye lands on. Orange at night, blue by day.": "一个强调色的点，在第 3 行第 3 列，视线最先落到这里。夜间是橙色，日间是蓝色。",
+ "One accent dot, at row 3, column 3: the point the eye lands on. Orange at night, blue by day.": "一个信号色的点，在第 3 行第 3 列，视线最先落到这里。夜间是橙色，日间是蓝色。",
  "One action on the Actions timeline: solid bar is running, hollow square is planned, line is now.": "操作时间线上的一项：实心条是正在进行，空心方块是已排上，竖线是现在。",
  "One alert: what, where, what it costs.": "一条告警：出了什么问题、在哪、多花了多少钱。",
  "One case, six states, three levels of confidence. Chiller 2 is using 14% more power than Chiller 1. Step through what the AI does: the parts that appear in each state are named and outlined, so you can see which component does which job.": "一个案例，六个状态，三档把握度。Chiller 2 比 Chiller 1 多耗电 14%。一步步看 AI 做了什么：每个状态出现的部件都标了名字、描了边，看得出哪个组件负责哪件事。",
@@ -3390,7 +3390,7 @@ segInd(document);
  "One script writes tokens.json into every file that copies it. Its first run found registry.json missing the badge colour since 1.1.": "一个脚本把 tokens.json 同步到所有拷贝了它的文件。第一次运行就发现，registry.json 从 1.1 起一直少一个标记色。",
  "Only suggest a check": "只建议检查",
  "Only the machine with the problem is lit. The rest of the plant stays grey line art.": "只有出问题的设备亮起来，机房里其他设备都是灰色线稿。",
- "Only the part with the problem takes the accent. Everything else stays grey, so the eye goes there first.": "只有出问题的零件用强调色，其他都是灰色，眼睛会先落在那里。",
+ "Only the part with the problem takes the accent. Everything else stays grey, so the eye goes there first.": "只有出问题的零件用信号色，其他都是灰色，眼睛会先落在那里。",
  "Open by default in the draft band.": "草案档里默认展开。",
  "Opened; the AI is checking.": "已打开；AI 正在检查。",
  "Opportunity": "机会",
@@ -3536,7 +3536,7 @@ segInd(document);
  "Tap opens the object in the sheet.": "点击后在弹层里打开对象。",
  "Text 2%": "文字 2%",
  "Text on a panel": "面板上的文字",
- "Text on the accent": "强调色上的文字",
+ "Text on the accent": "信号色上的文字",
  "The AI found something a person should look at.": "AI 发现了需要人看一下的事。",
  "The AI has spoken.": "AI 已经说完。",
  "The AI is checking.": "AI 正在检查。",
@@ -3560,7 +3560,7 @@ segInd(document);
  "The last one is not hypothetical: in the agent test, agents without the system drew a green \"C\" tile for a product called Green Control.": "最后一条不是假设：在 agent 测试里，没有这套系统的 agent 给一个叫 Green Control 的产品画了一个绿色的“C”方块。",
  "The likely cause and its number, then what isn't ruled out.": "先说最可能的原因和把握度，再说还有哪些没排除。",
  "The line underneath runs out in 8 s.": "下面那条线 8 秒内走完。",
- "The logo is the product. The spark is the AI speaking. They share the dot language and the accent, never the job.": "Logo 代表产品，火花标代表 AI 在说话。它们共用点阵语言和强调色，但用途从不混用。",
+ "The logo is the product. The spark is the AI speaking. They share the dot language and the accent, never the job.": "Logo 代表产品，火花标代表 AI 在说话。它们共用点阵语言和信号色，但用途从不混用。",
  "The logo.": "Logo。",
  "The look in six parts. Each page has the specs, the rules and what not to do.": "外观分六部分。每一页都有规格、规则和禁止事项。",
  "The machine check found grey text too faint to read on some backgrounds.": "机器检查发现：有几处灰字放在浅色底上，太淡，看不清。",
@@ -3595,7 +3595,7 @@ segInd(document);
  "Thread items rise 8px and fade in, 70ms apart, in reading order.": "对话内容按阅读顺序上浮 8px 并淡入，每条间隔 70 毫秒。",
  "Three cards under the drawing": "设备图下的三张卡片",
  "Three effects, all from the prototype. Each has a job.": "三种效果，都来自原型，各有用途。",
- "Three places the accent appears in the product, and why each one earns it.": "强调色在产品里只出现在三个地方，以及为什么是这三处。",
+ "Three places the accent appears in the product, and why each one earns it.": "信号色在产品里只出现在三个地方，以及为什么是这三处。",
  "Three surfaces and three particle effects. They give the product depth without colour: the drawing sits on a field of dots, panels float over it as frosted glass, and a new drawing builds itself from its points.": "三种表面和三种粒子效果，不靠颜色也能让页面有层次：设备图放在点阵底上，面板像磨砂玻璃一样浮在上面，新的设备图由自己的点拼出来。",
  "Timer pauses while the pointer is on it.": "鼠标停在上面时，计时暂停。",
  "Title": "大标题",
@@ -3606,7 +3606,7 @@ segInd(document);
  "Top half, still turnable": "上半屏，仍然可以转动",
  "Top of the sheet.": "弹层顶部。",
  "Top-left of the app, once. Links home.": "应用左上角，只出现一次。点击回首页。",
- "Twenty square segments and a number. Below 50% the bar turns to the accent, because the plan is replaced by a check.": "二十个方格加一个数字。低于 50% 时变成强调色，因为方案被换成了检查。",
+ "Twenty square segments and a number. Below 50% the bar turns to the accent, because the plan is replaced by a check.": "二十个方格加一个数字。低于 50% 时变成信号色，因为方案被换成了检查。",
  "Two families with two jobs. Hanken Grotesk carries sentences and big numbers; DM Mono carries labels, data and time, like the annotations on an engineering drawing.": "两种字体，两种分工。Hanken Grotesk 用于句子和大数字；DM Mono 用于标签、数据和时间，就像工程图纸上的标注。",
  "Two lines; Assign spans the width.": "两行；“派人”占满宽度。",
  "Two primaries in one view.": "一个视图里有两个主按钮。",
@@ -3625,7 +3625,7 @@ segInd(document);
  "Undone": "已撤销",
  "Undone. Chiller 2 is back to 50%.": "已撤销。Chiller 2 恢复到 50%。",
  "Units follow the number, smaller and muted:": "单位跟在数字后面，更小更淡：",
- "Unread: a 2px accent edge on the left.": "未读：左边一条 2px 的强调色边。",
+ "Unread: a 2px accent edge on the left.": "未读：左边一条 2px 的信号色边。",
  "Unselected option brightens.": "未选中的选项变亮。",
  "Unsure · below 50%": "不确定 · 低于 50%",
  "Upcoming": "即将进行",
@@ -3674,7 +3674,7 @@ segInd(document);
  "You can undo anytime": "你随时可以撤销",
  "You · DESIGN.md · Figma": "你 · DESIGN.md · Figma",
  "You · review": "你 · 审核",
- "accent · signal": "强调色 · 信号",
+ "accent · signal": "信号色 · 信号",
  "below 50 · suggest a check, no fix": "低于 50 · 建议检查，不给修复",
  "below 50%": "低于 50%",
  "confidence bands": "档 AI 把握度",
@@ -3738,7 +3738,7 @@ segInd(document);
  "Bad": "差",
  "Graded": "已打分",
  "Perspective off": "透视不对",
- "Too much accent": "强调色太多",
+ "Too much accent": "信号色太多",
  "Part unclear": "零件认不出",
  "Lines too faint": "线太淡",
  "Looks real": "像真的",
@@ -3878,7 +3878,7 @@ segInd(document);
  "SKILL.md →": "SKILL.md →",
  "gc-check · review desk →": "gc-check · 打标工具 →",
  "Changelog →": "更新记录 →",
- "What state an object is in: a small mark and a word. A square for live states, a check for Resolved, an arrow for a change in a reading. Only Issue, Opportunity and changes take the accent.": "对象处在什么状态：一个小标记加一个词。进行中的状态用方块，已解决用对勾，读数变化用箭头。只有问题、机会和读数变化用强调色。",
+ "What state an object is in: a small mark and a word. A square for live states, a check for Resolved, an arrow for a change in a reading. Only Issue, Opportunity and changes take the accent.": "对象处在什么状态：一个小标记加一个词。进行中的状态用方块，已解决用对勾，读数变化用箭头。只有问题、机会和读数变化用信号色。",
  "Square. One primary per view: the person's next decision.": "方角。每屏只有一个主按钮：人的下一个决定。",
  "Two to five options of one setting.": "同一个设置的两到五个选项。",
  "Ask the AI about the object on screen.": "对着屏幕上的设备问 AI。",
@@ -3887,7 +3887,7 @@ segInd(document);
  "Marks where the AI speaks or acts. Nowhere else.": "标出 AI 说话或动手的地方，别处不用。",
  "One numbered chip per source the AI checked.": "AI 查过的每个来源一个编号标签。",
  "One reading against its normal.": "一个读数和它的正常值对比。",
- "How sure the AI is. Below 50% it turns to the accent.": "AI 有多大把握。低于 50% 变成强调色。",
+ "How sure the AI is. Below 50% it turns to the accent.": "AI 有多大把握。低于 50% 变成信号色。",
  "Says what changed and offers Undo.": "说清改了什么，并且能撤销。",
  "One action and how far along it is.": "一项操作，做到了哪里。",
  "Who acts on it. The AI suggests; a person assigns.": "谁来处理。AI 只建议，由人来派。",
@@ -3907,7 +3907,7 @@ segInd(document);
  "Keep one dot pitch clear on every side.": "四周各留一个点距的空白。",
  "The logo is the product.": "Logo 代表产品，火花标代表 AI 在说话。",
  "Seven steps from the page to the text.": "从页面底色到文字共七级。",
- "On a real screen the accent is a sliver.": "在真实页面里，强调色只占一小条。",
+ "On a real screen the accent is a sliver.": "在真实页面里，信号色只占一小条。",
  "Measured live from the tokens (WCAG 2.2).": "按 token 实时算出来（WCAG 2.2）。",
  "Eleven styles, the same eleven as the Figma library.": "十一种样式，和 Figma 组件库里的一一对应。",
  "A sans number, a smaller muted unit, a mono label.": "数字用无衬线字体，单位更小更淡，标签用等宽字体。",
@@ -3939,10 +3939,10 @@ segInd(document);
  "One card per check the AI really made.": "AI 真正查了几项，就放几张卡片。",
  "5 × 5 dots, 4.4 pitch.": "5 × 5 个点，间距 4.4。",
  "16 dots draw the G.": "16 个点画出 G。",
- "One accent dot, where the eye lands.": "一个强调色的点，视线落在这里。",
+ "One accent dot, where the eye lands.": "一个信号色的点，视线落在这里。",
  "Draw the machine as it really is.": "照设备真实的样子画。",
  "Bright outlines that read small.": "线条够亮，缩小也看得清。",
- "Only the problem takes the accent.": "只有出问题的零件用强调色。",
+ "Only the problem takes the accent.": "只有出问题的零件用信号色。",
  "Key in caps, value beside it.": "键名大写，数值在旁边。",
  "Bottom-right, like a manual.": "右下角，像说明书的图注。",
  "Only the faulty machine is lit.": "只有出问题的设备亮。",
@@ -3990,7 +3990,7 @@ segInd(document);
  "Colours AI made up": "AI 自己编的颜色",
  "Our parts used": "用上的现成部件",
  "Drawings graded good": "打了“好”的设备图",
- "Rules, states, voice": "规则、状态、语气",
+ "Rules, states, voice": "规则、状态、说话方式",
  "Where to start": "从哪里开始",
  "Principles": "原则",
  "Grade them yourself": "你也来打分",
@@ -4086,7 +4086,7 @@ segInd(document);
  "Choose the evidence": "挑选证据",
  "Picks which cards prove the point, in what order, each tagged with the question a person would ask next.": "决定用哪几张证据卡片、按什么顺序，每张标上人接下来会问的问题。",
  "Build the screen": "搭页面",
- "Only our tokens and components, night and day, one accent for what needs a person.": "只用我们的 token 和组件，夜间日间都要做，只有要人处理的地方用强调色。",
+ "Only our tokens and components, night and day, one accent for what needs a person.": "只用我们的 token 和组件，夜间日间都要做，只有要人处理的地方用信号色。",
  "Draw the machine": "画设备图",
  "Isometric line drawing of the real machine, with only the faulty part lit.": "按真实设备画等轴测线稿，只点亮出问题的那个零件。",
  "Write what the AI says": "写 AI 说的话",
@@ -4194,7 +4194,12 @@ segInd(document);
  "- Make the drawings clearer.": "- 把图画清楚一点。",
  "Why: \"Part unclear\" ticked 5 times, on the EV charger.": "为什么：“零件认不出”被勾了 5 次，都在充电桩上。",
  "In their words: \"I can't tell which cable is broken.\"": "原话：“看不出是哪根线坏了。”",
- "Issue · +14% power": "问题 · 耗电 +14%"
+ "Issue · +14% power": "问题 · 耗电 +14%",
+ "Figma library + the skills": "Figma 组件库 + skill",
+ "Skills →": "Skills →",
+ "Twelve jobs an AI can do with this system.": "AI 用这套系统能做的十二件事。",
+ "People · review desk": "人 · 打标台",
+ "The five rules": "五条规则"
 };
   let LANG = "en";
   try { if (localStorage.getItem("gc-lang") === "zh") LANG = "zh"; } catch (e) {}
