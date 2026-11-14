@@ -120,7 +120,7 @@ img { display: block; max-width: 100%; }
 .btn-ghost:hover { background: var(--bg-raised); }
 .pbtn { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; white-space: nowrap; }
 .pbtn.primary { background: var(--cta-bg); color: var(--cta-fg); box-shadow: none; }
-.install { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 4px 0 14px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.install { display: flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%; box-sizing: border-box; height: 40px; padding: 0 4px 0 14px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
 .install code { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
 
 /* generic layout helpers */
@@ -545,6 +545,9 @@ details.more summary:hover { color: var(--text); }
 .sk-body { display: grid; gap: 8px; padding: 4px 18px 18px 204px; }
 .sk-say { margin: 0 0 8px; font-size: 16px; }
 @media (max-width: 720px) { .sk summary { grid-template-columns: 1fr auto; } .sk-id { grid-column: 1 / -1; } .sk summary::after { display: none; } .sk-body { padding-left: 18px; } }
+.ht-card > *, .ht-take, .ht-take > * { min-width: 0; }
+.ht-loop { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 28px; padding: 16px 18px; box-shadow: inset 0 0 0 1px var(--line); color: inherit; text-decoration: none; transition: background 160ms; }
+.ht-loop:hover { background: var(--bg-raised); }
 .csteps { display: grid; gap: 20px; }
 .cstep { display: grid; gap: 10px; min-width: 0; }
 .step-hd { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
@@ -827,7 +830,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .ht-seg { margin: 4px 0 14px; }
 .ht-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1px; background: var(--line); box-shadow: 0 0 0 1px var(--line); }
 .ht-card > div { background: var(--bg-surface); padding: 20px; display: grid; gap: 8px; align-content: start; }
-.ht-act { margin-top: 8px; }
+.ht-act { margin-top: 8px; min-width: 0; }
 .ht-then ol { margin: 4px 0 0; padding: 0; list-style: none; counter-reset: h; display: grid; gap: 10px; }
 .ht-then li { counter-increment: h; display: grid; grid-template-columns: 22px 1fr; gap: 8px; font-size: 15px; }
 .ht-then li::before { content: counter(h); font: 12px/22px var(--font-mono); color: var(--accent); }
@@ -2094,11 +2097,11 @@ const COMPONENTS = [
 
 /* ---------- pages ---------- */
 const NAV = [
-  ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
+  ["Start", [["overview", "Overview"], ["howto", "How to use"], ["workflow", "AI workflow"]]],
   ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials & motion"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
   ["AI behaviour", [["rules", "Rules, states, voice"], ["states", "States & confidence", 1], ["voice", "How the AI speaks", 1]]],
   ["Components", COMPONENTS.map((c) => [c.id, c.name])],
-  ["Behind the scenes", [["workflow", "AI workflow"], ["eval", "Eval"], ["changelog", "Changelog"]]],
+  ["Behind the scenes", [["eval", "Eval"], ["changelog", "Changelog"]]],
 ];
 const ORDER = NAV.flatMap(([g, items]) => items.map(([id, t, h]) => ({ id, t, g, h: !!h })));
 
@@ -2141,7 +2144,7 @@ ${guide("05", "Screens built from the package", "built")}
 <div class="grid2" id="builtGrid">${[["test-v12-battery", "Battery BT-01 · plan · 88%"], ["test-v13-tower", "Cooling tower CT-2 · draft · 58%"], ["test-v12-elevator", "Elevator EL-04 · check only · 41%"], ["test-v13-ev", "EV-B2 charging · opportunity · 83%"]].map(([f, t]) => `<div class="shot"><figure><img src="img/${f}.webp" alt="${t}" data-zoom></figure><span class="t-label muted">${t}</span></div>`).join("")}</div>
 
 ${guide("06", "Where to start", "start")}
-<div class="ostart"><a href="#/howto" class="ftile"><span class="t-strong">How to use</span><span class="t-small muted">One thing per role.</span></a><a href="#/skills" class="ftile"><span class="t-strong">Skills</span><span class="t-small muted">Seven jobs an AI can do with this system.</span></a><a href="#/changelog" class="ftile"><span class="t-strong">Changelog</span><span class="t-small muted">What each version fixed.</span></a></div>`;
+<div class="ostart"><a href="#/howto" class="ftile"><span class="t-strong">How to use</span><span class="t-small muted">One thing per role.</span></a><a href="#/workflow" class="ftile"><span class="t-strong">Skills</span><span class="t-small muted">Seven jobs an AI can do with this system.</span></a><a href="#/changelog" class="ftile"><span class="t-strong">Changelog</span><span class="t-small muted">What each version fixed.</span></a></div>`;
 
 /* LOGO */
 PAGES.logo = () => `${head("Foundations", "Logo", "A 5×5 grid of dots drawn as a G.")}
@@ -2435,8 +2438,7 @@ const FIGMA_URL = "https://www.figma.com/design/YuKDlrrGoOLavJtw0nGLIk";
 const GUIDE_URL = "https://shuyii0315-arch.github.io/green-control/guide/";
 const DESK_URL = "https://claude.ai/artifact/DaDH57wtk9uPkbrXJqhqVQ";
 const ROLES_HT = {
-  design: { take: "The Figma library", what: "Every component, colour and type style, night and day.", act: `<a class="cta" href="${FIGMA_URL}" target="_blank" rel="noopener">Open the Figma library</a>`, then: ["Build drafts from library components, not from scratch.", "Switch Night and Day with the variable mode.", "Found a gap? Change the rule, not one screen."] },
-  ai: { take: "Seven skills", what: "Install them once. Then ask for a screen in plain words; the AI picks the skill that fits.", act: `<a class="cta" href="#/skills">See the skills</a>`, then: ["Install with one command on the Skills page.", "Ask for what you need in one sentence.", "Grade what it draws in the review desk; the next rule comes from your grades."] },
+  design: { take: "Figma library + seven skills", what: "Draft in Figma with the library. Then let AI build the real screen with the skills.", act: `<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="cta" href="${FIGMA_URL}" target="_blank" rel="noopener">Open the Figma library</a><a class="pbtn" href="#/workflow" style="text-decoration:none;color:inherit">See the AI workflow</a></div>`, then: ["Draft from library components, night and day.", "Install the skills once; ask AI for the screen in one sentence.", "Grade what it makes in the review desk. A gap means a rule is missing: change the rule, not one screen."] },
   eng: { take: "One install command", what: "The theme and components go straight into a shadcn project.", act: `<div class="install" style="margin:0"><span class="t-data muted">$</span><code class="t-data" id="htCmd"></code><button class="pbtn" id="htCopyCmd">Copy</button></div>`, then: ["Every state is a prop, so nothing gets left out.", "Change tokens.json, run build_tokens.py: every copy updates.", "CI runs gc-check on every change."] },
 };
 const HT_STEPS = [
@@ -2446,45 +2448,35 @@ const HT_STEPS = [
   ["Check it", "Machine first, then a person.", "Review desk", DESK_URL],
   ["Fix the rule", "Never just the one screen.", "Changelog", "#/changelog"],
 ];
-let htRole = "ai";
+let htRole = "design";
 PAGES.howto = () => `${head("Start", "How to use", "Pick who you are. Each role takes one thing.")}
-<div class="seg ht-seg" id="htSeg" role="group" aria-label="Role">${[["design", "Designer"], ["ai", "Building with AI"], ["eng", "Engineer"]].map(([k, l]) => `<button data-r="${k}" aria-pressed="${k === htRole}">${l}</button>`).join("")}</div>
+<div class="seg ht-seg" id="htSeg" role="group" aria-label="Role">${[["design", "Designer"], ["eng", "Engineer"]].map(([k, l]) => `<button data-r="${k}" aria-pressed="${k === htRole}">${l}</button>`).join("")}</div>
 <div class="ht-card" id="role"></div>
-<h2 id="steps">A new screen, step by step</h2>
-<p class="sub">Five steps, one thing each.</p>
-<ol class="ht-steps">${HT_STEPS.map(([t, d, u, h], i) => `<li><span class="t-label accent">${String(i + 1).padStart(2, "0")}</span><b>${t}</b><span class="t-small muted">${d}</span><a class="t-data" href="${h}"${h.startsWith("http") ? ' target="_blank" rel="noopener"' : ""}>${u} →</a></li>`).join("")}</ol>
+<a class="ht-loop" href="#/workflow"><span class="t-strong">The whole loop, with the skill for each step</span><span class="t-small muted">AI workflow →</span></a>
 <h2 id="learn">Learning it as a team</h2>
 <ol class="ht-steps ht-3">
   <li><span class="t-label accent">15 min</span><b>Understand it</b><span class="t-small muted">Tokens, skill, MCP and checks, in pictures.</span><a class="t-data" href="${GUIDE_URL}" target="_blank" rel="noopener">The guide →</a></li>
-  <li><span class="t-label accent">30 min</span><b>Try it once</b><span class="t-small muted">Have AI build an alert for a new machine, check it, grade it.</span><a class="t-data" href="#/howto/steps">The five steps →</a></li>
+  <li><span class="t-label accent">30 min</span><b>Try it once</b><span class="t-small muted">Have AI build an alert for a new machine, check it, grade it.</span><a class="t-data" href="#/workflow">The whole loop →</a></li>
   <li><span class="t-label accent">Always</span><b>Remember one rule</b><span class="t-small muted">A problem means a rule is missing. Change the rule.</span><a class="t-data" href="#/changelog">How rules changed →</a></li>
 </ol>
-<h2 id="files">The files</h2>
-<p class="sub">For AI and tools. You don't need to open them. <a href="#/skills/files" style="color:var(--link)">See every file</a></p>`;
+`;
 
 /* SKILLS */
 const SKILL_SRC = window.GC_SKILLS || {};
 const SKILLS = [
-  ["Before you build", "Decide first. These two make the judgement calls the screen depends on.", [
+  [2, "Decide", "Before any layout: how far may the AI go, and what proves it.", [
     ["gc-confidence", "Decide what the AI may do", "Judgement", "From the AI's confidence, picks check, draft or plan, and whether competing causes must be listed.", "The AI is only 41% sure. What do we show?"],
     ["gc-evidence", "Choose the evidence", "Judgement", "Picks which cards prove the point, in what order, each tagged with the question a person would ask next.", "Show why the AI thinks Chiller 2 is the problem."]]],
-  ["Building", "Make the screen, the drawing and the words.", [
+  [3, "Build", "The screen, the drawing and the words.", [
     ["gc-build-screen", "Build the screen", "Rules", "Only our tokens and components, night and day, one accent for what needs a person.", "Build me a screen for the elevator fault."],
     ["gc-draw-equipment", "Draw the machine", "Rules", "Isometric line drawing of the real machine, with only the faulty part lit.", "Draw the EV charger with the broken cable lit."],
     ["gc-ai-voice", "Write what the AI says", "Judgement", "Seen, means, do. The words get bolder or more careful with the confidence.", "Write the alert for the cooling tower at 58%."]]],
-  ["Checking", "A strict pass before anything goes back to the team.", [
+  [4, "Check", "A strict pass before a person looks.", [
     ["gc-review", "Pass or block", "Judgement", "Reviews a screen against the five AI rules and the look, and blocks it with reasons if anything fails.", "Check this screen before I send it to engineering."]]],
-  ["Learning", "The system gets better from feedback.", [
+  [6, "Fix the rules", "Never fix just the one screen.", [
     ["gc-learn-rule", "Turn feedback into rules", "Judgement", "Turns graders' marks and your corrections into new rules, each with its reason. Never invents a reason.", "Go through this round of grades and update the rules."]]],
 ];
-PAGES.skills = () => `${head("Start", "Skills", "Seven small instructions for an AI, one job each, in the order you'd use them on a screen.")}
-<div class="codebox"><div class="codebox-head"><span class="t-data muted">Install all seven</span><button class="pbtn" data-snip="npx skills add shuyii0315-arch/green-control">Copy</button></div><pre>npx skills add shuyii0315-arch/green-control</pre></div>
-<p class="t-small muted" style="margin-top:10px">Then ask in plain words. The AI picks the skill that fits; you can also call one by name, like <span class="t-data">/gc-review</span>.</p>
-${SKILLS.map(([g, d, items], gi) => `<h2 id="sk${gi + 1}" class="sk-h" data-n="0${gi + 1}">${g}</h2><p class="sub">${d}</p><div class="sk-list">${items.map(([id, t, kind, what, say]) => `<details class="sk"><summary><span class="sk-id t-data">/${id}</span><span class="sk-t"><span class="t-strong">${t}</span><span class="t-small muted">${what}</span></span><span class="sk-kind ${kind === "Judgement" ? "j" : ""}">${kind}</span></summary><div class="sk-body"><span class="t-label muted">For example, you say</span><p class="sk-say">“${say}”</p>${SKILL_SRC[id] ? `<div class="codebox"><div class="codebox-head"><span class="t-data muted">skills/${id}/SKILL.md</span><button class="pbtn" data-skill="${id}">Copy</button></div><pre data-notr>${SKILL_SRC[id].replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre></div>` : ""}</div></details>`).join("")}</div>`).join("")}
-<h2 id="files">The files underneath</h2><p class="sub">The skills read these. You only open them to check or copy one by hand.</p>
-<div class="files"><div class="filelist" id="filelist">${FILES.map(([k, n, d], i) => `<button class="filebtn" data-f="${k}" aria-pressed="${i === 0}"><span class="t-strong t-small">${n}</span><span class="t-small muted">${d}</span></button>`).join("")}</div>
-<div class="codebox"><div class="codebox-head"><span class="t-data" id="fname"></span><button class="pbtn" id="copyFile">Copy</button></div><pre id="fbody" style="max-height:560px"></pre></div></div>
-`;
+
 
 /* EVAL */
 PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and without the skill. Then people grade the drawings.")}
@@ -2531,18 +2523,26 @@ const LOOP = [
 PAGES.workflow = () => {
   const steps = [
     ["Write the rules", "You", "DESIGN.md · Figma"],
-    ["Copy them everywhere", "A script", "build_tokens.py"],
-    ["Build a screen", "AI", "SKILL.md · MCP"],
-    ["Check it", "A machine", "gc-check"],
-    ["Look at it", "You", "review"],
-    ["Fix the rules", "AI suggests, you OK", "changelog"],
+    ["Decide", "AI", "/gc-confidence · /gc-evidence"],
+    ["Build", "AI", "/gc-build-screen · draw · voice"],
+    ["Check", "AI + a machine", "/gc-review · gc-check"],
+    ["Grade", "People", "review desk"],
+    ["Fix the rules", "AI suggests, you OK", "/gc-learn-rule"],
   ];
   const R = 150, cx = 260, cy = 190;
   const pts = steps.map((_, i) => { const a = -Math.PI / 2 + i * (Math.PI * 2 / 6); return [cx + R * Math.cos(a), cy + R * Math.sin(a)]; });
   const nodes = steps.map(([s, who, tool], i) => { const [x, y] = pts[i]; const left = x < cx - 10, right = x > cx + 10; const anchor = left ? "end" : right ? "start" : "middle"; const tx = left ? x - 30 : right ? x + 30 : x; const top = y < cy - R + 5, bottom = y > cy + R - 5; const ly = top ? y - 50 : bottom ? y + 40 : y - 4;
-    return `<circle cx="${x}" cy="${y}" r="20" class="wf-dot${i === 3 ? " on" : ""}"/><text x="${x}" y="${y + 5}" text-anchor="middle" class="wf-n">${i + 1}</text><text x="${tx}" y="${ly}" text-anchor="${anchor}" class="wf-s">${s}</text><text x="${tx}" y="${ly + 18}" text-anchor="${anchor}" class="wf-w">${who} · ${tool}</text>`; }).join("");
-  return `${head("Behind the scenes", "AI workflow", "How this design system is built and kept right with AI.")}
+    return `<circle cx="${x}" cy="${y}" r="20" class="wf-dot${[1, 2, 3, 5].includes(i) ? " on" : ""}"/><text x="${x}" y="${y + 5}" text-anchor="middle" class="wf-n">${i + 1}</text><text x="${tx}" y="${ly}" text-anchor="${anchor}" class="wf-s">${s}</text><text x="${tx}" y="${ly + 18}" text-anchor="${anchor}" class="wf-w"><tspan>${who}</tspan><tspan data-notr> · ${tool}</tspan></text>`; }).join("");
+  return `${head("Start", "AI workflow", "One loop, six steps. Four of them have a skill the AI follows.")}
 <figure class="wf"><svg viewBox="-150 -40 820 470" role="img" aria-label="Six steps in a circle"><circle cx="${cx}" cy="${cy}" r="${R}" class="wf-ring"/>${nodes}<text x="${cx}" y="${cy - 6}" text-anchor="middle" class="wf-c">One loop</text><text x="${cx}" y="${cy + 14}" text-anchor="middle" class="wf-w">step 6 leads back to step 1</text></svg></figure>
+<div class="codebox"><div class="codebox-head"><span class="t-data muted">Install the seven skills</span><button class="pbtn" data-snip="npx skills add shuyii0315-arch/green-control">Copy</button></div><pre>npx skills add shuyii0315-arch/green-control</pre></div>
+<p class="t-small muted" style="margin-top:10px">Then ask in plain words. The AI picks the skill that fits; you can also call one by name, like <span class="t-data">/gc-review</span>.</p>
+${SKILLS.map(([n, g, d, items]) => `<h2 id="step${n}" class="sk-h" data-n="0${n}">${g}</h2><p class="sub">${d}</p><div class="sk-list">${items.map(([id, t, kind, what, say]) => `<details class="sk"><summary><span class="sk-id t-data">/${id}</span><span class="sk-t"><span class="t-strong">${t}</span><span class="t-small muted">${what}</span></span><span class="sk-kind ${kind === "Judgement" ? "j" : ""}">${kind}</span></summary><div class="sk-body"><span class="t-label muted">For example, you say</span><p class="sk-say">“${say}”</p>${SKILL_SRC[id] ? `<div class="codebox"><div class="codebox-head"><span class="t-data muted">skills/${id}/SKILL.md</span><button class="pbtn" data-skill="${id}">Copy</button></div><pre data-notr>${SKILL_SRC[id].replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre></div>` : ""}</div></details>`).join("")}</div>`).join("")}
+<h2 id="trust">What AI can do, and what only you can do</h2>
+<div class="wf-trust wf-two">
+  <div><span class="t-label accent">AI can</span><b>Build screens</b><span>You look before they ship.</span><b>Suggest a new rule</b><span>You accept or reject it.</span></div>
+  <div><span class="t-label">Only you</span><b>Change the colours</b><span>The brand is a person's call.</span><b>Move the 50% / 80% lines</b><span>They decide what AI may do, so AI can't move them.</span></div>
+</div>
 <h2 id="example">One real loop</h2>
 <p class="sub">What happened in version 1.5, step by step.</p>
 <div class="wf-story">
@@ -2551,21 +2551,10 @@ PAGES.workflow = () => {
   <div><span class="t-label accent">So</span><span>We made that grey a little darker, once, in tokens.json.</span></div>
   <div><span class="t-label accent">Now</span><span>The script updated every copy. No screen can repeat the mistake.</span></div>
 </div>
-<h2 id="trust">What AI can do, and what only you can do</h2>
-<div class="wf-trust wf-two">
-  <div><span class="t-label accent">AI can</span><b>Build screens</b><span>You look before they ship.</span><b>Suggest a new rule</b><span>You accept or reject it.</span></div>
-  <div><span class="t-label">Only you</span><b>Change the colours</b><span>The brand is a person's call.</span><b>Move the 50% / 80% lines</b><span>They decide what AI may do, so AI can't move them.</span></div>
-</div>
-<h2 id="grade">Grading AI output</h2>
-<p class="sub">People grade what AI makes in a separate tool, one drawing at a time.</p><p><a class="cta" href="https://claude.ai/artifact/DaDH57wtk9uPkbrXJqhqVQ" target="_blank" rel="noopener">Open the review desk</a></p>
-<h2 id="ask">How to ask AI for a screen</h2>
-<p class="sub">Give it five things.</p><pre class="code"><code>Build a Green Control screen. Read SKILL.md first.
-Machine: Elevator EL-04
-What we saw: door motor +18% since 06:10, doors 3.4 s instead of 2.9 s
-How sure: 41%
-Who is on shift: Lin Wei
-Hand back: the screen + the gc-check result</code></pre>
-<p class="t-small" style="margin-top:14px">Figma library: <a href="https://www.figma.com/design/YuKDlrrGoOLavJtw0nGLIk" target="_blank" rel="noopener" style="color:var(--link)">Green Control · Design System Library</a></p>`;
+<h2 id="files">The files underneath</h2><p class="sub">The skills read these. You only open them to check or copy one by hand.</p>
+<div class="files"><div class="filelist" id="filelist">${FILES.map(([k, n, d], i) => `<button class="filebtn" data-f="${k}" aria-pressed="${i === 0}"><span class="t-strong t-small">${n}</span><span class="t-small muted">${d}</span></button>`).join("")}</div>
+<div class="codebox"><div class="codebox-head"><span class="t-data" id="fname"></span><button class="pbtn" id="copyFile">Copy</button></div><pre id="fbody" style="max-height:560px"></pre></div></div>
+`;
 };
 
 const BATCH = [
@@ -2615,7 +2604,7 @@ PAGES.voice = () => `${head("AI behaviour", "How the AI speaks", "A colleague re
 
 /* ---------- page init hooks ---------- */
 const INIT = {};
-INIT.skills = () => { if (INIT.agents) INIT.agents(); $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
+INIT.workflow = INIT.skills = () => { if (INIT.agents) INIT.agents(); $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
 INIT.howto = () => {
   const draw = () => { const r = ROLES_HT[htRole];
     $("#role").innerHTML = `<div class="ht-take"><span class="t-label muted">Take this one thing</span><b class="t-headline">${r.take}</b><span class="t-small muted">${r.what}</span><div class="ht-act">${r.act}</div></div><div class="ht-then"><span class="t-label muted">Then</span><ol>${r.then.map((x) => `<li>${x}</li>`).join("")}</ol></div>`;
@@ -2866,7 +2855,7 @@ document.addEventListener("click", (e) => {
 });
 function go() {
   let id = (location.hash.match(/^#\/([\w-]+)/) || [])[1] || "overview";
-  if (id === "agents") { history.replaceState(null, "", "#/skills/files"); id = "skills"; }
+  if (id === "agents" || id === "skills") { history.replaceState(null, "", id === "agents" ? "#/workflow/files" : "#/workflow"); id = "workflow"; }
   if (!PAGES[id]) id = "overview";
   const i = ORDER.findIndex((o) => o.id === id), prev = ORDER[i - 1], next = ORDER[i + 1];
   const page = $("#page");
@@ -3182,7 +3171,7 @@ segInd(document);
  "Five rules and three confidence bands for the AI.": "给 AI 的五条规则和三档把握度。",
  "Five rules that come before any pixel": "比画面更重要的五条规则",
  "Five signals used by an independent 2026 audit of 37 design systems. The leaders score 3 of 5.": "这五项指标来自 2026 年一份对 37 套设计系统的独立评估。做得最好的也只拿到 3 分（满分 5 分）。",
- "Fix the rules": "补规则",
+ "Fix the rules": "改规则",
  "Fixed and confirmed by a reading.": "修好了，读数也确认正常。",
  "Fixed and confirmed.": "修好了，已确认。",
  "Flat, inside the glass.": "平的，放在玻璃里面。",
@@ -3666,7 +3655,7 @@ segInd(document);
  "watching to undone": "从观察到撤销",
  "°C above normal": "°C 高于正常",
  "⚡ AI detected an anomaly!": "⚡ AI 检测到异常！",
- "AI suggests, you OK": "AI 提议，你确认",
+ "AI suggests, you OK": "AI 提，你点头",
  "\"Abnormal behaviour detected on an elevator. Don't worry, our smart AI is on it!\"": "“检测到电梯异常。别担心，我们的智能 AI 正在处理！”",
  "\"EL-04's doors are working harder and closing slower than usual: +18% current since 06:10, 3.4 s per cycle.\"": "“EL-04 的门比平时费劲，关得也慢：06:10 起电流多了 18%，开关一次要 3.4 秒。”",
  "\"I compared door current with its 30-day baseline and matched the passenger reports. Three causes fit, so a technician should check first.\"": "“我对比了门电流和过去 30 天的正常值，也核对了乘客反馈。有三种原因都说得通，所以先派技术员看一下。”",
@@ -4076,7 +4065,30 @@ segInd(document);
  "Install with one command on the Skills page.": "在 Skills 页用一条命令装好。",
  "Ask for what you need in one sentence.": "用一句话说你要什么。",
  "Grade what it draws in the review desk; the next rule comes from your grades.": "在打标台给它画的图打分，下一条规则就从你的打分里来。",
- "Say what you need in one sentence.": "一句话说你要什么。"
+ "Say what you need in one sentence.": "一句话说你要什么。",
+ "Decide": "判断",
+ "Build": "搭建",
+ "Check": "检查",
+ "Grade": "打分",
+ "One loop, six steps. Four of them have a skill the AI follows.": "一个循环，六步。其中四步，AI 有对应的 skill 照着做。",
+ "Install the seven skills": "装好七个 skill",
+ "Before any layout: how far may the AI go, and what proves it.": "排版之前先判断：AI 能做到哪一步，拿什么当证据。",
+ "The screen, the drawing and the words.": "页面、设备图、AI 说的话。",
+ "A strict pass before a person looks.": "人看之前，先严格过一遍。",
+ "Never fix just the one screen.": "不只改这一个页面，要改规则。",
+ "The whole loop, with the skill for each step": "完整流程，以及每一步用哪个 skill",
+ "AI workflow →": "AI 工作流 →",
+ "You": "你",
+ "People": "人",
+ "AI + a machine": "AI + 机器",
+ "The five steps": "整个流程",
+ "Figma library + seven skills": "Figma 组件库 + 七个 skill",
+ "Draft in Figma with the library. Then let AI build the real screen with the skills.": "先用组件库在 Figma 里出草图，再让 AI 按 skill 做出真实页面。",
+ "See the AI workflow": "看 AI 工作流",
+ "Draft from library components, night and day.": "用组件库里的组件出草图，夜间日间都做。",
+ "Install the skills once; ask AI for the screen in one sentence.": "装一次 skill，用一句话让 AI 做页面。",
+ "Grade what it makes in the review desk. A gap means a rule is missing: change the rule, not one screen.": "在打标台给它做的图打分。发现问题说明少了一条规则：改规则，不只改这一页。",
+ "The whole loop →": "完整流程 →"
 };
   let LANG = "en";
   try { if (localStorage.getItem("gc-lang") === "zh") LANG = "zh"; } catch (e) {}
