@@ -1,7 +1,7 @@
 # Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.8.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.9.
 
 ## The one idea
 
@@ -44,8 +44,9 @@ Every rule says why. If a case seems to need an exception, read the reason first
 - **Sans (Hanken Grotesk) for sentences. Mono (DM Mono, uppercase, 11px) for labels, data and time.**
   - Why: numbers line up in mono. And measured data looks different from the AI's sentences, so people can tell a reading from an interpretation at a glance: the same idea as evidence first.
   - Source: [Product]
-- **Motion uses one curve (`motion.ease`). Spring only for things that arrive. Respect reduced motion.**
-  - Why: one curve makes every movement feel like the same product. A spring says "this is new" (a toast, a figure assembling), so it is kept for arrivals; used everywhere, nothing would feel new.
+- **Motion is picked by what the movement does, from one list: hover and press `feedback` 120 ms; a label or chip `small-in` 240 / `small-out` 160 ms; a panel or sheet `in` 420 / `out` 280 ms; the layout `move` 520 ms; the drawing `camera` 900 ms; in progress `loop` 1200 ms; live `ambient` 2400 ms. Curves: `ease` for entering and moving, `exit` for leaving, `spring` only for arrivals, `wave` for loops, `linear` for things that spin. No other numbers. Respect reduced motion.**
+  - Why: one list makes every screen move at the same rhythm, and a machine can check it (before 1.9 the prototype had 38 different durations). Leaving is one step shorter than arriving: what arrives needs to be seen, what leaves does not. A spring says "this is new", so it is kept for arrivals; used everywhere, nothing would feel new.
+  - Exception: one-off sequences (the figure assembling, the scan) are written inside their component and marked as exceptions.
   - Source: [Product]; reduced motion from [Industry] WCAG.
 - **Colours come in three layers:** `primitive.color.*` (raw values) → `color.*` semantic (what it means) → component (`cta-*`, `sel-*`, `badge-bg`). UI code only uses semantic or component tokens. A theme only re-points semantic tokens.
   - Why: a theme or brand change then edits one layer, not every screen.
@@ -200,6 +201,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.9** Motion is picked by what moves, from one list of curves and durations (`tokens.json` › motion). New: an `exit` curve for anything leaving, `wave` for loops, `linear` for spinners. Every transition in the prototype, the site and the component code now uses these values; `gc-motion` skill rewritten to match.
 - **1.8** Each component is shown in the situations it meets, with one line on what changes, instead of do/don't lists. New: AI panel, one frame for every AI answer (fault, saving, draft, low confidence), on desktop, tablet and phone.
 - **1.7** Rules now say where they come from: [Industry] (ISA-101, ISA-18.2, WCAG), [Product] (evidence first, people decide) or [Task]. Two places where Green Control differs from the industry habit are written down with their reasons. New: screens sorted by what the person is doing (detect, diagnose, respond, review); a plan for testing the rules with operators; open questions.
 - **1.6** Every look and layout rule now says why, and what breaks if it is ignored, so a person or an agent can tell a real exception from a mistake. New table: what stays the same on every screen, and what varies and by which rule.

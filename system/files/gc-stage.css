@@ -30,9 +30,9 @@
 .gc-figure { position: absolute; left: 0; right: 0; top: 96px; height: 560px; container-type: size; }
 .dots { position: absolute; inset: 0; background-image: radial-gradient(var(--dot) 0.55px, transparent 0.75px); background-size: 4.2px 4.2px; -webkit-mask-image: radial-gradient(ellipse 58% 60% at 50% 50%, #000 40%, transparent 100%); mask-image: radial-gradient(ellipse 58% 60% at 50% 50%, #000 40%, transparent 100%); pointer-events: none; }
 .pool { position: absolute; left: 18%; top: 28%; width: 64%; height: 56%; background: radial-gradient(closest-side, var(--pool), transparent); pointer-events: none; }
-.gc-art { position: absolute; left: 50%; top: 50%; max-width: 86%; max-height: 96%; transform: translate(-50%, -50%); display: block; -webkit-user-drag: none; transition: opacity 600ms var(--ease); }
+.gc-art { position: absolute; left: 50%; top: 50%; max-width: 86%; max-height: 96%; transform: translate(-50%, -50%); display: block; -webkit-user-drag: none; transition: opacity 520ms var(--ease); }
 .gc-figure.assembling .gc-art { opacity: 0; transition: none; }
-.gc-assemble { position: absolute; pointer-events: none; transition: opacity 600ms var(--ease); }
+.gc-assemble { position: absolute; pointer-events: none; transition: opacity 520ms var(--ease); }
 .gc-figure.built .gc-assemble { opacity: 0; }
 .gc-labels { position: absolute; inset: 0; pointer-events: none; }
 .gc-figure.assembling .gc-labels { opacity: 0; }
@@ -55,11 +55,11 @@
 
 /* numbered marks: where each piece of evidence was read on the machine; same number as the chip */
 .amark { position: absolute; width: 18px; height: 18px; display: grid; place-items: center; background: var(--badge-bg); color: var(--on-accent); font: 11px/1 "DM Mono", monospace; transform: translate(-50%, -50%); }
-.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: gcScan 900ms var(--ease) infinite; }
+.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: gcScan 1200ms var(--ease) infinite; }
 @keyframes gcScan { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
 
 /* linked highlight: hovering a chip, a card or a mark draws a border around all three */
-.hl { outline: 1.5px solid var(--accent); outline-offset: 3px; transition: outline-color 200ms; }
+.hl { outline: 1.5px solid var(--accent); outline-offset: 3px; transition: outline-color 160ms var(--ease); }
 
 /* evidence row under the drawing: one card per check (1–4), tagged with this topic's questions, joined by dashed lines */
 .gc-evrow { --evgap: 100px; position: absolute; left: 40px; right: 40px; bottom: 40px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--evgap); }

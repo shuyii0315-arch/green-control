@@ -26,6 +26,7 @@
   /* theme-independent */
   --gc-ease: var(--gc-motion-ease);
   --gc-spring: var(--gc-motion-spring);
+  --gc-exit: var(--gc-motion-exit);
   --gc-type-ui: 400 14px/20px var(--gc-font-sans);
   --gc-radius-none: 0px;
   --gc-radius-dot: 99px;
@@ -51,9 +52,20 @@
   --gc-type-label-tracking: 0.05em;
   --gc-type-data: 400 12px/16px var(--gc-font-mono);
   --gc-motion-ease: cubic-bezier(0.2, 0, 0, 1);
+  --gc-motion-exit: cubic-bezier(0.4, 0, 1, 1);
   --gc-motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --gc-motion-wave: cubic-bezier(0.45, 0, 0.55, 1);
+  --gc-motion-linear: linear;
+  --gc-motion-feedback: 120ms;
+  --gc-motion-small-out: 160ms;
+  --gc-motion-small-in: 240ms;
+  --gc-motion-out: 280ms;
+  --gc-motion-in: 420ms;
   --gc-motion-rise: 420ms;
   --gc-motion-move: 520ms;
+  --gc-motion-camera: 900ms;
+  --gc-motion-loop: 1200ms;
+  --gc-motion-ambient: 2400ms;
   --gc-ai-confidence-act: 80;
   --gc-ai-confidence-review: 50;
   --gc-ai-undo-window: 24h;
