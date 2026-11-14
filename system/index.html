@@ -530,7 +530,7 @@ details.more summary:hover { color: var(--text); }
 .say .q { font-size: 15px; } .say .arr { color: var(--accent); font-family: var(--font-mono); }
 .say .tgt { display: grid; gap: 2px; }
 @media (max-width: 720px) { .say a { grid-template-columns: 1fr; gap: 4px; } .say .arr { display: none; } }
-.sk-n { font: 13px/1 var(--font-mono); color: var(--accent); margin-right: 14px; vertical-align: 0.3em; }
+.sk-h::before { content: attr(data-n); font: 13px/1 var(--font-mono); color: var(--accent); margin-right: 14px; vertical-align: 0.3em; }
 .sk-list { display: grid; box-shadow: inset 0 0 0 1px var(--line); }
 .sk + .sk { box-shadow: inset 0 1px 0 var(--line); }
 .sk summary { list-style: none; display: grid; grid-template-columns: 170px minmax(0, 1fr) auto 16px; gap: 16px; align-items: center; padding: 16px 18px; cursor: pointer; transition: background 160ms; }
@@ -2083,7 +2083,7 @@ const COMPONENTS = [
 
 /* ---------- pages ---------- */
 const NAV = [
-  ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"], ["agents", "Files for AI"]]],
+  ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
   ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials & motion"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
   ["AI behaviour", [["rules", "Rules, states, voice"], ["states", "States & confidence", 1], ["voice", "How the AI speaks", 1]]],
   ["Components", COMPONENTS.map((c) => [c.id, c.name])],
@@ -2130,7 +2130,7 @@ ${guide("05", "Screens built from the package", "built")}
 <div class="grid2" id="builtGrid">${[["test-v12-battery", "Battery BT-01 · plan · 88%"], ["test-v13-tower", "Cooling tower CT-2 · draft · 58%"], ["test-v12-elevator", "Elevator EL-04 · check only · 41%"], ["test-v13-ev", "EV-B2 charging · opportunity · 83%"]].map(([f, t]) => `<div class="shot"><figure><img src="img/${f}.webp" alt="${t}" data-zoom></figure><span class="t-label muted">${t}</span></div>`).join("")}</div>
 
 ${guide("06", "Where to start", "start")}
-<div class="ostart"><a href="#/howto" class="ftile"><span class="t-strong">How to use</span><span class="t-small muted">One thing per role.</span></a><a href="#/agents" class="ftile"><span class="t-strong">Files for AI</span><span class="t-small muted">SKILL.md, tokens, registry.</span></a><a href="#/changelog" class="ftile"><span class="t-strong">Changelog</span><span class="t-small muted">What each version fixed.</span></a></div>`;
+<div class="ostart"><a href="#/howto" class="ftile"><span class="t-strong">How to use</span><span class="t-small muted">One thing per role.</span></a><a href="#/skills" class="ftile"><span class="t-strong">Skills</span><span class="t-small muted">Seven jobs an AI can do with this system.</span></a><a href="#/changelog" class="ftile"><span class="t-strong">Changelog</span><span class="t-small muted">What each version fixed.</span></a></div>`;
 
 /* LOGO */
 PAGES.logo = () => `${head("Foundations", "Logo", "A 5×5 grid of dots drawn as a G.")}
@@ -2425,13 +2425,13 @@ const GUIDE_URL = "https://shuyii0315-arch.github.io/green-control/guide/";
 const DESK_URL = "https://claude.ai/artifact/DaDH57wtk9uPkbrXJqhqVQ";
 const ROLES_HT = {
   design: { take: "The Figma library", what: "Every component, colour and type style, night and day.", act: `<a class="cta" href="${FIGMA_URL}" target="_blank" rel="noopener">Open the Figma library</a>`, then: ["Build drafts from library components, not from scratch.", "Switch Night and Day with the variable mode.", "Found a gap? Change the rule, not one screen."] },
-  ai: { take: "SKILL.md", what: "One prompt that points your AI at SKILL.md. The skill tells it what to read and when.", act: `<button class="cta" id="htPrompt">Copy prompt for your AI</button>`, then: ["Paste the prompt, then say what screen you need in one sentence.", "Run gc-check on what it builds.", "Grade the result in the review desk."] },
+  ai: { take: "Seven skills", what: "Install them once. Then ask for a screen in plain words; the AI picks the skill that fits.", act: `<a class="cta" href="#/skills">See the skills</a>`, then: ["Install with one command on the Skills page.", "Ask for what you need in one sentence.", "Grade what it draws in the review desk; the next rule comes from your grades."] },
   eng: { take: "One install command", what: "The theme and components go straight into a shadcn project.", act: `<div class="install" style="margin:0"><span class="t-data muted">$</span><code class="t-data" id="htCmd"></code><button class="pbtn" id="htCopyCmd">Copy</button></div>`, then: ["Every state is a prop, so nothing gets left out.", "Change tokens.json, run build_tokens.py: every copy updates.", "CI runs gc-check on every change."] },
 };
 const HT_STEPS = [
   ["Decide what it says", "Which states, and how sure the AI is.", "States & confidence", "#/states"],
   ["Draft it", "Designer, with library components.", "Figma library", FIGMA_URL],
-  ["Let AI build it", "One sentence plus the prompt.", "SKILL.md", "#/howto/role"],
+  ["Let AI build it", "Say what you need in one sentence.", "Skills", "#/skills"],
   ["Check it", "Machine first, then a person.", "Review desk", DESK_URL],
   ["Fix the rule", "Never just the one screen.", "Changelog", "#/changelog"],
 ];
@@ -2449,7 +2449,7 @@ PAGES.howto = () => `${head("Start", "How to use", "Pick who you are. Each role 
   <li><span class="t-label accent">Always</span><b>Remember one rule</b><span class="t-small muted">A problem means a rule is missing. Change the rule.</span><a class="t-data" href="#/changelog">How rules changed →</a></li>
 </ol>
 <h2 id="files">The files</h2>
-<p class="sub">For AI and tools. You don't need to open them. <a href="#/agents" style="color:var(--link)">See every file</a></p>`;
+<p class="sub">For AI and tools. You don't need to open them. <a href="#/skills/files" style="color:var(--link)">See every file</a></p>`;
 
 /* SKILLS */
 const SKILL_SRC = window.GC_SKILLS || {};
@@ -2469,7 +2469,11 @@ const SKILLS = [
 PAGES.skills = () => `${head("Start", "Skills", "Seven small instructions for an AI, one job each, in the order you'd use them on a screen.")}
 <div class="codebox"><div class="codebox-head"><span class="t-data muted">Install all seven</span><button class="pbtn" data-snip="npx skills add shuyii0315-arch/green-control">Copy</button></div><pre>npx skills add shuyii0315-arch/green-control</pre></div>
 <p class="t-small muted" style="margin-top:10px">Then ask in plain words. The AI picks the skill that fits; you can also call one by name, like <span class="t-data">/gc-review</span>.</p>
-${SKILLS.map(([g, d, items], gi) => `<h2 id="sk${gi + 1}"><span class="sk-n">0${gi + 1}</span>${g}</h2><p class="sub">${d}</p><div class="sk-list">${items.map(([id, t, kind, what, say]) => `<details class="sk"><summary><span class="sk-id t-data">/${id}</span><span class="sk-t"><span class="t-strong">${t}</span><span class="t-small muted">${what}</span></span><span class="sk-kind ${kind === "Judgement" ? "j" : ""}">${kind}</span></summary><div class="sk-body"><span class="t-label muted">For example, you say</span><p class="sk-say">“${say}”</p>${SKILL_SRC[id] ? `<div class="codebox"><div class="codebox-head"><span class="t-data muted">skills/${id}/SKILL.md</span><button class="pbtn" data-skill="${id}">Copy</button></div><pre data-notr>${SKILL_SRC[id].replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre></div>` : ""}</div></details>`).join("")}</div>`).join("")}`;
+${SKILLS.map(([g, d, items], gi) => `<h2 id="sk${gi + 1}" class="sk-h" data-n="0${gi + 1}">${g}</h2><p class="sub">${d}</p><div class="sk-list">${items.map(([id, t, kind, what, say]) => `<details class="sk"><summary><span class="sk-id t-data">/${id}</span><span class="sk-t"><span class="t-strong">${t}</span><span class="t-small muted">${what}</span></span><span class="sk-kind ${kind === "Judgement" ? "j" : ""}">${kind}</span></summary><div class="sk-body"><span class="t-label muted">For example, you say</span><p class="sk-say">“${say}”</p>${SKILL_SRC[id] ? `<div class="codebox"><div class="codebox-head"><span class="t-data muted">skills/${id}/SKILL.md</span><button class="pbtn" data-skill="${id}">Copy</button></div><pre data-notr>${SKILL_SRC[id].replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre></div>` : ""}</div></details>`).join("")}</div>`).join("")}
+<h2 id="files">The files underneath</h2><p class="sub">The skills read these. You only open them to check or copy one by hand.</p>
+<div class="files"><div class="filelist" id="filelist">${FILES.map(([k, n, d], i) => `<button class="filebtn" data-f="${k}" aria-pressed="${i === 0}"><span class="t-strong t-small">${n}</span><span class="t-small muted">${d}</span></button>`).join("")}</div>
+<div class="codebox"><div class="codebox-head"><span class="t-data" id="fname"></span><button class="pbtn" id="copyFile">Copy</button></div><pre id="fbody" style="max-height:560px"></pre></div></div>
+`;
 
 /* EVAL */
 PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and without the skill. Then people grade the drawings.")}
@@ -2600,7 +2604,7 @@ PAGES.voice = () => `${head("AI behaviour", "How the AI speaks", "A colleague re
 
 /* ---------- page init hooks ---------- */
 const INIT = {};
-INIT.skills = () => { $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
+INIT.skills = () => { if (INIT.agents) INIT.agents(); $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
 INIT.howto = () => {
   const draw = () => { const r = ROLES_HT[htRole];
     $("#role").innerHTML = `<div class="ht-take"><span class="t-label muted">Take this one thing</span><b class="t-headline">${r.take}</b><span class="t-small muted">${r.what}</span><div class="ht-act">${r.act}</div></div><div class="ht-then"><span class="t-label muted">Then</span><ol>${r.then.map((x) => `<li>${x}</li>`).join("")}</ol></div>`;
@@ -2799,10 +2803,11 @@ INIT.responsive = () => {
 const AGENT_PROMPT = () => `You are building screens for Green Control, an AI that watches a building's energy plant with the people who run it.\nBefore writing any UI, read ${BASE}llms.txt, then SKILL.md, DESIGN.md and tokens.json.\nStart from shell.html. Draw the machine with the anatomy-figure skill (isometric line art, one part lit in the accent) and open the screen with the particle assemble.\nRules: evidence before advice; people apply; everything is undoable; confidence 80+ = plan, 50-79 = draft, below 50 = suggest a check only; name machines as links.\nLook: tokens only, square corners, one accent, night and day. Finish with the SKILL.md checklist.`;
 const INSTALL_CMD = () => `npx shadcn@latest add ${BASE}r/green-control-theme.json ${BASE}r/green-control-components.json`;
 INIT.agents = () => {
+  if (!$("#filelist")) return;
   $$("[data-zoom]").forEach((im) => (im.onclick = () => { $("#lightbox img").src = im.src; $("#lightbox").classList.add("on"); }));
-  $("#installCmd").textContent = `npx shadcn@latest add ${BASE}r/green-control-theme.json ${BASE}r/green-control-components.json`;
+  if ($("#installCmd")) $("#installCmd").textContent = `npx shadcn@latest add ${BASE}r/green-control-theme.json ${BASE}r/green-control-components.json`;
   $$("[data-copy]").forEach((b) => (b.onclick = () => copyText($(b.dataset.copy).textContent, b)));
-  $("#copyAgent").onclick = (e) => copyText(AGENT_PROMPT(), e.currentTarget);
+  if ($("#copyAgent")) $("#copyAgent").onclick = (e) => copyText(AGENT_PROMPT(), e.currentTarget);
   let curF = "skill";
   const show = (k) => { curF = k; $("#fname").textContent = FILES.find((f) => f[0] === k)[1]; $("#fbody").textContent = file(k); $$(".filebtn").forEach((b) => b.setAttribute("aria-pressed", b.dataset.f === k)); };
   $("#filelist").onclick = (e) => { const b = e.target.closest(".filebtn"); if (b) show(b.dataset.f); };
@@ -2850,6 +2855,7 @@ document.addEventListener("click", (e) => {
 });
 function go() {
   let id = (location.hash.match(/^#\/([\w-]+)/) || [])[1] || "overview";
+  if (id === "agents") { history.replaceState(null, "", "#/skills/files"); id = "skills"; }
   if (!PAGES[id]) id = "overview";
   const i = ORDER.findIndex((o) => o.id === id), prev = ORDER[i - 1], next = ORDER[i + 1];
   const page = $("#page");
@@ -4049,7 +4055,17 @@ segInd(document);
  "“Draw the EV charger with the broken cable lit.”": "“画一个充电桩，把坏的那根线点亮。”",
  "“Write the alert for the cooling tower at 58%.”": "“冷却塔把握度 58%，帮我写这条告警。”",
  "“Check this screen before I send it to engineering.”": "“发给工程之前，帮我检查一下这个页面。”",
- "“Go through this round of grades and update the rules.”": "“看一下这一轮的打分，更新一下规则。”"
+ "“Go through this round of grades and update the rules.”": "“看一下这一轮的打分，更新一下规则。”",
+ "The files underneath": "底下的文件",
+ "The skills read these. You only open them to check or copy one by hand.": "skill 会去读这些文件。只有想检查或手动复制时才需要打开。",
+ "Seven jobs an AI can do with this system.": "AI 用这套系统能做的七件事。",
+ "Seven skills": "七个 skill",
+ "Install them once. Then ask for a screen in plain words; the AI picks the skill that fits.": "装一次就行。之后用平常的话提需求，AI 会自己挑合适的 skill。",
+ "See the skills": "看 Skills",
+ "Install with one command on the Skills page.": "在 Skills 页用一条命令装好。",
+ "Ask for what you need in one sentence.": "用一句话说你要什么。",
+ "Grade what it draws in the review desk; the next rule comes from your grades.": "在打标台给它画的图打分，下一条规则就从你的打分里来。",
+ "Say what you need in one sentence.": "一句话说你要什么。"
 };
   let LANG = "en";
   try { if (localStorage.getItem("gc-lang") === "zh") LANG = "zh"; } catch (e) {}
