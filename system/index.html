@@ -3077,6 +3077,7 @@ addEventListener("hashchange", () => {
 $("#menuBtn").onclick = () => document.body.classList.toggle("nav-open");
 addEventListener("scroll", () => { const hs = $$("#page h2[id]"); let on = null; hs.forEach((h) => { if (h.getBoundingClientRect().top < 140) on = h.id; }); $$("#toc a").forEach((a) => a.classList.toggle("on", a.dataset.to === on)); }, { passive: true });
 try { const s = localStorage.getItem("gc-theme"); if (s) setTheme(s); } catch (e) {}
+try { const q = new URLSearchParams(location.search).get("theme"); if (q === "day" || q === "night") setTheme(q); } catch (e) {}
 go(); $("#page").dataset.cur = (location.hash.match(/^#\/([\w-]+)/) || [])[1] || "overview";
 segInd(document);
 })();
