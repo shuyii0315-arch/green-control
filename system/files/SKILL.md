@@ -7,7 +7,7 @@ description: Use whenever you create or change any Green Control (AI GC) screen,
 
 This is the overview. For one job at a time, use the task skills (install all: `npx skills add shuyii0315-arch/green-control`):
 `gc-confidence` decide what the AI may do · `gc-evidence` choose the evidence · `gc-ai-voice` write what the AI says · `gc-build-screen` build the screen · `gc-draw-equipment` draw the machine · `gc-review` pass or block · `gc-learn-rule` turn feedback into rules.
-For components: `gc-motion` animate a component · `gc-states` draw every state · `gc-break-ui` try to break it with the worst data.
+For components: `gc-motion` animate a component · `gc-states` draw every state · `gc-break-ui` try to break it with the worst data · `gc-a11y` keyboard, contrast, screen readers · `gc-responsive` fit every width.
 
 Before you write any UI for Green Control, read `DESIGN.md` and `tokens.json` in this folder, and take buttons, the segmented control, the spark and the logo from `green-control-components.css`.
 
