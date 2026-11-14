@@ -1031,50 +1031,55 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .moseg span { position: relative; padding: 4px 14px; text-align: center; }
 .moseg i { position: absolute; left: 2px; top: 2px; bottom: 2px; width: calc(50% - 2px); background: var(--sel-bg, var(--bg-raised)); }
 
-/* containers + page frame */
-.ct-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.ct-dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; margin: 0; font-size: 13px; line-height: 19px; }
-.ct-dl dt { color: var(--muted); font: 11px/19px var(--font-mono); text-transform: uppercase; letter-spacing: .05em; }
-.ct-dl dd { margin: 0; }
+/* containers + page frame: real screens, scaled */
+.cv { position: relative; width: 100%; overflow: hidden; background: var(--bg-page); box-shadow: 0 0 0 1px var(--line); }
+.cv-in { position: absolute; left: 0; top: 0; transform-origin: 0 0; transform: scale(var(--k, 0.5)); }
+.cv-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.cv-box { position: absolute; box-shadow: inset 0 0 0 3px var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); pointer-events: none; }
+.cv-box.dash { box-shadow: none; outline: 3px dashed var(--accent); outline-offset: -3px; background: none; }
+.cv-tag { position: absolute; padding: 6px 12px; font: 500 24px/1 var(--font-mono); letter-spacing: .03em; background: var(--accent); color: var(--on-accent); white-space: nowrap; }
+.cv-tag.tl { left: 0; top: 0; } .cv-tag.tr { right: 0; top: 0; } .cv-tag.bl { left: 0; bottom: 0; } .cv-tag.br { right: 0; bottom: -40px; }
+.ct-popover { display: grid; gap: 4px; padding: 10px 14px; width: max-content; }
+.ct { display: grid; gap: 10px; align-content: start; }
 .ct .pbtn { justify-self: start; }
-.ct-iso { width: 56px; height: 56px; fill: none; stroke: var(--muted); stroke-width: 1; }
-.ct-panel .mx-panel { transform: translateX(102%); }
-.ct-panel.go .mx-panel { transform: none; transition: transform 420ms var(--ease); }
-.ct-mark { position: absolute; left: 50%; top: 46%; width: 8px; height: 8px; margin: -4px; background: var(--accent); }
-.ct-tip { position: absolute; left: calc(50% + 10px); top: calc(46% - 34px); padding: 6px 8px; font-size: 12px; background: var(--bg-raised); box-shadow: var(--drop); white-space: nowrap; opacity: 0; transform: translateY(4px); transition: opacity 160ms var(--exit), transform 160ms var(--exit); }
-.ct-tip b { font: 11px var(--font-mono); margin-right: 6px; }
-.ct-pop.go .ct-tip { opacity: 1; transform: none; transition: opacity 240ms var(--ease), transform 240ms var(--ease); }
-.ct-toastc.go .mx-toast { opacity: 1; transform: translate(-50%, 0); transition: opacity 240ms var(--ease), transform 520ms var(--spring); }
-.ct-list { position: absolute; inset: 12px; display: grid; gap: 8px; align-content: start; }
-.ct-card { height: 32px; background: var(--bg-raised); display: block; }
-.ct-card.new { box-shadow: inset 2px 0 0 var(--accent); height: 0; opacity: 0; transform: translateY(-8px); transition: height 280ms var(--exit), opacity 280ms var(--exit), transform 280ms var(--exit); }
-.ct-cardc.go .ct-card.new { height: 32px; opacity: 1; transform: none; transition: height 420ms var(--ease), opacity 420ms var(--ease), transform 420ms var(--ease); }
-.ct-flow .ct-p1, .ct-flow .ct-p2 { position: absolute; top: 0; right: 0; bottom: 0; width: 46%; padding: 12px; display: grid; gap: 7px; align-content: start; background: var(--bg-raised); box-shadow: -1px 0 0 var(--line); }
-.ct-flow b, .fa-panel b { height: 7px; width: 60%; background: var(--text); display: block; margin-bottom: 4px; }
-.ct-flow i, .fa-panel i { height: 5px; background: var(--muted); opacity: .5; display: block; }
-.ct-flow u, .fa-panel u { position: absolute; left: 12px; right: 12px; bottom: 12px; height: 16px; box-shadow: inset 0 0 0 1px var(--muted); }
-.ct-row { font-size: 11px; padding: 4px 6px; box-shadow: inset 0 0 0 1px var(--line); }
-.ct-flow.go .ct-row { background: var(--bg-surface); }
-.ct-back { font-size: 11px; color: var(--muted); }
-.ct-flow .ct-p2 { transform: translateX(102%); transition: transform 280ms var(--exit); }
-.ct-flow.go .ct-p2 { transform: none; transition: transform 420ms var(--ease) 300ms; }
-.ct-scenes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-.ct-scene { display: grid; gap: 6px; align-content: start; }
-.ct-tab, .fr-svg { width: 100%; height: auto; display: block; outline: 1px solid var(--line); }
 .ct-same { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
 .ct-same > div { display: grid; gap: 6px; align-content: start; padding: 14px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
-.fr-map { display: grid; grid-template-columns: 150px 1fr 220px; grid-template-rows: auto 220px; gap: 1px; background: var(--line); box-shadow: 0 0 0 1px var(--line); }
-.fr-map > div { background: var(--bg-surface); padding: 14px; display: grid; gap: 6px; align-content: start; }
-.fr-nav { grid-row: 1 / 3; } .fr-panel { grid-column: 3; grid-row: 1 / 3; } .fr-main { background: var(--bg-page) !important; }
-.fr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.fr-anim { display: flex; }
-.fa-nav { width: 30%; padding: 12px 10px; display: grid; gap: 8px; align-content: start; background: var(--bg-surface); box-shadow: 1px 0 0 var(--line); transition: width 520ms var(--ease); overflow: hidden; }
-.fa-nav i { height: 6px; background: var(--muted); opacity: .5; display: block; }
-.fa-main { flex: 1; display: grid; place-items: center; }
-.fa-panel { position: relative; width: 0; overflow: hidden; padding: 12px 0; display: grid; gap: 7px; align-content: start; background: var(--bg-raised); box-shadow: -1px 0 0 var(--line); transition: width 280ms var(--exit), padding 280ms var(--exit); }
-.fr-anim.go .fa-nav { width: 9%; }
-.fr-anim.go .fa-panel { width: 40%; padding: 12px; transition: width 420ms var(--ease), padding 420ms var(--ease); }
-@media (max-width: 900px) { .ct-scenes, .fr-grid { grid-template-columns: repeat(2, 1fr); } .ct-same { grid-template-columns: 1fr; } }
+.nest-wrap { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+.nest-notes { display: grid; gap: 16px; align-content: start; }
+.nest-notes > div { display: grid; gap: 4px; }
+.cv.nest .cv-in > div { position: absolute; inset: 0; }
+.nest-l1 { display: grid; }
+.nest-l1 .aip { max-width: none; height: 100%; display: flex; flex-direction: column; }
+.nest-l1 .aip > :last-child { margin-top: auto; }
+.nest .link { transition: background 120ms var(--ease); }
+.nest.tap .nest-l1 .owner .link:first-of-type { background: color-mix(in srgb, var(--link) 18%, transparent); }
+.nest-l2 { background: var(--bg-surface); box-shadow: -1px 0 0 var(--line); display: flex; flex-direction: column; gap: 12px; padding: 20px; transform: translateX(102%); transition: transform 280ms var(--exit); }
+.nest.go .nest-l2 { transform: none; transition: transform 420ms var(--ease); }
+.nest-back { margin-bottom: 4px; }
+.nest-p { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.nest-av { width: 28px; height: 28px; display: grid; place-items: center; background: var(--bg-raised); font: 11px var(--font-mono); flex: none; }
+.tb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 14px; }
+.tb-cell { display: grid; gap: 6px; align-content: start; }
+.tb { position: absolute; inset: 0; background: var(--bg-page); }
+.tb-head { position: absolute; left: 32px; top: 28px; display: flex; align-items: center; gap: 14px; }
+.tb-art { position: absolute; left: 40px; top: 96px; width: 754px; height: auto; }
+.tb-scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.55); }
+.tb-sheet { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 16px; padding: 22px 28px 28px; }
+.tb-grab { position: absolute; left: 50%; top: 9px; width: 44px; height: 5px; margin-left: -22px; background: var(--muted); }
+.tb-title { display: flex; justify-content: space-between; align-items: center; font-size: 18px; }
+.tb-body { display: grid; gap: 12px; align-content: start; overflow: hidden; }
+.tb-body .aip { max-width: none; box-shadow: none; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.tb-foot { margin-top: auto; }
+.tb-foot .askbox { max-width: none; }
+.tb-note { display: grid; gap: 6px; padding: 14px 16px; }
+.tb-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.tb-row .t-small.muted { margin-left: auto; }
+.tb-radio { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--muted); }
+.tb-radio.on { box-shadow: inset 0 0 0 5px var(--accent); }
+.tb-wide { width: 100%; justify-content: center; height: 44px; }
+.fr-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fr-live { width: 1440px; height: 900px; border: 0; display: block; }
+@media (max-width: 900px) { .tb-grid { grid-template-columns: repeat(2, 1fr); } .fr-two, .nest-wrap, .ct-same { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -2911,88 +2916,71 @@ PAGES.typography = () => `${head("Foundations", "Typography", "Two families with
 
 /* ---------- CONTAINERS and PAGE FRAME ---------- */
 function playSeq(st, seq) { (st._t || []).forEach(clearTimeout); st._t = seq.map(([c, t]) => setTimeout(() => (c[0] === "-" ? st.classList.remove(c.slice(1)) : st.classList.add(c)), t)); }
-const CT_SEQ = { panel: [["go", 0], ["-go", 1700]], pop: [["go", 0], ["-go", 1500]], toastc: [["go", 0], ["-go", 1800]], cardc: [["go", 0], ["-go", 2200]], flow: [["go", 0], ["-go", 2600]] };
-const ISO = '<svg class="ct-iso" viewBox="0 0 60 60"><path d="M6 22 30 10l24 12v18L30 52 6 40Z M6 22l24 12 24-12 M30 34v18"/></svg>';
-const CONTAINERS = [
-  { k: "panel", n: "Panel", when: "A task with several steps: read, decide, act.", from: "Desktop: the right edge, 400px. Tablet and phone: the bottom.", close: "Close button or Esc. A grabber only if its height can change.", cover: "Depends on the task (see below).", mo: "in 420 · out 280", holds: "AI panel, plan rail, causes, owner row",
-    stage: `<div class="mx-dots"></div><div class="mx-c" style="right:40%">${ISO}</div><div class="mx-panel"><b></b><i></i><i></i><i style="width:50%"></i><u></u></div>` },
-  { k: "pop", n: "Popover", when: "One or two lines about one point on the drawing.", from: "Next to that point.", close: "Click anywhere else.", cover: "Never.", mo: "small-in 240 · small-out 160", holds: "a reading on the drawing",
-    stage: `<div class="mx-dots"></div><div class="mx-c">${ISO}</div><span class="ct-mark"></span><span class="ct-tip"><b>CH-02</b> 0.71 kW/t</span>` },
-  { k: "toastc", n: "Toast", when: "A receipt for something just done.", from: "The top of the work area.", close: "Leaves after 6 s; waits while the pointer is on it.", cover: "Never.", mo: "arrives 520 spring · leaves 160", holds: "toast with Undo",
-    stage: `<div class="mx-page"><i></i><i></i><i style="width:40%"></i></div><div class="mx-toast">✓ Plan applied</div>` },
-  { k: "cardc", n: "Card", when: "Things listed on the page. It does not float.", from: "In place, in the list.", close: "Not closed; it changes state.", cover: "—", mo: "a new card: in 420", holds: "alert card, evidence card",
-    stage: `<div class="ct-list"><span class="ct-card new"></span><span class="ct-card"></span><span class="ct-card"></span></div>` },
+const CT_SEQ = { nest: [["tap", 0], ["go", 300], ["-tap", 700], ["-go", 2600]] };
+function fitCanvases() { $$(".cv").forEach((c) => c.style.setProperty("--k", c.clientWidth / +c.dataset.w)); }
+window.addEventListener("resize", () => fitCanvases());
+const cv = (w, h, inner, cls = "") => `<div class="cv ${cls}" data-w="${w}" style="aspect-ratio:${w}/${h}"><div class="cv-in" style="width:${w}px;height:${h}px">${inner}</div></div>`;
+const box = (x, y, w, h, tag, side = "tl", dash = false) => `<div class="cv-box${dash ? " dash" : ""}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><span class="cv-tag ${side}">${tag}</span></div>`;
+const POP = `<div class="glass ct-popover"><span class="t-label muted">CH-02 · Condenser</span><span class="t-strong">+2.8 °C above normal</span></div>`;
+const SCREEN_CT = cv(1440, 900, `<img src="img/proto-investigate.webp" alt="Green Control, equipment page" class="cv-img">
+<div style="position:absolute;left:470px;top:22px">${toastS()}</div>
+<div style="position:absolute;left:418px;top:392px">${POP}</div>
+${box(1040, 0, 400, 900, "1 · Panel", "tr")}${box(410, 384, 252, 80, "2 · Popover", "tr")}${box(462, 14, 300, 56, "3 · Toast", "br")}${box(100, 700, 900, 176, "4 · Card", "tl")}`);
+const CT_ROWS = [
+  ["1", "Panel", "A task with several steps: read, decide, act.", "Desktop: the right edge, 400px. Tablet and phone: the bottom.", "Close button or Esc. A grabber only if its height can change.", "Depends on the task (see below).", "in 420 · out 280"],
+  ["2", "Popover", "One or two lines about one point on the drawing.", "Next to that point.", "Click anywhere else.", "Never.", "small-in 240 · small-out 160"],
+  ["3", "Toast", "A receipt for something just done.", "The top of the work area.", "Leaves after 6 s; waits while the pointer is on it.", "Never.", "arrives 520 spring · leaves 160"],
+  ["4", "Card", "Things listed on the page. It does not float.", "In place, in the list.", "Not closed; it changes state.", "—", "a new card: in 420"],
 ];
-const SCENES_PANEL = [
-  { t: "AI investigation", h: 0.5, grab: true, scrim: false, foot: "input", c: "Half height, no dimming: the drawing must stay visible to check the evidence. Ask box at the bottom." },
-  { t: "Shift handover", h: 0.5, grab: true, scrim: false, foot: "input", c: "Like a comments sheet: notes listed, a text field at the bottom." },
-  { t: "Assign to someone", h: 0.3, grab: false, scrim: true, foot: "button", c: "Short and dimmed: pick a person and it closes. No need to see the drawing." },
-  { t: "Equipment details", h: 0.5, grab: true, scrim: false, foot: "none", c: "Opens at half height; drag up for more readings." },
-  { t: "Filters and alerts", h: 0.9, grab: false, scrim: true, foot: "button", c: "Full height, covers the drawing: nobody reads the drawing while changing settings." },
+/* one panel at a time: level 1 is the AI panel, level 2 the team it names */
+const NEST = cv(400, 470, `<div class="nest-l1">${aip("Proposed", "Issue · CH-02 · ¥312 today", `<span class="t-small">Clean the condenser tubes on Chiller 2. Maintenance B has the tools.</span>${ownerS()}`, "")}</div>
+<div class="nest-l2"><span class="t-small muted nest-back">‹ Back</span><span class="t-strong">Maintenance B</span><span class="t-label muted">On shift now</span>${["Ana Ruiz", "Wei Chen", "Omar Haddad"].map((n, i) => `<div class="nest-p"><span class="nest-av">${n.split(" ").map((w) => w[0]).join("")}</span><span class="t-small">${n}</span><span class="t-small muted" style="margin-left:auto">${["Plant room", "Roof", "B2"][i]}</span></div>`).join("")}<button class="cta" style="margin-top:auto;justify-content:center">Assign to Ana</button></div>`, "nest");
+/* the panel on a tablet, in five situations */
+const TAB_W = 834, TAB_H = 1112;
+const note = (who, t) => `<div class="block tb-note"><span class="t-label muted">${who}</span><span class="t-small">${t}</span></div>`;
+const person = (n, w, on) => `<div class="tb-row"><span class="nest-av">${n.split(" ").map((x) => x[0]).join("")}</span><span class="t-small">${n}</span><span class="t-small muted">${w}</span><span class="tb-radio${on ? " on" : ""}"></span></div>`;
+const optRow = (l, opts, on = 0) => `<div class="tb-row"><span class="t-small">${l}</span><div class="seg" style="margin-left:auto">${opts.map((o, i) => `<button class="${i === on ? "on" : ""}" aria-pressed="${i === on}">${o}</button>`).join("")}</div></div>`;
+const TAB_SCENES = [
+  { t: "AI investigation", h: 0.5, grab: true, scrim: false, title: "", body: AIP_PLAN, foot: "", c: "Half height, no dimming: the drawing must stay visible to check the evidence. Ask box at the bottom." },
+  { t: "Shift handover", h: 0.5, grab: true, scrim: false, title: "Shift handover", body: note("Night · Ana Ruiz · 06:40", "Chiller 2 ran hot after 05:00. Moved 20% of the load to Chiller 1.") + note("Evening · Wei Chen · 22:10", "Condenser cleaning booked for Saturday 08:00."), foot: askBox().replace("Ask about Chiller 2…", "Write a note for the next shift…"), c: "Like a comments sheet: notes listed, a text field at the bottom." },
+  { t: "Assign to someone", h: 0.36, grab: false, scrim: true, title: "Assign to", body: person("Ana Ruiz", "Maintenance B", true) + person("Wei Chen", "Maintenance B") + person("Omar Haddad", "Controls"), foot: '<button class="cta tb-wide">Assign</button>', c: "Short and dimmed: pick a person and it closes. No need to see the drawing." },
+  { t: "Equipment details", h: 0.5, grab: true, scrim: false, title: "Chiller 2 · readings", body: stOf("evidence-card", 0), foot: "", c: "Opens at half height; drag up for more readings." },
+  { t: "Filters and alerts", h: 0.92, grab: false, scrim: true, title: "Filters and alerts", body: optRow("Time", ["Today", "7 days", "30 days"]) + optRow("Systems", ["All", "Cooling", "Power"]) + optRow("Alert me about", ["Issues", "Everything"]) + optRow("Quiet hours", ["On", "Off"], 1), foot: '<button class="cta tb-wide">Apply</button>', c: "Full height, covers the drawing: nobody reads the drawing while changing settings." },
 ];
-function tabletSVG(sc) {
-  const W = 150, H = 200, sh = H * sc.h, sy = H - sh, F = (v) => `style="fill:var(${v})"`;
-  let g = `<svg viewBox="0 0 ${W} ${H}" class="ct-tab"><rect width="${W}" height="${H}" ${F("--bg-page")}/>`;
-  for (let y = 4; y < H; y += 6) for (let x = 4; x < W; x += 6) g += `<circle cx="${x}" cy="${y}" r=".55" ${F("--muted")} opacity=".45"/>`;
-  g += `<path d="M48 70 L75 56 L102 70 L102 100 L75 114 L48 100Z M48 70 L75 84 L102 70 M75 84 V114" style="fill:none;stroke:var(--muted)"/>`;
-  if (sc.scrim) g += `<rect width="${W}" height="${H}" fill="rgba(0,0,0,.5)"/>`;
-  g += `<rect y="${sy}" width="${W}" height="${sh}" ${F("--bg-raised")}/><rect y="${sy}" width="${W}" height="1" ${F("--line")}/>`;
-  if (sc.grab) g += `<rect x="${W / 2 - 12}" y="${sy + 4}" width="24" height="3" ${F("--muted")}/>`;
-  const hy = sy + (sc.grab ? 18 : 14);
-  g += `<rect x="10" y="${hy - 4}" width="44" height="5" ${F("--text")}/><path d="M${W - 16} ${hy - 5} l6 6 m0 -6 l-6 6" style="stroke:var(--text);stroke-width:1.2"/>`;
-  const bot = H - (sc.foot === "none" ? 0 : 20) - 10;
-  for (let y = hy + 10; y < bot; y += 10) g += `<rect x="10" y="${y}" width="${W - 20 - ((y * 7) % 40)}" height="4" ${F("--line")}/>`;
-  if (sc.foot === "input") g += `<rect x="8" y="${H - 22}" width="${W - 16}" height="16" style="fill:none;stroke:var(--muted)"/><rect x="${W - 22}" y="${H - 20}" width="12" height="12" ${F("--text")}/>`;
-  if (sc.foot === "button") g += `<rect x="8" y="${H - 22}" width="${W - 16}" height="16" ${F("--accent")}/>`;
-  return g + "</svg>";
-}
+const tabletCV = (sc) => cv(TAB_W, TAB_H, `<div class="tb">
+<div class="tb-head"><span class="t-headline">Chiller 2</span>${stateTag("issue", "Issue")}</div>
+<img src="img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt="" class="tb-art">
+${sc.scrim ? '<div class="tb-scrim"></div>' : ""}
+<div class="glass tb-sheet" style="height:${Math.round(TAB_H * sc.h)}px">${sc.grab ? '<span class="tb-grab"></span>' : ""}${sc.title ? `<div class="tb-title"><span class="t-strong">${sc.title}</span><span class="muted">✕</span></div>` : ""}<div class="tb-body">${sc.body}</div>${sc.foot ? `<div class="tb-foot">${sc.foot}</div>` : ""}</div></div>`, "tab");
 PAGES.containers = () => `${head("Foundations", "Containers", "Four kinds of container. Every feature puts its content into one of them, the way a phone app's one bottom sheet carries comments, sharing and settings.")}
-<h2 id="kinds">Four kinds</h2>
-<p class="sub">Press Play to see each one arrive and leave.</p>
-<div class="ct-grid">${CONTAINERS.map((c) => `<div class="mx ct"><div class="mx-stage ct-${c.k}">${c.stage}</div><div class="mx-head"><span class="t-strong">${c.n}</span><span class="mono t-small muted">${c.mo}</span></div>
-<dl class="ct-dl"><dt>When</dt><dd>${c.when}</dd><dt>From</dt><dd>${c.from}</dd><dt>Close</dt><dd>${c.close}</dd><dt>Covers the drawing</dt><dd>${c.cover}</dd><dt>Holds</dt><dd>${c.holds}</dd></dl><button class="pbtn ct-play" data-ct="${c.k}">Play</button></div>`).join("")}</div>
+<h2 id="kinds">Four kinds, on one screen</h2>
+<p class="sub">The equipment page, with all four in place.</p>
+${SCREEN_CT}
+<table class="table" style="margin-top:16px"><thead><tr><th></th><th>Container</th><th>When</th><th>From</th><th>Close</th><th>Covers the drawing</th><th>Motion</th></tr></thead><tbody>${CT_ROWS.map((r) => `<tr><td class="mono accent">${r[0]}</td><td class="t-strong">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td class="mono t-small muted">${r[6]}</td></tr>`).join("")}</tbody></table>
 <h2 id="one-panel">One panel at a time</h2>
-<div class="grid2"><div class="mx ct"><div class="mx-stage ct-flow"><div class="mx-dots"></div><div class="mx-c" style="right:46%">${ISO}</div><div class="ct-p1"><b></b><i></i><i></i><span class="ct-row">Maintenance B ›</span><u></u></div><div class="ct-p2"><span class="ct-back">‹ Back</span><b></b><i></i><i style="width:60%"></i><u></u></div></div><button class="pbtn ct-play" data-ct="flow">Play</button></div>
-<div class="tile"><span class="t-strong">Open something from inside a panel, and it opens one level down in the same panel, with Back at the top left.</span><span class="t-small muted">Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.</span><span class="t-strong" style="margin-top:12px">The alerts floating on the overview are cards, not a panel.</span><span class="t-small muted">Why: they are a list, not a conversation. This keeps one panel, at one width: 400px.</span></div></div>
+<div class="nest-wrap"><div class="ct">${NEST}<button class="pbtn ct-play" data-ct="nest">Play</button></div>
+<div class="nest-notes"><div><span class="t-strong">Open something from inside a panel, and it opens one level down in the same panel, with Back at the top left.</span><span class="t-small muted">Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.</span></div><div><span class="t-strong">The alerts floating on the overview are cards, not a panel.</span><span class="t-small muted">Why: they are a list, not a conversation. This keeps one panel, at one width: 400px.</span></div></div></div>
 <h2 id="panel-scenes">The panel in five situations</h2>
 <p class="sub">Shown on a tablet. Same container, different content, like comments, sharing and settings in one sheet.</p>
-<div class="ct-scenes">${SCENES_PANEL.map((sc) => `<div class="ct-scene">${tabletSVG(sc)}<span class="t-strong t-small">${sc.t}</span><span class="t-small muted">${sc.c}</span></div>`).join("")}</div>
+<div class="tb-grid">${TAB_SCENES.map((sc) => `<div class="tb-cell">${tabletCV(sc)}<span class="t-strong t-small">${sc.t}</span><span class="t-small muted">${sc.c}</span></div>`).join("")}</div>
 <div class="ct-same"><div><span class="t-label">Stays the same</span><span class="t-small">Header with title and close · frosted glass · rises from the bottom · a fixed bar at the bottom · its motion.</span></div><div><span class="t-label">Changes with the situation</span><span class="t-small">Height · grabber or not · dimming or not · ask box or button at the bottom.</span></div><div><span class="t-label">Grabber rule</span><span class="t-small">Only a panel whose height can change gets a grabber. A fixed-height one gets a close button only.</span></div></div>`;
-
+const regions = (nav, panel, cardsPanel) => `${box(0, 0, nav, 900, "1 · Menu", "tl")}${box(nav, 0, (panel ? 1440 - 400 : 1440) - nav, 112, "2 · Header", "tl")}${box(nav, 112, (panel ? 1440 - 400 : 1440) - nav, 788, "3 · Main", "bl")}${panel ? box(1040, 0, 400, 900, "4 · Panel", "tr") : box(1052, 130, 352, 640, "Cards, not a panel", "tr", true)}`;
 const FRAMES = [
-  { id: "overview", t: "Overview", task: "Detect: what is wrong", nav: 232, panel: 0, cards: true, main: "bldg", tools: "Time range, Ask AI", m: "The building cutaway; alert cards float on it", p: "Closed" },
-  { id: "equipment", t: "Equipment", task: "Diagnose and respond", nav: 64, panel: 400, main: "eq", tools: "State, path", m: "The machine and its evidence row", p: "AI panel open" },
-  { id: "actions", t: "Actions", task: "Review: what was done", nav: 232, panel: 400, main: "list", tools: "Filters", m: "A list", p: "Opens when a row is picked" },
-  { id: "reports", t: "Reports", task: "Review: what was saved", nav: 232, panel: 0, main: "chart", tools: "Time range, Export", m: "Charts", p: "Closed" },
+  { t: "Overview", task: "Detect: what is wrong", nav: "Open", tools: "Time range, Ask AI", m: "The building cutaway; alert cards float on it", p: "Closed" },
+  { t: "Equipment", task: "Diagnose and respond", nav: "Folded", tools: "State, path", m: "The machine and its evidence row", p: "AI panel open" },
+  { t: "Actions", task: "Review: what was done", nav: "Open", tools: "Filters", m: "A list", p: "Opens when a row is picked" },
+  { t: "Reports", task: "Review: what was saved", nav: "Open", tools: "Time range, Export", m: "Charts", p: "Closed" },
 ];
-function frameSVG(f) {
-  const S = 0.17, W = 1440 * S, H = 900 * S, nv = f.nav * S, pn = f.panel * S, hh = 84 * S + 6, F = (v) => `style="fill:var(${v})"`;
-  let g = `<svg viewBox="0 0 ${W} ${H}" class="fr-svg"><rect width="${W}" height="${H}" ${F("--bg-page")}/><rect width="${nv}" height="${H}" ${F("--bg-surface")}/><rect x="${nv}" width="1" height="${H}" ${F("--line")}/>`;
-  for (let i = 0; i < 4; i++) g += f.nav > 100 ? `<rect x="6" y="${26 + i * 9}" width="${nv - 16}" height="4" ${F(i ? "--line" : "--muted")}/>` : `<rect x="${nv / 2 - 2.5}" y="${26 + i * 9}" width="5" height="5" ${F(i === 1 ? "--muted" : "--line")}/>`;
-  const mx = nv + 8, mw = W - nv - pn - 16;
-  g += `<rect x="${mx}" y="8" width="40" height="5" ${F("--text")}/><rect x="${mx + mw - 34}" y="8" width="34" height="6" style="fill:none;stroke:var(--muted)"/><rect x="${mx - 8}" y="${hh}" width="${W - nv - pn}" height="1" ${F("--line")}/>`;
-  const my = hh + 8, mh = H - my - 8;
-  if (f.main === "bldg" || f.main === "eq") {
-    const cx = mx + mw / 2, cy = my + mh / 2 - (f.main === "eq" ? 8 : 0), r = f.main === "eq" ? 26 : 32;
-    g += `<path d="M${cx - r} ${cy - r / 3} L${cx} ${cy - r} L${cx + r} ${cy - r / 3} L${cx + r} ${cy + r / 2} L${cx} ${cy + r} L${cx - r} ${cy + r / 2}Z" style="fill:none;stroke:var(--muted)"/>`;
-    if (f.main === "eq") for (let i = 0; i < 3; i++) g += `<rect x="${mx + i * (mw / 3) + 2}" y="${my + mh - 16}" width="${mw / 3 - 6}" height="14" ${F("--bg-raised")}/>`;
-    if (f.cards) for (let i = 0; i < 2; i++) g += `<rect x="${mx + mw - 58}" y="${my + 4 + i * 26}" width="58" height="22" ${F("--bg-raised")}/>${i ? "" : `<rect x="${mx + mw - 58}" y="${my + 4}" width="2" height="22" ${F("--accent")}/>`}`;
-  }
-  if (f.main === "list") for (let i = 0; i < 8; i++) g += `<rect x="${mx}" y="${my + i * 13}" width="${mw}" height="10" ${F(i === 2 ? "--line" : "--bg-surface")}/>`;
-  if (f.main === "chart") for (let i = 0; i < 12; i++) { const h = 20 + ((i * 37) % 60); g += `<rect x="${mx + i * (mw / 12) + 2}" y="${my + mh - h}" width="${mw / 12 - 5}" height="${h}" ${F(i === 7 ? "--accent" : "--line")}/>`; }
-  if (pn) { g += `<rect x="${W - pn}" width="${pn}" height="${H}" ${F("--bg-raised")}/><rect x="${W - pn}" width="1" height="${H}" ${F("--line")}/><rect x="${W - pn + 6}" y="8" width="${pn - 30}" height="5" ${F("--text")}/>`; for (let y = 22; y < H - 26; y += 9) g += `<rect x="${W - pn + 6}" y="${y}" width="${pn - 12 - ((y * 5) % 18)}" height="3" ${F("--line")}/>`; g += `<rect x="${W - pn + 6}" y="${H - 18}" width="${pn - 12}" height="11" style="fill:none;stroke:var(--muted)"/>`; }
-  return g + "</svg>";
-}
 PAGES.frame = () => `${head("Foundations", "Page frame", "Every page is built from the same four regions. A page only decides which are open.")}
 <h2 id="regions">Four regions</h2>
-<div class="fr-map"><div class="fr-nav"><span class="t-label">1 · Menu</span><span class="t-small muted">232px open, 64px folded</span></div><div class="fr-head"><span class="t-label">2 · Header</span><span class="t-small muted">Fixed height. Title always in the same place; the page's own tools on the right.</span></div><div class="fr-main"><span class="t-label">3 · Main</span><span class="t-small muted">Takes the width that is left. No fixed pixel positions.</span></div><div class="fr-panel"><span class="t-label">4 · Panel</span><span class="t-small muted">400px, one at a time</span></div></div>
-<h2 id="pages">Four pages</h2>
-<div class="fr-grid">${FRAMES.map((f) => `<div class="ct-scene">${frameSVG(f)}<span class="t-strong t-small">${f.t}</span><span class="t-small muted">${f.task}</span></div>`).join("")}</div>
-<table class="table" style="margin-top:20px"><thead><tr><th>Page</th><th>The person is…</th><th>Menu</th><th>Header tools</th><th>Main</th><th>Panel</th></tr></thead><tbody>${FRAMES.map((f) => `<tr><td>${f.t}</td><td>${f.task}</td><td>${f.nav > 100 ? "Open" : "Folded"}</td><td>${f.tools}</td><td>${f.m}</td><td>${f.p}</td></tr>`).join("")}</tbody></table>
+<p class="sub">The same four regions on the overview and on an equipment page. Only the menu width and the panel change.</p>
+<div class="fr-two"><div class="tb-cell">${cv(1440, 900, `<img src="img/proto-overview.webp" alt="Overview" class="cv-img">${regions(232, false)}`)}<span class="t-strong t-small">Overview</span><span class="t-small muted">Menu open (232px). No panel: the alert cards float on the drawing.</span></div>
+<div class="tb-cell">${cv(1440, 900, `<img src="img/proto-investigate.webp" alt="Equipment page" class="cv-img">${regions(64, true)}`)}<span class="t-strong t-small">Equipment</span><span class="t-small muted">Menu folded (64px). The AI panel is open (400px).</span></div></div>
+<table class="table" style="margin-top:20px"><thead><tr><th>Page</th><th>The person is…</th><th>Menu</th><th>Header tools</th><th>Main</th><th>Panel</th></tr></thead><tbody>${FRAMES.map((f) => `<tr><td class="t-strong">${f.t}</td><td>${f.task}</td><td>${f.nav}</td><td>${f.tools}</td><td>${f.m}</td><td>${f.p}</td></tr>`).join("")}</tbody></table>
+<div class="nest-notes" style="margin-top:20px"><div><span class="t-strong">The menu folds only on the equipment page.</span><span class="t-small muted">Why: only that page keeps a panel open, so it needs the width for the drawing and the panel. Elsewhere an open menu tells people where they are.</span></div><div><span class="t-strong">The header has a fixed height; the title is always in the same place.</span><span class="t-small muted">Why: when the page changes, the eye doesn't hunt for the title. The right side holds only that page's tools.</span></div><div><span class="t-strong">Main takes the width that is left. No fixed pixel positions.</span><span class="t-small muted">Why: control-room monitors, tablets and phones are all different widths.</span></div></div>
 <h2 id="switch">From the overview to an equipment page</h2>
-<div class="grid2"><div class="mx ct"><div class="mx-stage fr-anim"><div class="fa-nav"><i></i><i></i><i></i></div><div class="fa-main">${ISO}</div><div class="fa-panel"><b></b><i></i><i></i><u></u></div></div><button class="pbtn ct-play" data-ct="flow">Play</button></div>
-<div class="tile"><span class="t-strong">The menu folds (move 520 ms) while the AI panel slides in (in 420 ms).</span><span class="t-small muted">Why the menu folds only here: only the equipment page keeps a panel open, so it needs the width for the drawing and the panel. Other pages have room, and an open menu tells people where they are.</span></div></div>`;
-
+<p class="sub">The real prototype. The menu folds (move 520 ms) while the AI panel slides in (in 420 ms).</p>
+<div class="ct">${cv(1440, 900, `<iframe class="fr-live" title="Green Control prototype" loading="lazy" src="https://shuyii0315-arch.github.io/green-control/?state=s2"></iframe>`)}<button class="pbtn" id="frReplay">Replay</button></div>`;
 /* MOTION */
 PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement does, not by component: five curves and nine durations. No other numbers.")}
 <div class="grid2">
@@ -3361,8 +3349,8 @@ PAGES.voice = () => `${head("AI behaviour", "How the AI speaks", "A colleague re
 
 /* ---------- page init hooks ---------- */
 const INIT = {};
-INIT.containers = () => { $$(".ct-play").forEach((b) => (b.onclick = () => playSeq(b.closest(".ct").querySelector(".mx-stage"), CT_SEQ[b.dataset.ct]))); };
-INIT.frame = () => { $$(".ct-play").forEach((b) => (b.onclick = () => playSeq(b.closest(".ct").querySelector(".mx-stage"), CT_SEQ[b.dataset.ct]))); };
+INIT.containers = () => { fitCanvases(); $$(".ct-play").forEach((b) => (b.onclick = () => playSeq(b.closest(".ct").querySelector(".cv"), CT_SEQ[b.dataset.ct]))); };
+INIT.frame = () => { fitCanvases(); const r = $("#frReplay"); if (r) r.onclick = () => { const f = $(".fr-live"); f.src = f.src.split("&r=")[0] + "&r=" + Date.now(); }; };
 INIT.workflow = INIT.skills = () => { if (INIT.agents) INIT.agents(); $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
 INIT.howto = () => {
   const draw = () => { const r = ROLES_HT[htRole];
@@ -3652,6 +3640,60 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Container": "容器",
+  "Four kinds, on one screen": "四种容器，放在同一个页面上",
+  "The equipment page, with all four in place.": "设备页，四种容器都在各自的位置上。",
+  "1 · Panel": "1 · 面板",
+  "2 · Popover": "2 · 小卡",
+  "3 · Toast": "3 · Toast",
+  "4 · Card": "4 · 卡片",
+  "Motion": "动效",
+  "CH-02 · Condenser": "CH-02 · 冷凝器",
+  "+2.8 °C above normal": "比正常高 2.8 °C",
+  "Clean the condenser tubes on Chiller 2. Maintenance B has the tools.": "清洗 Chiller 2 的冷凝管。维修 B 组有工具。",
+  "On shift now": "当前在班",
+  "Plant room": "机房",
+  "Roof": "屋顶",
+  "Assign to Ana": "派给 Ana",
+  "Night · Ana Ruiz · 06:40": "夜班 · Ana Ruiz · 06:40",
+  "Chiller 2 ran hot after 05:00. Moved 20% of the load to Chiller 1.": "05:00 后 Chiller 2 偏热，已把 20% 的负荷转到 Chiller 1。",
+  "Evening · Wei Chen · 22:10": "晚班 · Wei Chen · 22:10",
+  "Condenser cleaning booked for Saturday 08:00.": "冷凝器清洗已约在周六 08:00。",
+  "Assign to": "派给",
+  "Controls": "自控组",
+  "Chiller 2 · readings": "Chiller 2 · 读数",
+  "Time": "时间",
+  "Systems": "系统",
+  "Alert me about": "提醒我",
+  "Everything": "全部",
+  "Quiet hours": "免打扰",
+  "On": "开",
+  "Off": "关",
+  "Apply": "执行",
+  "Issues": "问题",
+  "All": "全部",
+  "Cooling": "制冷",
+  "Power": "电力",
+  "Today": "今天",
+  "7 days": "7 天",
+  "30 days": "30 天",
+  "Write a note for the next shift…": "给下一班留言…",
+  "The same four regions on the overview and on an equipment page. Only the menu width and the panel change.": "总览和设备页用的是同样的四个区，只有导航宽度和面板不同。",
+  "1 · Menu": "1 · 导航",
+  "2 · Header": "2 · 页头",
+  "3 · Main": "3 · 主区",
+  "4 · Panel": "4 · 面板",
+  "Cards, not a panel": "卡片，不是面板",
+  "Menu open (232px). No panel: the alert cards float on the drawing.": "导航展开（232px）。没有面板：提醒卡浮在图纸上。",
+  "Menu folded (64px). The AI panel is open (400px).": "导航收起（64px）。AI 面板打开（400px）。",
+  "The menu folds only on the equipment page.": "只有设备页收起导航。",
+  "Why: only that page keeps a panel open, so it needs the width for the drawing and the panel. Elsewhere an open menu tells people where they are.": "原因：只有设备页常开面板，宽度要留给图纸和面板。其他页面展开导航，让人知道自己在哪。",
+  "The header has a fixed height; the title is always in the same place.": "页头高度固定，标题永远在同一个位置。",
+  "Why: when the page changes, the eye doesn't hunt for the title. The right side holds only that page's tools.": "原因：换页时眼睛不用重新找标题。右边只放这一页自己的工具。",
+  "Main takes the width that is left. No fixed pixel positions.": "主区用剩下的宽度，不写死像素位置。",
+  "Why: control-room monitors, tablets and phones are all different widths.": "原因：控制室显示器、平板、手机的宽度都不一样。",
+  "The real prototype. The menu folds (move 520 ms) while the AI panel slides in (in 420 ms).": "这是真实的原型。导航收起（布局变化 520 ms），同时 AI 面板滑进来（进 420 ms）。",
+  "Replay": "重播",
   "Containers and the page frame": "容器和页面框架",
   "Components had rules; where they sit and how a page is put together did not.": "组件有规则了，但组件放在哪里、页面怎么搭，还没有。",
   "Containers: four kinds (panel, popover, toast, card), one panel at a time, and the panel in five situations with the grabber rule.": "容器：四种（面板、小卡、Toast、卡片），一次只开一个面板，面板的五个场景和拖动条规则。",
