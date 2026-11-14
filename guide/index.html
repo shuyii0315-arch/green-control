@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teaching AI Your Design System</title>
+<style>
+/* Dot-matrix display face: Doto (open source), the same on every computer so spacing can be tuned. */
+@font-face { font-family: "GC Dot"; font-weight: 400; font-display: swap; src: url("fonts/doto-latin-900-normal.woff2") format("woff2"); ascent-override: 80%; descent-override: 20%; line-gap-override: 0%; }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 400; font-display: swap; src: url("fonts/hanken-grotesk-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 500; font-display: swap; src: url("fonts/hanken-grotesk-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "DM Mono"; font-weight: 400; font-display: swap; src: url("fonts/dm-mono-latin-400-normal.woff2") format("woff2"); }
+:root {
+  --paper: #f4f4f1; --surface: #fbfbf9; --line: #d4d6dc; --rule: #3a3a3a;
+  --ink: #1b1b1b; --muted: #6a6a66;
+  --blue: #2b4ee6; --blue-1: #eef1fe; --blue-2: #dde3fd; --blue-3: #c8d3fb; --blue-4: #9fb2f7;
+  --bad: #e0531f; --bad-1: #fde8de; --bad-2: #f9cab3; --bad-3: #f3a882;
+  --serif: "Iowan Old Style", "Charter", "Source Serif 4", Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
+  --sans: "Hanken Grotesk", system-ui, "PingFang SC", "Noto Sans SC", sans-serif;
+  --mono: "DM Mono", ui-monospace, "PingFang SC", monospace;
+  --pixel: "GC Dot", "DM Mono", monospace;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+.mast h1, .sec-head, .bar .title { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+html[lang="en"] .zh, html[lang="zh"] .en { display: none !important; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #e6e6e3; color: var(--ink); font: 17px/1.75 var(--serif); -webkit-font-smoothing: antialiased; }
+html[lang="zh"] body { font-size: 16px; line-height: 1.95; }
+h1, h2, h3, h4, p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 1.5px solid var(--blue); outline-offset: 2px; }
+code { font-family: var(--mono); font-size: 0.84em; color: var(--blue); background: var(--blue-1); padding: 1px 5px; }
+svg { display: block; }
+
+/* illustration vocabulary */
+.iso { width: 100%; height: auto; overflow: visible; }
+.pic .iso { width: 340px; max-width: 100%; }
+.s, .t, .l, .r, .a, .am, .ad, .m, .in, .slot, .paper, .sa, .ld, .dash { stroke: var(--blue); stroke-width: 1.1; stroke-linejoin: round; stroke-linecap: round; }
+.s { fill: none; } .t { fill: var(--blue-1); } .l { fill: var(--blue-2); } .r { fill: var(--blue-3); }
+.a { fill: var(--blue); } .am { fill: #2342c4; } .ad { fill: #1b36a8; } .m { fill: var(--blue-4); }
+.in { fill: var(--blue-3); } .paper { fill: #fff; } .slot { fill: none; stroke-dasharray: 3 3; }
+.sa { fill: none; stroke-width: 2; }
+.ld { fill: none; stroke-width: 0.9; }
+.dot { fill: var(--blue); }
+.ld.bad-l { stroke: var(--bad); } .dot.bad-f { fill: var(--bad); }
+.dash { fill: none; stroke-width: 0.9; stroke-dasharray: 4 4; }
+.ot { fill: var(--bad-1); stroke: var(--bad); stroke-width: 1.1; } .ol { fill: var(--bad-2); stroke: var(--bad); stroke-width: 1.1; } .or { fill: var(--bad-3); stroke: var(--bad); stroke-width: 1.1; }
+.bad { fill: none; stroke: var(--bad); stroke-width: 2; stroke-linecap: round; }
+.lab { font: 11.5px var(--mono); letter-spacing: 0.06em; fill: var(--blue); }
+.lab2 { font: 10.5px var(--mono); letter-spacing: 0.06em; fill: var(--muted); }
+.bad-t { fill: var(--bad); }
+.ln { fill: none; stroke: var(--blue); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.lnb { fill: none; stroke: var(--bad); stroke-width: 1.6; stroke-linecap: round; }
+.fa { fill: var(--blue); } .f1 { fill: var(--blue-1); } .f2 { fill: var(--blue-2); } .f3 { fill: var(--blue-3); } .fw { fill: #fff; }
+.tx { font: 11px var(--mono); letter-spacing: 0.05em; fill: var(--blue); }
+.tx2 { font: 11px var(--mono); letter-spacing: 0.05em; fill: var(--muted); }
+
+/* page */
+.sheet { max-width: 1180px; margin: 0 auto; background: var(--paper); min-height: 100vh; box-shadow: 0 0 0 1px rgba(0,0,0,0.04); }
+.bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 18px; height: 48px; padding: 0 56px; background: rgba(244, 244, 241, 0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); font-family: var(--mono); }
+.bar .title { font: 500 14px var(--sans); color: var(--blue); white-space: nowrap; }
+.bar nav { display: flex; gap: 2px; margin-left: auto; }
+.bar nav a { font: 11.5px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 8px 10px; }
+.bar nav a.on, .bar nav a:hover { color: var(--blue); }
+.lang { display: inline-flex; padding: 2px; gap: 2px; box-shadow: inset 0 0 0 1px var(--line); background: var(--surface); }
+.lang button { border: 0; background: none; padding: 3px 10px; font: 12px var(--sans); color: var(--muted); transition: background 160ms var(--ease), color 160ms var(--ease); }
+.lang button[aria-pressed="true"] { background: var(--blue); color: #fff; }
+
+.wrap { padding: 0 72px; }
+
+/* masthead */
+.mast { display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: end; padding: 64px 0 28px; border-bottom: 1px solid var(--rule); }
+.mast h1 { font: 400 64px/1.05 var(--pixel); color: var(--blue); letter-spacing: -0.07em; word-spacing: -0.2em; }
+html[lang="zh"] .mast h1 { font: 500 52px/1.1 var(--sans); letter-spacing: 0.02em; }
+.mast .by { text-align: right; font-size: 15px; line-height: 1.6; }
+.mast .by b { font-weight: 600; }
+
+.intro { display: grid; grid-template-columns: 340px 1fr; gap: 48px; padding: 44px 0 56px; border-bottom: 1px solid var(--rule); }
+.intro .text { display: grid; gap: 1em; align-content: start; text-align: justify; hyphens: auto; }
+html[lang="zh"] .intro .text, html[lang="zh"] .col { text-align: left; }
+.intro .text .lead { font-weight: 600; }
+.go { display: grid; gap: 0; margin-top: 12px; border-top: 1px solid var(--line); }
+.go a { display: grid; grid-template-columns: 34px 1fr auto; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); transition: color 160ms var(--ease); }
+.go a:hover { color: var(--blue); }
+.go .n { font: 12px var(--mono); color: var(--blue); }
+.go .arr { font: 13px var(--mono); color: var(--blue); }
+
+/* sections */
+section.layer, section.end { padding: 72px 0 8px; scroll-margin-top: 48px; }
+.sec-head { display: grid; grid-template-columns: auto 1fr; column-gap: 20px; row-gap: 10px; align-items: baseline; padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
+.sec-head > div { display: contents; }
+.sec-head > div > p { grid-column: 2; margin-top: 0; }
+.sec-head .num { font: 400 44px/1.05 var(--pixel); letter-spacing: -0.06em; color: var(--blue); align-self: center; }
+.sec-head h2 { align-self: center; }
+.sec-head h2 { font: 400 44px/1.05 var(--pixel); letter-spacing: -0.06em; word-spacing: -0.2em; color: var(--blue); }
+html[lang="zh"] .sec-head h2 { font: 500 36px/1.1 var(--sans); }
+.sec-head p { font-size: 16px; color: var(--muted); }
+
+.topic { display: grid; grid-template-columns: 340px 1fr; gap: 48px; padding: 48px 0; border-bottom: 1px solid var(--line); }
+.topic:last-child { border-bottom: 0; }
+.col { display: grid; gap: 0.9em; align-content: start; text-align: justify; hyphens: auto; }
+.col h3 { font: 400 13px/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); display: flex; gap: 10px; margin-bottom: 2px; }
+.col h3 .n { color: var(--muted); }
+.col .h { font: 600 20px/1.35 var(--serif); text-align: left; text-wrap: balance; }
+html[lang="zh"] .col .h { font: 500 19px/1.5 var(--sans); }
+.col .like { font: 12px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); display: flex; align-items: center; gap: 8px; }
+.col .like::before { content: ""; width: 16px; height: 1px; background: var(--blue); }
+.fig { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-content: center; }
+.full { grid-column: 1 / -1; }
+.caption { font: 12px/1.6 var(--mono); color: var(--muted); letter-spacing: 0.02em; }
+
+/* framed panels */
+.panel { background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { display: grid; align-content: start; }
+.grid2 > .cell + .cell, .grid3 > .cell + .cell, .grid4 > .cell + .cell { box-shadow: inset 1px 0 0 var(--line); }
+.cell .pic { min-height: 150px; display: grid; place-items: center; padding: 18px; background-image: radial-gradient(var(--blue-2) 1px, transparent 1px); background-size: 12px 12px; }
+.cell .cap { padding: 12px 16px 16px; box-shadow: inset 0 1px 0 var(--line); display: grid; gap: 2px; }
+.cell .cap .k { font: 11px/16px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); }
+.cell .cap .k.bad { color: var(--bad); }
+.cell .cap > span:not(.k) { font-size: 14.5px; line-height: 1.5; }
+
+/* mini UI */
+.b { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 30px; padding: 0 12px; font: 500 13px var(--sans); background: var(--blue); color: #fff; white-space: nowrap; }
+.b.hover { background: #5272ff; } .b.focus { outline: 1.5px solid var(--ink); outline-offset: 2px; } .b.press { transform: scale(0.94); background: #1f3cc0; } .b.dis { opacity: 0.35; }
+.spin { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid currentColor; border-top-color: transparent; animation: sp 0.7s linear infinite; flex: none; }
+@keyframes sp { to { transform: rotate(360deg); } }
+.states { display: grid; grid-template-columns: repeat(6, 1fr); }
+.states > div { display: grid; justify-items: center; gap: 14px; padding: 30px 6px 18px; }
+.states > div + div { box-shadow: inset 1px 0 0 var(--line); }
+.states .k { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); text-align: center; }
+.states > div.miss { background: repeating-linear-gradient(135deg, transparent 0 6px, var(--bad-1) 6px 7px); }
+.states > div.miss .k { color: var(--bad); }
+.ghost { width: 74px; height: 30px; box-shadow: inset 0 0 0 1.5px var(--bad); display: grid; place-items: center; font: 15px var(--mono); color: var(--bad); }
+
+/* props demo */
+.demo { display: grid; grid-template-columns: 190px 1fr; }
+.demo .ctl { padding: 18px; display: grid; gap: 14px; align-content: start; box-shadow: inset -1px 0 0 var(--line); }
+.demo .ttl { font: 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.demo .opts { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.demo .opts button, .chk button, .gfilter button { border: 0; padding: 4px 10px; font: 13px var(--sans); background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); transition: background 160ms var(--ease), color 160ms var(--ease); }
+.demo .opts button[aria-pressed="true"], .chk button[aria-pressed="true"], .gfilter button[aria-pressed="true"] { background: var(--blue); color: #fff; box-shadow: none; }
+.demo .out { display: grid; grid-template-rows: 1fr auto; }
+.demo .stage { display: grid; place-items: center; min-height: 160px; background-image: radial-gradient(var(--blue-2) 1px, transparent 1px); background-size: 12px 12px; }
+.demo .code { font: 15px/1.5 var(--mono); padding: 14px 18px; box-shadow: inset 0 1px 0 var(--line); overflow-x: auto; white-space: nowrap; }
+.demo .code .p { color: var(--blue); background: var(--blue-1); padding: 0 3px; }
+.gbtn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border: 0; font: 500 15px var(--sans); }
+.gbtn.primary { background: var(--blue); color: #fff; }
+.gbtn.secondary { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.gbtn:disabled { opacity: 0.4; cursor: not-allowed; }
+.gbtn.loading { opacity: 1; cursor: progress; }
+
+/* takeout strip */
+.strip { display: grid; grid-template-columns: repeat(4, 1fr); }
+.strip > div { padding: 12px 14px; display: grid; gap: 1px; }
+.strip > div + div { box-shadow: inset 1px 0 0 var(--line); }
+.strip .n { font: 11px var(--mono); color: var(--muted); }
+.strip b { font: 600 15px var(--serif); }
+html[lang="zh"] .strip b { font: 500 15px var(--sans); }
+.strip code { justify-self: start; font-size: 12px; }
+.why { display: flex; flex-wrap: wrap; gap: 6px; }
+.why > span { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font: 13.5px var(--sans); }
+.why > span::before { content: "✓"; color: var(--blue); }
+
+/* elevator */
+.elev { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; padding: 20px 22px; }
+.elev .card { display: grid; gap: 10px; padding: 14px 16px; min-width: 240px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font: 14.5px var(--sans); }
+.elev .card .k { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.elev .x { opacity: 0.28; text-decoration: line-through; }
+.elev p { font-size: 15.5px; }
+
+/* check demo */
+.chk-code { font: 13.5px/2 var(--mono); padding: 10px 0; overflow-x: auto; }
+.chk-code div { display: grid; grid-template-columns: 38px 1fr auto; padding-right: 16px; transition: background 300ms; white-space: nowrap; }
+.chk-code .n { color: var(--muted); text-align: right; padding-right: 14px; }
+.chk-code .mk { font-size: 11.5px; color: var(--bad); opacity: 0; transition: opacity 300ms; padding-left: 12px; }
+.chk-code div.flag { background: var(--bad-1); }
+.chk-code div.flag .mk { opacity: 1; }
+.chk { display: flex; gap: 6px; padding: 12px 16px; box-shadow: inset 0 1px 0 var(--line); flex-wrap: wrap; }
+.chk button { padding: 7px 14px; font-size: 14px; }
+.verdict { display: flex; align-items: center; gap: 12px; padding: 12px 18px; box-shadow: inset 0 1px 0 var(--line); min-height: 52px; font: 15px var(--sans); flex-wrap: wrap; }
+.verdict .bubble { padding: 4px 10px; font-weight: 500; }
+.verdict.pass .bubble { background: var(--blue-1); color: var(--blue); }
+.verdict.fail .bubble { background: var(--bad-1); color: var(--bad); }
+.verdict .muted { color: var(--muted); }
+
+/* who + trust */
+.who > .cell { justify-items: center; text-align: center; gap: 4px; padding: 20px 10px 16px; }
+.who b { font: 600 15px var(--serif); }
+html[lang="zh"] .who b { font: 500 15px var(--sans); }
+.who .cell > span { font-size: 14px; color: var(--muted); line-height: 1.4; }
+.doc { padding: 22px 24px; display: grid; gap: 12px; font-family: var(--sans); }
+.doc .k { font: 11px var(--mono); letter-spacing: 0.05em; color: var(--muted); }
+.doc .line { font-size: 16px; }
+.doc del { color: var(--bad); text-decoration-thickness: 1.5px; }
+.doc ins { color: var(--blue); text-decoration: none; background: var(--blue-1); padding: 0 3px; }
+.doc .note { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); flex-wrap: wrap; }
+.doc .who-ai { display: inline-flex; align-items: center; gap: 6px; font: 11px var(--mono); color: var(--blue); }
+.doc .acts { display: flex; gap: 6px; margin-left: auto; }
+.doc .acts > span { padding: 4px 12px; font-size: 13px; box-shadow: inset 0 0 0 1px var(--line); }
+.doc .acts > span.ok { background: var(--blue); color: #fff; box-shadow: none; }
+.trust > .cell { padding: 16px 18px; gap: 6px; }
+.trust .step { display: flex; gap: 3px; }
+.trust .step i { width: 24px; height: 5px; background: var(--line); }
+.trust .step i.on { background: var(--blue); }
+.trust b { font: 600 15px var(--serif); }
+html[lang="zh"] .trust b { font: 500 15px var(--sans); }
+.trust .cell > span { font-size: 14px; color: var(--muted); line-height: 1.45; }
+
+/* mcp flow */
+.flow > div { display: grid; grid-template-columns: 26px 150px minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 12px 18px; border-top: 1px solid var(--line); }
+.flow > div:first-child { border-top: 0; }
+.flow .n { font: 12px var(--mono); color: var(--muted); }
+.flow code { justify-self: start; font-size: 12px; }
+.flow .qa { display: grid; gap: 2px; }
+.flow .q { font-size: 15.5px; }
+.flow .a { font: 14px var(--sans); color: var(--blue); }
+.flow .a::before { content: "→ "; }
+.flow .ask { grid-template-columns: 26px minmax(0, 1fr); background: var(--blue-1); }
+.flow .ask .k { grid-column: 1 / -1; font: 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); }
+.flow .ask > span:last-child { grid-column: 1 / -1; font-size: 16px; }
+.flow .end { display: block !important; font-size: 15px; color: var(--muted); }
+
+/* mcp walkthrough */
+.walk { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+.walk .talk { padding: 18px 20px; display: grid; gap: 14px; align-content: start; box-shadow: inset -1px 0 0 var(--line); min-height: 330px; grid-template-rows: auto 1fr auto; }
+.walk .steps { display: flex; gap: 4px; }
+.walk .steps i { flex: 1; height: 4px; background: var(--line); transition: background 200ms var(--ease); }
+.walk .steps i.on { background: var(--blue); }
+.bub { display: grid; gap: 4px; padding: 10px 12px; font: 15px/1.5 var(--sans); }
+.bub .who { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.bub .who code { font-size: 11px; text-transform: none; letter-spacing: 0; }
+.bub.ai { background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.bub.desk { background: var(--blue-1); }
+.bub.you { background: var(--blue-1); }
+.walk .so { font-size: 15px; color: var(--ink); padding-left: 12px; box-shadow: inset 2px 0 0 var(--blue); }
+.walk #walkTalk { display: grid; gap: 8px; align-content: start; }
+.walk .nav { display: flex; gap: 6px; justify-content: flex-end; }
+.walk .nav button { border: 0; padding: 7px 16px; font: 14px var(--sans); background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); }
+.walk .nav button.go-next { background: var(--blue); color: #fff; box-shadow: none; }
+.walk .nav button:disabled { opacity: 0.35; cursor: default; }
+.walk .preview { padding: 18px 20px; display: grid; gap: 12px; align-content: start; background-image: radial-gradient(var(--blue-2) 1px, transparent 1px); background-size: 12px 12px; }
+.walk .preview > .k { font: 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.mc { background: #fff; box-shadow: inset 0 0 0 1px var(--line); padding: 16px; display: grid; gap: 12px; font: 14px var(--sans); min-height: 200px; align-content: start; }
+.mc.empty { display: grid; place-items: center; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); background: transparent; border: 1px dashed var(--blue-3); }
+.mc .ttl { font-weight: 500; font-size: 15px; }
+.mc .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.mc .tagx { font: 11px var(--mono); letter-spacing: 0.04em; padding: 2px 7px; box-shadow: inset 0 0 0 1px #bbb; color: #888; }
+.mc .tagx.c { box-shadow: none; background: var(--blue-1); color: var(--blue); }
+.mc .meter { display: grid; gap: 4px; font: 11px var(--mono); color: var(--muted); }
+.mc .bar { height: 6px; background: #999; position: relative; }
+.mc .bar.ok { background: var(--line); }
+.mc .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 41%; background: #bbb; }
+.mc .bar i.c { background: var(--blue); }
+.mc .flag { outline: 1.5px solid var(--bad); outline-offset: 3px; }
+.mc .flagnote { font: 11px var(--mono); color: var(--bad); }
+.mc .okmark { font: 11px var(--mono); color: var(--blue); }
+.mc .ph { height: 30px; padding: 0 12px; display: inline-flex; align-items: center; font-size: 13px; border: 1px dashed #aaa; color: #888; }
+.mc .no { height: 30px; padding: 0 12px; display: inline-flex; align-items: center; font-size: 13px; color: var(--bad); text-decoration: line-through; opacity: 0.6; box-shadow: inset 0 0 0 1px var(--bad-2); }
+.fresh { animation: fresh 700ms var(--ease); }
+@keyframes fresh { from { background-color: var(--blue-2); } }
+
+/* pipeline */
+.pipe { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pipe .band { padding: 16px 16px 18px; display: grid; gap: 12px; align-content: start; position: relative; }
+.pipe .band + .band { box-shadow: inset 1px 0 0 var(--line); }
+.pipe .band + .band::before { content: "→"; position: absolute; left: -11px; top: 14px; width: 22px; height: 22px; display: grid; place-items: center; background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); font: 12px var(--mono); color: var(--blue); }
+.pipe .bk { font: 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); padding-left: 2px; }
+.pipe ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; position: relative; }
+.pipe ol::before { content: ""; position: absolute; left: 11px; top: 12px; bottom: 12px; width: 1px; background: var(--blue-3); }
+.pipe li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; align-items: start; position: relative; }
+.pipe .sd { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font: 11px var(--mono); color: var(--blue); background: var(--surface); box-shadow: inset 0 0 0 1px var(--blue); }
+.pipe li:nth-child(1) .sd { }
+.pipe b { display: block; font: 500 14px/1.45 var(--sans); }
+.pipe code { display: inline-block; margin-top: 4px; font-size: 11px; }
+.loopback { display: grid; gap: 4px; font: 12px var(--mono); color: var(--blue); }
+
+/* elevator compare */
+.elev2 .hd { padding: 10px 16px; font: 12px var(--mono); letter-spacing: 0.05em; color: var(--blue); box-shadow: inset 0 -1px 0 var(--line); }
+.elev2 .hd.bad { color: var(--bad); }
+.elev2 .pic { min-height: 0; padding: 22px 18px; }
+.mcard { display: grid; gap: 10px; width: 100%; max-width: 260px; padding: 14px 16px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font: 14.5px var(--sans); }
+.mcard .k { font: 11px var(--mono); letter-spacing: 0.04em; color: var(--muted); }
+.mcard .row { display: flex; gap: 8px; }
+.mcard .b.wrong { outline: 1.5px solid var(--bad); outline-offset: 3px; }
+
+/* token layers + findings + eval */
+.nums .cell { padding: 16px 18px; display: flex; align-items: baseline; gap: 10px; }
+.nums b { font: 400 40px/1 var(--pixel); color: var(--blue); }
+.nums span { font: 14px var(--sans); color: var(--muted); }
+.find > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 6px 16px; padding: 14px 18px; border-top: 1px solid var(--line); align-items: center; }
+.find > div:first-child { border-top: 0; }
+.find .fk { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--bad); grid-row: span 2; align-self: start; padding-top: 6px; }
+.find .pair { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.find .arr { color: var(--muted); font: 13px var(--mono); }
+.find .fd { font: 14px/1.5 var(--sans); color: var(--muted); }
+.cs { display: inline-flex; align-items: center; gap: 10px; padding: 7px 10px; font: 13px var(--sans); }
+.cs b { font: 11px var(--mono); }
+.cs b.no { color: var(--bad); } .cs b.ok { color: var(--blue); }
+.sw { width: 30px; height: 30px; display: inline-block; }
+.evtab > div { display: grid; grid-template-columns: 90px 92px minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: center; padding: 8px 18px; border-top: 1px solid var(--line); font: 14px var(--sans); }
+.evtab > div:first-child { border-top: 0; font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); padding: 12px 18px; }
+.evtab .er.plain { background: var(--bad-1); }
+.evtab .er > span:nth-child(2) { font: 12px var(--mono); color: var(--muted); }
+.bar2 { display: flex; align-items: center; gap: 8px; }
+.bar2 i { display: block; height: 8px; background: var(--blue); min-width: 2px; }
+.bar2 i.bad { background: var(--bad); }
+.bar2 b { font: 12px var(--mono); }
+
+/* eval v2 */
+.ev-task { padding: 14px 18px; display: grid; gap: 4px; font: 16px var(--sans); background: var(--blue-1); box-shadow: none; }
+.ev-task .k { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); }
+.ev-shots .hd { padding: 10px 14px; font: 12px var(--mono); letter-spacing: 0.05em; color: var(--blue); box-shadow: inset 0 -1px 0 var(--line); }
+.ev-shots .hd.bad { color: var(--bad); }
+.ev-shots img { display: block; width: 100%; height: auto; }
+.ev-shots .cap span { font-size: 14px; line-height: 1.5; }
+.ev-score > div { display: grid; grid-template-columns: minmax(0, 1fr) 90px 90px; gap: 12px; align-items: center; padding: 12px 18px; border-top: 1px solid var(--line); }
+.ev-score > div:first-child { border-top: 0; padding: 10px 18px; font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); }
+.ev-score > div > span:first-child { display: grid; gap: 2px; }
+.ev-score b { font: 500 15px var(--sans); }
+.ev-score i { font: normal 13px/1.45 var(--sans); color: var(--muted); }
+.ev-score .v { font: 400 34px/1 var(--pixel); color: var(--blue); }
+.ev-score .bad-t { color: var(--bad); }
+.ev-more summary { cursor: pointer; font: 13px var(--sans); color: var(--blue); padding: 4px 0; }
+.ev-more[open] summary { margin-bottom: 10px; }
+
+/* token demo */
+.tdemo .tbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; box-shadow: inset 0 -1px 0 var(--line); flex-wrap: wrap; }
+.tdemo .tbar .k { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); }
+.sws { display: flex; gap: 8px; }
+.sws button { width: 28px; height: 28px; border: 0; background: var(--s); box-shadow: 0 0 0 1px var(--line); cursor: pointer; }
+.sws button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--ink); }
+.tcol .hd { padding: 10px 14px; font: 12px var(--mono); letter-spacing: 0.04em; color: var(--blue); box-shadow: inset 0 -1px 0 var(--line); }
+.tcol .hd.bad { color: var(--bad); }
+.tparts { display: grid; gap: 10px; padding: 16px; }
+.tp { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 30px; }
+.tp .tag { font: 11px var(--mono); color: var(--muted); }
+#tdL .tp:first-child .tag { color: var(--bad); }
+.tp .b, .tp .lk, .tp .seg2 i, .tp .bdg, .tp .mtr i { transition: background 300ms var(--ease), color 300ms var(--ease); }
+.tp .lk { font: 500 15px var(--sans); text-decoration: underline; text-underline-offset: 3px; }
+.seg2 { display: inline-flex; box-shadow: inset 0 0 0 1px var(--line); font: 12px var(--sans); }
+.seg2 i { font-style: normal; padding: 4px 10px; } .seg2 i:first-child { color: #fff; }
+.bdg { width: 22px; height: 22px; display: grid; place-items: center; color: #fff; font: 12px var(--mono); }
+.mtr { width: 120px; height: 6px; background: var(--line); display: block; position: relative; }
+.mtr i { position: absolute; inset: 0 40% 0 0; }
+.tres { padding: 0 16px 16px; font: 14px/1.5 var(--sans); color: var(--muted); margin: 0; }
+.tres.warn { color: var(--bad); }
+/* takeout story */
+.story { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.story .sc { display: grid; grid-template-rows: auto 1fr; position: relative; }
+.story .sc + .sc { box-shadow: inset 1px 0 0 var(--line); }
+.story .sc + .sc::before { content: "→"; position: absolute; left: -11px; top: 70px; width: 22px; height: 22px; display: grid; place-items: center; background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); font: 12px var(--mono); color: var(--blue); z-index: 1; }
+.story .sp { padding: 14px 10px 6px; background-image: radial-gradient(var(--blue-2) 1px, transparent 1px); background-size: 12px 12px; }
+.story .sp svg { width: 100%; height: auto; }
+.story .scap { padding: 12px 14px 14px; display: grid; gap: 3px; align-content: start; box-shadow: inset 0 1px 0 var(--line); }
+.story .scap .n { font: 11px var(--mono); color: var(--muted); }
+.story .scap b { font: 500 16px var(--sans); }
+.story .scap span:not(.n):not(.en):not(.zh) { font: 13.5px/1.45 var(--sans); color: var(--muted); }
+.story .scap > span:nth-of-type(2) { font: 13.5px/1.45 var(--sans); color: var(--muted); }
+.story code { justify-self: start; font-size: 11px; margin-top: 4px; }
+.ln-thin { fill: none; stroke: var(--blue); stroke-width: 1; stroke-linecap: round; }
+.jump { font: 14px var(--sans); color: var(--blue); text-decoration: none; box-shadow: inset 0 -1px 0 var(--blue-3); }
+.jump:hover { box-shadow: inset 0 -1px 0 var(--blue); }
+
+/* eval table v2 + mcp log */
+.evtab2 > div { display: grid; grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: center; padding: 9px 18px; border-top: 1px solid var(--line); font: 14px var(--sans); }
+.evtab2 > .eh { border-top: 0; font: 12px/1.4 var(--sans); color: var(--muted); padding: 12px 18px; }
+.evtab2 > .grp { display: block; font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); background: var(--paper); padding: 8px 18px; }
+.evtab2 > .grp.bad-t { color: var(--bad); }
+.evtab2 .er.plain { background: var(--bad-1); }
+.evtab2 .ver { font: 11px var(--mono); color: var(--muted); margin-left: 8px; }
+.ev-read { display: grid; gap: 8px; margin-top: 12px; font: 14.5px/1.6 var(--sans); }
+.ev-read b { font-weight: 500; }
+.ev-read .small { font-size: 13px; color: var(--muted); }
+.mlog .mh { display: grid; gap: 2px; padding: 12px 18px; box-shadow: inset 0 -1px 0 var(--line); background: var(--blue-1); }
+.mlog .mh .k { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); }
+.mlog .mh > span:last-child { font: 14px var(--sans); }
+.mlog .mr { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 14px; padding: 12px 18px; border-top: 1px solid var(--line); align-items: start; }
+.mlog .mh + .mr { border-top: 0; }
+.mlog .mr code { justify-self: start; font-size: 11.5px; }
+.mlog .mr > div { display: grid; gap: 3px; }
+.mlog .q { font: 14.5px/1.5 var(--sans); }
+.mlog .a { font: 14px/1.5 var(--sans); color: var(--blue); }
+.mlog .a::before { content: "→ "; }
+.mlog .a.bad-t { color: var(--bad); }
+
+/* MCP desk (html) */
+.desk { display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1.15fr) 56px minmax(0, 1fr); gap: 0; padding: 18px; row-gap: 14px; }
+.desk .dcol { display: grid; gap: 10px; align-content: start; }
+.desk .dk { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); }
+.desk .who { display: flex; align-items: center; gap: 10px; font: 13px/1.4 var(--sans); color: var(--muted); }
+.desk .dq { padding: 10px 12px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font: 14px/1.5 var(--sans); }
+.desk .darr { display: grid; justify-items: center; align-content: center; gap: 2px; font: 12px var(--sans); color: var(--blue); }
+.desk .darr b, .desk .dans b { font: 500 13px var(--mono); }
+.desk .darr i { font-style: normal; font-size: 18px; }
+.desk ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.desk .wins li { display: grid; gap: 1px; padding: 7px 10px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font: 13.5px var(--sans); }
+.desk .wins code { justify-self: start; font-size: 11px; background: none; padding: 0; color: var(--muted); }
+.desk .wins li > span { font: 13.5px/1.35 var(--sans); }
+.desk .files li { display: grid; gap: 1px; padding: 7px 10px; background: var(--blue-1); box-shadow: inset 0 0 0 1px var(--line); }
+.desk .files b { font: 12px var(--mono); color: var(--ink); }
+.desk .files span { font: 12.5px var(--sans); color: var(--muted); }
+.desk li.on { box-shadow: inset 0 0 0 1.5px var(--blue); background: var(--blue-1); }
+.desk .files li.on { background: var(--blue-2); }
+.desk .wins li.on code { color: var(--blue); }
+.desk .dans { grid-column: 1 / -1; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 12px 14px; background: var(--blue-1); color: var(--blue); }
+.desk .dans .k { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; }
+.desk .dans .t { font: 500 15px/1.5 var(--sans); color: var(--ink); }
+
+/* glossary cards */
+.gloss.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; background: transparent; box-shadow: inset 1px 1px 0 var(--line); }
+.gloss.cards > .gc { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px; padding: 16px; background: var(--surface); border: 0; box-shadow: inset -1px -1px 0 var(--line); align-items: start; }
+.gloss.cards .gc svg { width: 52px; height: 52px; background-image: radial-gradient(var(--blue-2) 1px, transparent 1px); background-size: 8px 8px; }
+.gloss.cards .gc > div { display: grid; gap: 3px; }
+.gloss.cards .t { font: 14px var(--mono); color: var(--blue); }
+.gloss.cards .l { font: 10.5px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.gloss.cards .d { font: 14px/1.5 var(--sans); color: var(--ink); }
+.lnbfill { fill: var(--bad); }
+.fw { fill: #fff; }
+
+/* glossary */
+.gfilter { display: flex; gap: 6px; flex-wrap: wrap; margin: 24px 0 14px; }
+.gloss > div { display: grid; grid-template-columns: 200px 110px 1fr; gap: 16px; padding: 11px 18px; border-top: 1px solid var(--line); align-items: baseline; }
+.gloss > div:first-child { border-top: 0; }
+.gloss .t { font: 14px var(--mono); color: var(--blue); }
+.gloss .l { font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.gloss .d { font-size: 15.5px; }
+.gloss .key { font: 10px var(--mono); color: #fff; background: var(--blue); padding: 1px 5px; margin-left: 8px; vertical-align: 1px; }
+
+/* ---------- motion ---------- */
+.hero-anim .pl { transform: translateY(var(--dy)); transition: transform 1000ms cubic-bezier(0.22, 1.25, 0.36, 1) calc(250ms + var(--i) * 70ms), opacity 300ms var(--ease); }
+.hero-anim .gd { opacity: 0; transition: opacity 500ms var(--ease) 900ms; }
+.hero-anim .hlab { opacity: 0; transform: translateX(-8px); transition: opacity 380ms var(--ease), transform 380ms var(--ease); transition-delay: calc(1150ms + var(--i) * 150ms); }
+.hero-anim .hlab .ld { stroke-dasharray: 140; stroke-dashoffset: 140; transition: stroke-dashoffset 420ms var(--ease); transition-delay: calc(1150ms + var(--i) * 150ms); }
+.hero-anim.open .pl, .hero-anim.open .hlab { transform: none; }
+.hero-anim.open .gd, .hero-anim.open .hlab { opacity: 1; }
+.hero-anim.open .hlab .ld { stroke-dashoffset: 0; }
+.hero-anim.ready .pl, .hero-anim.ready .hlab, .hero-anim.ready .hlab .ld { transition-delay: 0ms; transition-duration: 220ms; }
+.hero-anim.hov .pl:not(.on) { opacity: 0.35; }
+.hero-anim.hov .hlab:not(.on) { opacity: 0.3; }
+.hero-anim .pl.on { transform: translateY(-6px); }
+.hero-anim .pl { cursor: pointer; }
+.fig .replay { justify-self: end; border: 0; background: none; padding: 2px 0; font: 11px var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: color 160ms var(--ease); }
+.fig .replay:hover { color: var(--blue); }
+.rv { opacity: 0; transform: translateY(14px); transition: opacity 600ms var(--ease), transform 700ms var(--ease); }
+.rv.shown { opacity: 1; transform: none; }
+.rv .iso .ld { stroke-dasharray: 160; stroke-dashoffset: 160; transition: stroke-dashoffset 520ms var(--ease) calc(300ms + var(--k, 0) * 110ms); }
+.rv .iso .lab, .rv .iso .lab2, .rv .iso .dot { opacity: 0; transition: opacity 360ms var(--ease) calc(420ms + var(--k, 0) * 110ms); }
+.rv.shown .iso .ld { stroke-dashoffset: 0; }
+.rv.shown .iso .lab, .rv.shown .iso .lab2, .rv.shown .iso .dot { opacity: 1; }
+.gloss.cards > .gc { position: relative; overflow: hidden; }
+.gloss.cards .gc svg { overflow: visible; transition: background-color 200ms var(--ease); }
+.gloss.cards > .gc:hover svg { animation: wig 620ms var(--ease); background-color: var(--blue-1); }
+.gloss.cards > .gc:hover svg [pathLength] { stroke-dasharray: 1; animation: draw 700ms var(--ease) both; }
+.gloss.cards > .gc:hover svg :is(.fa, .f1, .f2, .f3, .fw, .lnbfill) { animation: draw 700ms var(--ease) both, fillin 420ms var(--ease) 280ms both; }
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes fillin { from { fill-opacity: 0; } to { fill-opacity: 1; } }
+@keyframes wig { 0% { transform: rotate(0); } 25% { transform: rotate(-7deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-2deg); } 100% { transform: rotate(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim .pl, .hero-anim .hlab, .hero-anim .gd, .rv, .rv .iso .ld, .rv .iso .lab, .rv .iso .lab2, .rv .iso .dot { transition: none !important; transform: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; }
+  .gloss.cards > .gc:hover svg, .gloss.cards > .gc:hover svg * { animation: none !important; }
+}
+
+footer { margin: 64px 0 0; padding: 22px 0 48px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+
+@media (max-width: 960px) {
+  .gloss.cards { grid-template-columns: minmax(0, 1fr); }
+  .desk { grid-template-columns: minmax(0, 1fr); }
+  .desk .darr { grid-auto-flow: column; justify-content: start; gap: 6px; }
+  .desk .darr i { transform: rotate(90deg); }
+  .desk .dans { grid-template-columns: auto minmax(0, 1fr); } .desk .dans .t { grid-column: 1 / -1; }
+  .evtab2 > div { grid-template-columns: 90px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 9px 12px; }
+  .mlog .mr { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .story { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story .sc:nth-child(3) { box-shadow: inset 0 1px 0 var(--line); }
+  .story .sc:nth-child(4) { box-shadow: inset 1px 0 0 var(--line), inset 0 1px 0 var(--line); }
+  .story .sc:nth-child(3)::before { content: "↓"; left: 50%; top: -11px; }
+  .ev-score > div { grid-template-columns: minmax(0, 1fr) 56px 56px; padding: 12px; }
+  .find > div { grid-template-columns: minmax(0, 1fr); }
+  .find .fk { grid-row: auto; }
+  .evtab > div { grid-template-columns: 64px 44px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 8px 12px; }
+  .pipe { grid-template-columns: minmax(0, 1fr); }
+  .pipe .band + .band { box-shadow: inset 0 1px 0 var(--line); }
+  .pipe .band + .band::before { content: "↓"; left: 16px; top: -11px; }
+  .walk { grid-template-columns: minmax(0, 1fr); }
+  .walk .talk { box-shadow: inset 0 -1px 0 var(--line); min-height: 0; }
+  .flow > div { grid-template-columns: 22px minmax(0, 1fr); }
+  .flow .qa { grid-column: 2; }
+  .wrap { padding: 0 20px; } .bar { padding: 0 16px; } .bar nav { display: none; } .bar .lang { margin-left: auto; }
+  .mast, .intro, .sec-head, .topic { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .sec-head { grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 8px; } .sec-head > div > p { grid-column: 2; }
+  .fig, .col { min-width: 0; }
+  .mast h1 { font-size: 44px; } html[lang="zh"] .mast h1 { font-size: 36px; }
+  .mast .by { text-align: left; }
+
+  .col, .intro .text { text-align: left; }
+  .grid2, .grid3, .grid4, .strip, .demo { grid-template-columns: minmax(0, 1fr); }
+  .pic svg { max-width: 100%; height: auto; }
+  .who.grid4 { grid-template-columns: 1fr 1fr; }
+  .grid2 > .cell + .cell, .grid3 > .cell + .cell, .grid4 > .cell + .cell, .strip > div + div { box-shadow: inset 0 1px 0 var(--line); }
+  .who.grid4 > .cell:nth-child(2n) { box-shadow: inset 1px 0 0 var(--line); }
+  .who.grid4 > .cell:nth-child(n+3) { box-shadow: inset 0 1px 0 var(--line); }
+  .who.grid4 > .cell:nth-child(4) { box-shadow: inset 1px 0 0 var(--line), inset 0 1px 0 var(--line); }
+  .states { grid-template-columns: repeat(3, 1fr); }
+  .states > div:nth-child(4) { box-shadow: inset 0 1px 0 var(--line); }
+  .states > div:nth-child(n+5) { box-shadow: inset 1px 0 0 var(--line), inset 0 1px 0 var(--line); }
+  .demo .ctl { box-shadow: inset 0 -1px 0 var(--line); }
+  .elev { grid-template-columns: 1fr; }
+  .gloss > div { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .spin { animation: none; } }
+
+/* v3 · calmer layout */
+.intro .text > p:nth-of-type(n+3) { display: none; }
+.topic { grid-template-columns: 1fr; gap: 28px; padding: 64px 0; }
+.col { grid-template-columns: 340px minmax(0, 1fr); column-gap: 48px; row-gap: 6px; text-align: left; }
+.col > h3 { grid-column: 1; grid-row: 1; margin: 0; }
+.col > h3 > :not(.n) { display: none; }
+.col > .h { grid-column: 1; grid-row: 2; font-size: 22px; }
+html[lang="zh"] .col > .h { font-size: 21px; }
+.col > .like { grid-column: 1; grid-row: 3; margin-top: 6px; }
+.col > p:not(.h) { grid-column: 2; grid-row: 1 / span 3; align-self: end; color: var(--muted); max-width: 56ch; }
+.col > a, .col > .more { grid-column: 2; }
+.fig .caption { display: none; }
+.fig { gap: 14px; }
+@media (max-width: 860px) { .col { grid-template-columns: 1fr; } .col > * { grid-column: 1 !important; grid-row: auto !important; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="bar">
+  <span class="title"><span class="en">Teaching AI</span><span class="zh">教 AI 用设计系统</span></span>
+  <nav aria-label="Sections">
+    <a href="#layer1"><span class="en">01 Rules</span><span class="zh">01 规则</span></a>
+    <a href="#layer2"><span class="en">02 Package</span><span class="zh">02 打包</span></a>
+    <a href="#layer3"><span class="en">03 Check</span><span class="zh">03 检查</span></a>
+    <a href="#whole"><span class="en">04 Together</span><span class="zh">04 串起来</span></a>
+    <a href="#glossary"><span class="en">Glossary</span><span class="zh">词表</span></a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="zh" aria-pressed="false">中文</button></div>
+</header>
+
+<main class="wrap">
+
+  <div class="mast">
+    <h1><span class="en">Teaching AI Your<br>Design System</span><span class="zh">教 AI 用好<br>你的设计系统</span></h1>
+    <p class="by"><span class="en">A visual guide for designers who keep hearing words like registry, lint and CI.</span><span class="zh">写给设计师的图解：<br>registry、lint、CI 这些词到底在说什么。</span></p>
+  </div>
+
+  <div class="intro">
+    <div class="text">
+      <p class="en">Have you ever asked an AI tool to build a screen, and it came back almost right? The button is a slightly different blue. The loading state is missing. A rule you never wrote down got broken anyway.</p>
+      <p class="zh">你有没有让 AI 帮你搭过一个页面，结果差一点点？按钮的蓝不太对，加载状态没有，一条你从没写下来的规则还是被打破了。</p>
+      <p class="en">That's not the AI being careless. It simply doesn't know what you know. Teams fix this in three layers, stacked like the drawing on the right.</p>
+      <p class="zh">这不是 AI 不认真，而是它不知道你知道的那些事。团队一般分三层来解决，就像右边这张拆开的图。</p>
+      <p class="en">Every new word below comes with a picture and an everyday comparison. You don't need to code. If you've used Figma, you're ready.</p>
+      <p class="zh">下面每个新词都配了一张图和一个生活里的比喻。不用会写代码，用过 Figma 就能看懂。</p>
+      <div class="go">
+        <a href="#layer1"><span class="n">01</span><span><span class="en">Define the rules</span><span class="zh">先把规则写下来</span></span><span class="arr">↓</span></a>
+        <a href="#layer2"><span class="n">02</span><span><span class="en">Package them for AI</span><span class="zh">打包成 AI 能直接用的样子</span></span><span class="arr">↓</span></a>
+        <a href="#layer3"><span class="n">03</span><span><span class="en">Check the work</span><span class="zh">检查做得对不对</span></span><span class="arr">↓</span></a>
+        <a href="#whole"><span class="n">04</span><span><span class="en">Putting it all together</span><span class="zh">串起来看</span></span><span class="arr">↓</span></a>
+      </div>
+    </div>
+    <div class="fig"><svg class="iso hero-anim" viewBox="0 0 750 600" role="img" aria-label="Exploded view of three layers: rules, package, check"><defs><marker id="ah0" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="var(--blue)"/></marker></defs><g class="gd"><line x1="216.0" y1="160.0" x2="216.0" y2="330.0" class="dash"/><line x1="504.0" y1="160.0" x2="504.0" y2="330.0" class="dash"/><line x1="216.0" y1="340.0" x2="216.0" y2="510.0" class="dash"/><line x1="504.0" y1="340.0" x2="504.0" y2="510.0" class="dash"/></g><g class="pl" data-p="3" style="--i:2;--dy:-170px"><polygon points="216.0,510.0 360.0,582.0 360.0,592.0 216.0,520.0" class="l"/><polygon points="360.0,582.0 504.0,510.0 504.0,520.0 360.0,592.0" class="r"/><polygon points="360.0,438.0 504.0,510.0 360.0,582.0 216.0,510.0" class="t"/><line x1="223.2" y1="513.6" x2="237.6" y2="506.4" class="s"/><line x1="234.0" y1="519.0" x2="241.9" y2="515.0" class="s"/><line x1="244.8" y1="524.4" x2="259.2" y2="517.2" class="s"/><line x1="255.6" y1="529.8" x2="263.5" y2="525.8" class="s"/><line x1="266.4" y1="535.2" x2="280.8" y2="528.0" class="s"/><line x1="277.2" y1="540.6" x2="285.1" y2="536.6" class="s"/><line x1="288.0" y1="546.0" x2="302.4" y2="538.8" class="s"/><line x1="298.8" y1="551.4" x2="306.7" y2="547.4" class="s"/><line x1="309.6" y1="556.8" x2="324.0" y2="549.6" class="s"/><line x1="320.4" y1="562.2" x2="328.3" y2="558.2" class="s"/><line x1="331.2" y1="567.6" x2="345.6" y2="560.4" class="s"/><line x1="342.0" y1="573.0" x2="349.9" y2="569.0" class="s"/><line x1="352.8" y1="578.4" x2="367.2" y2="571.2" class="s"/><line x1="259.2" y1="495.6" x2="388.8" y2="560.4" class="sa"/><line x1="266.4" y1="492.0" x2="252.0" y2="499.2" class="sa"/><line x1="396.0" y1="556.8" x2="381.6" y2="564.0" class="sa"/><polygon points="378.0,465.0 435.6,493.8 388.8,517.2 331.2,488.4" class="m"/></g><g class="pl" data-p="2" style="--i:1;--dy:0px"><polygon points="216.0,330.0 360.0,402.0 360.0,412.0 216.0,340.0" class="l"/><polygon points="360.0,402.0 504.0,330.0 504.0,340.0 360.0,412.0" class="r"/><polygon points="360.0,258.0 504.0,330.0 360.0,402.0 216.0,330.0" class="t"/><polygon points="321.8,269.8 356.4,287.1 356.4,313.1 321.8,295.8" class="l"/><polygon points="356.4,287.1 391.0,269.8 391.0,295.8 356.4,313.1" class="r"/><polygon points="356.4,252.5 391.0,269.8 356.4,287.1 321.8,269.8" class="t"/><polygon points="390.2,300.4 424.8,317.7 424.8,343.7 390.2,326.4" class="am"/><polygon points="424.8,317.7 459.4,300.4 459.4,326.4 424.8,343.7" class="ad"/><polygon points="424.8,283.1 459.4,300.4 424.8,317.7 390.2,300.4" class="a"/><polygon points="264.2,302.2 298.8,319.5 298.8,345.5 264.2,328.2" class="l"/><polygon points="298.8,319.5 333.4,302.2 333.4,328.2 298.8,345.5" class="r"/><polygon points="298.8,284.9 333.4,302.2 298.8,319.5 264.2,302.2" class="t"/><polygon points="325.4,334.2 360.0,351.5 360.0,377.5 325.4,360.2" class="l"/><polygon points="360.0,351.5 394.6,334.2 394.6,360.2 360.0,377.5" class="r"/><polygon points="360.0,317.0 394.6,334.2 360.0,351.5 325.4,334.2" class="t"/></g><g class="pl" data-p="1" style="--i:0;--dy:170px"><polygon points="216.0,150.0 360.0,222.0 360.0,232.0 216.0,160.0" class="l"/><polygon points="360.0,222.0 504.0,150.0 504.0,160.0 360.0,232.0" class="r"/><polygon points="360.0,78.0 504.0,150.0 360.0,222.0 216.0,150.0" class="t"/><polygon points="360.0,92.4 385.2,105.0 360.0,117.6 334.8,105.0" class="a"/><polygon points="396.0,110.4 421.2,123.0 396.0,135.6 370.8,123.0" class="m"/><polygon points="432.0,128.4 457.2,141.0 432.0,153.6 406.8,141.0" class="r"/><line x1="313.2" y1="115.8" x2="421.2" y2="169.8" class="s"/><line x1="295.2" y1="124.8" x2="388.8" y2="171.6" class="s"/><line x1="277.2" y1="133.8" x2="381.6" y2="186.0" class="s"/><polygon points="329.0,176.3 375.8,199.7 358.6,208.3 311.8,184.9" class="a"/></g><g class="hlab" data-p="1" style="--i:0"><circle cx="540" cy="150" r="1.6" class="dot"/><line x1="540" y1="150" x2="508" y2="150" class="ld" marker-end="url(#ah0)"/><text x="548" y="154" text-anchor="start" class="lab en">01 · RULES</text><text x="548" y="154" text-anchor="start" class="lab zh">01 · 定义规则</text><text x="548" y="170" text-anchor="start" class="lab2 en">TOKENS · STATES · COMBINING</text><text x="548" y="170" text-anchor="start" class="lab2 zh">TOKEN · 状态 · 组合规则</text></g><g class="hlab" data-p="1" style="--i:1"><circle cx="200" cy="105" r="1.6" class="dot"/><line x1="200" y1="105" x2="331" y2="105" class="ld" marker-end="url(#ah0)"/><text x="192" y="109" text-anchor="end" class="lab en">ACCENT #1F4FFF</text><text x="192" y="109" text-anchor="end" class="lab zh">颜色 ACCENT</text></g><g class="hlab" data-p="2" style="--i:2"><circle cx="180" cy="330" r="1.6" class="dot"/><line x1="180" y1="330" x2="212" y2="330" class="ld" marker-end="url(#ah0)"/><text x="172" y="334" text-anchor="end" class="lab en">02 · PACKAGE</text><text x="172" y="334" text-anchor="end" class="lab zh">02 · 打包给 AI</text><text x="172" y="350" text-anchor="end" class="lab2 en">TSX · REGISTRY · SKILL</text><text x="172" y="350" text-anchor="end" class="lab2 zh">TSX · REGISTRY · SKILL</text></g><g class="hlab" data-p="2" style="--i:3"><circle cx="540" cy="313" r="1.6" class="dot"/><line x1="540" y1="313" x2="463" y2="313" class="ld" marker-end="url(#ah0)"/><text x="548" y="317" text-anchor="start" class="lab en">BUTTON.TSX</text><text x="548" y="317" text-anchor="start" class="lab zh">BUTTON.TSX</text><text x="548" y="333" text-anchor="start" class="lab2 en">ONE FINISHED PART</text><text x="548" y="333" text-anchor="start" class="lab2 zh">一个做好的部件</text></g><g class="hlab" data-p="3" style="--i:4"><circle cx="540" cy="510" r="1.6" class="dot"/><line x1="540" y1="510" x2="508" y2="510" class="ld" marker-end="url(#ah0)"/><text x="548" y="514" text-anchor="start" class="lab en">03 · CHECK</text><text x="548" y="514" text-anchor="start" class="lab zh">03 · 检查</text><text x="548" y="530" text-anchor="start" class="lab2 en">TYPESCRIPT · LINT · PEOPLE</text><text x="548" y="530" text-anchor="start" class="lab2 zh">TYPESCRIPT · LINT · 人</text></g><g class="hlab" data-p="3" style="--i:5"><circle cx="200" cy="496" r="1.6" class="dot"/><line x1="200" y1="496" x2="254" y2="496" class="ld" marker-end="url(#ah0)"/><text x="192" y="500" text-anchor="end" class="lab en">THE RULER</text><text x="192" y="500" text-anchor="end" class="lab zh">尺子</text><text x="192" y="516" text-anchor="end" class="lab2 en">SAME ANSWER EVERY TIME</text><text x="192" y="516" text-anchor="end" class="lab2 zh">每次结果一样</text></g></svg></div>
+  </div>
+
+  <!-- ============ LAYER 1 ============ -->
+  <section class="layer" id="layer1">
+    <div class="sec-head">
+      <span class="num">01</span>
+      <div><h2><span class="en">Define the rules</span><span class="zh">先把规则写下来</span></h2><p><span class="en">If it isn't written down, AI doesn't know it exists.</span><span class="zh">没写下来的规则，对 AI 来说就不存在。</span></p></div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">1.1</span><span class="en">Three kinds of rules</span><span class="zh">三类规则</span></h3>
+        <p class="h"><span class="en">Look, parts, and how parts combine</span><span class="zh">长什么样、有哪些部件、部件怎么组合</span></p>
+        <p class="en">Rules come in three kinds: how things look, what each part is, and how parts combine. Designers keep the third in their heads. AI can't read heads.</p>
+        <p class="zh">规则分三类：长什么样、每个部件是什么、部件怎么组合。第三类常常只在设计师脑子里，AI 读不到。</p>
+      </div>
+      <div class="fig">
+        <div class="panel grid3">
+          <div class="cell"><div class="pic"><svg width="180" height="96" viewBox="0 0 180 96" aria-hidden="true"><rect x="8" y="12" width="36" height="36" class="fa"/><rect x="52" y="12" width="36" height="36" class="f3 ln"/><rect x="96" y="12" width="36" height="36" class="f1 ln"/><path d="M144 12v36M140 12h8M140 48h8" class="ln"/><text x="8" y="68" class="tx">ACCENT</text><text x="52" y="84" class="tx2">SOFT</text><text x="96" y="68" class="tx2">PAPER</text><text x="136" y="84" class="tx2">16PX</text></svg></div><div class="cap"><span class="k"><span class="en">Look · tokens</span><span class="zh">长相 · Token</span></span><span><span class="en">Named colours, spacing, type.</span><span class="zh">有名字的颜色、间距、字号。</span></span></div></div>
+          <div class="cell"><div class="pic"><div style="display:flex;gap:6px;align-items:center"><span class="b">Apply</span><span class="b hover">Apply</span><span class="b dis">Apply</span></div></div><div class="cap"><span class="k"><span class="en">Parts · components</span><span class="zh">部件 · 组件</span></span><span><span class="en">Each part, in every state.</span><span class="zh">每个部件，每种状态。</span></span></div></div>
+          <div class="cell"><div class="pic"><svg width="180" height="96" viewBox="0 0 180 96" aria-hidden="true"><rect x="10" y="6" width="150" height="84" class="fw ln"/><rect x="22" y="18" width="64" height="7" class="f2"/><rect x="22" y="32" width="104" height="5" class="f2"/><rect x="22" y="62" width="48" height="16" class="fa"/><rect x="78" y="62" width="48" height="16" class="f1 ln"/><circle cx="145" cy="70" r="11" class="fw ln"/><text x="141" y="74" class="tx">1</text></svg></div><div class="cap"><span class="k"><span class="en">Behaviour · combining</span><span class="zh">组合 · 搭配规则</span></span><span><span class="en">One primary button per screen.</span><span class="zh">比如一屏只放一个主按钮。</span></span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">1.2</span><span class="en">Component states</span><span class="zh">组件状态</span></h3>
+        <p class="h"><span class="en">Draw every state, even the boring ones</span><span class="zh">每个状态都要画出来，哪怕是最无聊的那几个</span></p>
+        <p class="en">Leave a state undrawn and AI fills it in differently every time. So name and draw every state.</p>
+        <p class="zh">少画一个状态，AI 每次都会补得不一样。所以每个状态都要起名、画出来。</p>
+      </div>
+      <div class="fig">
+        <div class="panel states">
+          <div><span class="b">Apply</span><span class="k"><span class="en">Default</span><span class="zh">默认</span></span></div>
+          <div><span class="b hover">Apply</span><span class="k"><span class="en">Hover</span><span class="zh">悬停</span></span></div>
+          <div><span class="b focus">Apply</span><span class="k"><span class="en">Focus</span><span class="zh">聚焦</span></span></div>
+          <div><span class="b press">Apply</span><span class="k"><span class="en">Pressed</span><span class="zh">按下</span></span></div>
+          <div class="miss"><span class="ghost">?</span><span class="k"><span class="en">Loading<br>not drawn</span><span class="zh">加载<br>没画</span></span></div>
+          <div><span class="b dis">Apply</span><span class="k"><span class="en">Disabled</span><span class="zh">禁用</span></span></div>
+        </div>
+        <p class="caption"><span class="en">The striped cell is where AI starts guessing.</span><span class="zh">打斜线的那一格，就是 AI 开始乱猜的地方。</span></p>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">1.3</span><span class="en">Token layers</span><span class="zh">Token 分层</span></h3>
+        <p class="h"><span class="en">Write each colour once</span><span class="zh">每个颜色只写一次</span></p>
+        <span class="like"><span class="en">Like one light switch for the whole room</span><span class="zh">像一个总开关，管一屋子的灯</span></span>
+        <p class="en">Write the raw colour once. Names that say what it means point to it. Night and day only re-point those names. Try it below.</p>
+        <p class="zh">色值只写一次，用途名指向它。日间夜间切换，只是换指向。下面可以试。</p>
+      </div>
+      <div class="fig">
+        <div class="panel tdemo" id="tdemo">
+          <div class="tbar"><span class="k"><span class="en">Try it: change the brand colour</span><span class="zh">试试看：换一个品牌色</span></span><span class="sws"><button data-c="#1f4fff" aria-pressed="true" style="--s:#1f4fff" aria-label="blue"></button><button data-c="#7a3cff" aria-pressed="false" style="--s:#7a3cff" aria-label="purple"></button><button data-c="#0f8a5f" aria-pressed="false" style="--s:#0f8a5f" aria-label="green"></button></span></div>
+          <div class="grid2">
+            <div class="cell tcol" id="tdL"><div class="hd bad"><span class="en">Before: typed in 5 times</span><span class="zh">以前：同一个蓝写了 5 遍</span></div><div class="tparts">
+              <div class="tp"><span class="b" style="background:var(--cL0)"><span class="en">Assign check</span><span class="zh">派人检查</span></span><span class="tag">#1f4fff</span></div>
+              <div class="tp"><span class="lk" style="color:var(--cL1);text-decoration-color:var(--cL1)">EL-04</span><span class="tag">#1f4fff</span></div>
+              <div class="tp"><span class="seg2"><i style="background:var(--cL2)"><span class="en">Day</span><span class="zh">日间</span></i><i><span class="en">Night</span><span class="zh">夜间</span></i></span><span class="tag">#1f4fff</span></div>
+              <div class="tp"><span class="bdg" style="background:var(--cL3)">3</span><span class="tag">#1f4fff</span></div>
+              <div class="tp"><span class="mtr"><i style="background:var(--cL4)"></i></span><span class="tag">#1f4fff</span></div>
+            </div><p class="tres" id="tdLres"><span class="en">Change one, and only that one changes.</span><span class="zh">改了一处，只有那一处变。</span></p></div>
+            <div class="cell tcol" id="tdR"><div class="hd"><span class="en">Now: written once, everyone points to it</span><span class="zh">现在：只写一次，大家都指向它</span></div><div class="tparts">
+              <div class="tp"><span class="b" style="background:var(--cR0)"><span class="en">Assign check</span><span class="zh">派人检查</span></span><span class="tag">→ blue-600</span></div>
+              <div class="tp"><span class="lk" style="color:var(--cR1);text-decoration-color:var(--cR1)">EL-04</span><span class="tag">→ blue-600</span></div>
+              <div class="tp"><span class="seg2"><i style="background:var(--cR2)"><span class="en">Day</span><span class="zh">日间</span></i><i><span class="en">Night</span><span class="zh">夜间</span></i></span><span class="tag">→ blue-600</span></div>
+              <div class="tp"><span class="bdg" style="background:var(--cR3)">3</span><span class="tag">→ blue-600</span></div>
+              <div class="tp"><span class="mtr"><i style="background:var(--cR4)"></i></span><span class="tag">→ blue-600</span></div>
+            </div><p class="tres" id="tdRres"><span class="en">Change it once, all 5 follow.</span><span class="zh">改一次，5 个部件一起变。</span></p></div>
+          </div>
+        </div>
+        <p class="caption"><span class="en">Measured on Green Control: changing one raw colour updates 29 values in 6 files automatically.</span><span class="zh">在 Green Control 上实测：改一个原色，6 个文件里的 29 处自动同步。</span></p>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">1.4</span><span class="en">Where the rules live</span><span class="zh">规则写在哪</span></h3>
+        <p class="h"><span class="en">A rule book, a sticky note and a price list</span><span class="zh">一本规则手册、一张便利贴、一张价目表</span></p>
+        <p class="en">All rules live in one plain-text file, DESIGN.md. SKILL.md is the sticky note for AI on its cover. tokens.json holds only the values.</p>
+        <p class="zh">所有规则写进一个纯文字文件 DESIGN.md。贴在封面上的 SKILL.md 是给 AI 的便利贴。tokens.json 只放数值。</p>
+      </div>
+      <div class="fig"><div class="panel" style="padding:18px 14px"><svg class="iso" viewBox="0 0 950 290" role="img" aria-label="A rule book with a sticky note on its cover, and a small card of colour values"><g transform="translate(90,0)"><defs><marker id="ahf" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="var(--blue)"/></marker></defs><polygon points="169.2,137.2 255.6,180.4 255.6,220.4 169.2,177.2" class="l"/><polygon points="255.6,180.4 370.8,122.8 370.8,162.8 255.6,220.4" class="r"/><polygon points="284.4,79.6 370.8,122.8 255.6,180.4 169.2,137.2" class="t"/><line x1="259.2" y1="211.6" x2="367.2" y2="157.6" class="s"/><line x1="259.2" y1="205.6" x2="367.2" y2="151.6" class="s"/><line x1="259.2" y1="199.6" x2="367.2" y2="145.6" class="s"/><line x1="259.2" y1="193.6" x2="367.2" y2="139.6" class="s"/><line x1="172.8" y1="175.0" x2="172.8" y2="143.0" class="s"/><polygon points="284.4,90.4 349.2,122.8 255.6,169.6 190.8,137.2" class="slot"/><polygon points="280.8,123.6 316.8,141.6 279.0,160.5 243.0,142.5" class="m"/><line x1="277.2" y1="130.8" x2="300.6" y2="142.5" class="paper"/><line x1="268.2" y1="135.3" x2="291.6" y2="147.0" class="paper"/><line x1="259.2" y1="139.8" x2="282.6" y2="151.5" class="paper"/><polygon points="596.0,205.0 650.0,232.0 650.0,238.0 596.0,211.0" class="l"/><polygon points="650.0,232.0 704.0,205.0 704.0,211.0 650.0,238.0" class="r"/><polygon points="650.0,178.0 704.0,205.0 650.0,232.0 596.0,205.0" class="t"/><polygon points="650.0,182.5 671.0,193.0 650.0,203.5 629.0,193.0" class="a"/><polygon points="674.0,194.5 695.0,205.0 674.0,215.5 653.0,205.0" class="m"/><polygon points="626.0,194.5 647.0,205.0 626.0,215.5 605.0,205.0" class="r"/><polygon points="650.0,206.5 671.0,217.0 650.0,227.5 629.0,217.0" class="t"/><circle cx="160" cy="180" r="1.6" class="dot"/><line x1="160" y1="180" x2="196" y2="180" class="ld" marker-end="url(#ahf)"/><text x="152" y="176" text-anchor="end" class="lab en">DESIGN.MD · RULE BOOK</text><text x="152" y="176" text-anchor="end" class="lab zh">DESIGN.MD · 规则手册</text><text x="152" y="192" text-anchor="end" class="lab2 en">EVERY RULE · PEOPLE AND AI READ IT</text><text x="152" y="192" text-anchor="end" class="lab2 zh">所有规定 · 人和 AI 都读</text><circle cx="470" cy="132" r="1.6" class="dot"/><line x1="470" y1="132" x2="302" y2="132" class="ld" marker-end="url(#ahf)"/><text x="478" y="136" text-anchor="start" class="lab en">SKILL.MD · STICKY NOTE</text><text x="478" y="136" text-anchor="start" class="lab zh">SKILL.MD · 便利贴</text><text x="478" y="152" text-anchor="start" class="lab2 en">AI READS IT FIRST: WHERE TO LOOK, HOW TO WORK</text><text x="478" y="152" text-anchor="start" class="lab2 zh">AI 先读它：去哪查、怎么干活</text><circle cx="740" cy="221" r="1.6" class="dot"/><line x1="740" y1="221" x2="681" y2="221" class="ld" marker-end="url(#ahf)"/><text x="748" y="225" text-anchor="start" class="lab en">TOKENS.JSON</text><text x="748" y="225" text-anchor="start" class="lab zh">TOKENS.JSON</text><text x="748" y="241" text-anchor="start" class="lab2 en">ONLY THE VALUES</text><text x="748" y="241" text-anchor="start" class="lab2 zh">只有数值</text></g></svg></div>
+        <p class="caption"><span class="en">Where the rules live. The sticky note on the rule book is the skill: it tells AI where to look and how to work.</span><span class="zh">规则写在哪：一本规则手册，封面上贴着一张便利贴，那就是 skill，告诉 AI 去哪查、怎么干活。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAYER 2 ============ -->
+  <section class="layer" id="layer2">
+    <div class="sec-head">
+      <span class="num">02</span>
+      <div><h2><span class="en">Package them for AI</span><span class="zh">打包成 AI 能直接用的样子</span></h2><p><span class="en">Five kinds of package, each with its own job.</span><span class="zh">五种打包方式，各管一件事。</span></p></div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">2.1</span><span>Tokens</span></h3>
+        <p class="h"><span class="en">Write values as a form, not an essay</span><span class="zh">把数值写成表格，而不是作文</span></p>
+        <span class="like"><span class="en">Like a résumé template</span><span class="zh">像一份简历模板</span></span>
+        <p class="en">Say “bright blue” and AI guesses. Give it a field, accent = #1f4fff, and there's nothing left to guess.</p>
+        <p class="zh">说“亮一点的蓝”，AI 只能猜；给它一栏 accent = #1f4fff，就没什么可猜的了。</p>
+      </div>
+      <div class="fig">
+        <div class="panel grid2">
+          <div class="cell"><div class="pic"><svg width="260" height="120" viewBox="0 0 260 120" aria-hidden="true"><rect x="10" y="8" width="180" height="36" class="fw ln"/><path d="M36 44l-6 12 18-12" class="fw ln"/><text x="22" y="31" class="tx2">"A BRIGHT BLUE"</text><rect x="40" y="70" width="38" height="38" fill="#4a73ff"/><rect x="86" y="70" width="38" height="38" fill="#1f4fff"/><rect x="132" y="70" width="38" height="38" fill="#3355ee"/><text x="184" y="95" style="font:18px var(--mono);fill:var(--bad)">?</text></svg></div><div class="cap"><span class="k bad"><span class="en">An essay</span><span class="zh">作文</span></span><span><span class="en">AI picks some blue. Different each time.</span><span class="zh">AI 随手挑一个蓝，每次都不同。</span></span></div></div>
+          <div class="cell"><div class="pic"><svg width="260" height="120" viewBox="0 0 260 120" aria-hidden="true"><rect x="10" y="8" width="200" height="36" class="fw ln"/><path d="M84 8v36" class="ln"/><text x="22" y="31" class="tx2">ACCENT</text><text x="98" y="31" class="tx">#1F4FFF</text><path d="M120 44v20" class="ln" stroke-dasharray="3 3"/><rect x="101" y="70" width="38" height="38" class="fa"/><path d="M156 88l7 7 13-13" class="ln" style="stroke-width:1.8"/></svg></div><div class="cap"><span class="k"><span class="en">A form</span><span class="zh">表格</span></span><span><span class="en">AI uses exactly this value. Every time.</span><span class="zh">AI 只用这一个值，每次都一样。</span></span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">2.2</span><span class="en">Components · props · .tsx</span><span class="zh">组件 · props · .tsx</span></h3>
+        <p class="h"><span class="en">Hand over the finished dish, not the recipe</span><span class="zh">直接给做好的菜，而不是菜谱</span></p>
+        <span class="like"><span class="en">Like Figma's properties panel</span><span class="zh">像 Figma 的属性面板</span></span>
+        <p class="en">Don't describe the button. Hand AI the finished one, with its options (props) built in. Try turning on Loading.</p>
+        <p class="zh">别用文字描述按钮，直接把做好的按钮交给 AI，选项（props）都在里面。试试打开“加载中”。</p>
+      </div>
+      <div class="fig">
+        <div class="panel demo" id="demo">
+          <div class="ctl">
+            <div><span class="ttl"><span class="en">Variant</span><span class="zh">样式</span></span><div class="opts" data-k="v"><button aria-pressed="true" data-v="primary"><span class="en">Primary</span><span class="zh">主要</span></button><button aria-pressed="false" data-v="secondary"><span class="en">Secondary</span><span class="zh">次要</span></button></div></div>
+            <div><span class="ttl"><span class="en">Loading</span><span class="zh">加载中</span></span><div class="opts" data-k="l"><button aria-pressed="true" data-v="0"><span class="en">Off</span><span class="zh">关</span></button><button aria-pressed="false" data-v="1"><span class="en">On</span><span class="zh">开</span></button></div></div>
+            <div><span class="ttl"><span class="en">Disabled</span><span class="zh">禁用</span></span><div class="opts" data-k="d"><button aria-pressed="true" data-v="0"><span class="en">Off</span><span class="zh">关</span></button><button aria-pressed="false" data-v="1"><span class="en">On</span><span class="zh">开</span></button></div></div>
+          </div>
+          <div class="out"><div class="stage" id="demoStage"></div><div class="code" id="demoCode"></div></div>
+        </div>
+        <p class="caption"><span class="en">Left: the options. Bottom: the one line AI actually writes.</span><span class="zh">左边是选项，下面那一行是 AI 真正要写的代码。</span></p>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">2.3</span><span>Registry · shadcn</span></h3>
+        <p class="h"><span class="en">How a finished part gets delivered</span><span class="zh">做好的部件，怎么送到别的项目里</span></p>
+        <span class="like"><span class="en">Like ordering takeout</span><span class="zh">像点外卖</span></span>
+        <p class="en">A finished part travels like takeout: the dish in a standard box, ordered from a platform with one line. shadcn is the box everyone uses.</p>
+        <p class="zh">做好的部件像外卖：菜装进标准餐盒，在平台上一行命令就能下单。shadcn 就是大家都用的那种餐盒。</p>
+      </div>
+      <div class="fig">
+        <div class="panel story"><div class="sc"><div class="sp"><svg viewBox="0 0 200 170" aria-hidden="true" class="iso"><path d="M150 20 l26 -14 M156 28 l28 -14" class="s"/><path d="M34,96 C38,158 162,158 166,96 Z" class="l"/><ellipse cx="100" cy="96" rx="66" ry="33" class="t"/><ellipse cx="100" cy="96" rx="54" ry="27" class="r"/><polygon points="67.5,84.1 113.8,107.2 113.8,114.2 67.5,91.1" class="am"/><polygon points="113.8,107.2 132.4,97.9 132.4,104.9 113.8,114.2" class="ad"/><polygon points="86.2,74.8 132.4,97.9 113.8,107.2 67.5,84.1" class="a"/><line x1="87.9" y1="85.0" x2="112.1" y2="97.0" style="stroke:#fff;stroke-width:2;stroke-linecap:round"/><path d="M34,96 A66,33 0 0 0 166,96 C162,158 38,158 34,96 Z" class="l"/><path d="M34,96 A66,33 0 0 0 166,96" class="s" style="stroke-width:1.4"/><path d="M84 44 c-6 -8 6 -12 0 -22 M100 40 c-6 -8 6 -12 0 -22 M116 44 c-6 -8 6 -12 0 -22" class="s"/></svg></div><div class="scap"><span class="n">01</span><b><span class="en">The dish</span><span class="zh">菜</span></b><span><span class="en">The finished button itself.</span><span class="zh">做好的按钮本身。</span></span><code>button.tsx</code></div></div><div class="sc"><div class="sp"><svg viewBox="0 0 200 170" aria-hidden="true" class="iso"><polygon points="100.0,52.0 148.0,76.0 124.0,64.0 76.0,40.0" class="l"/><polygon points="52.0,76.0 100.0,100.0 100.0,152.0 52.0,128.0" class="l"/><polygon points="100.0,100.0 148.0,76.0 148.0,128.0 100.0,152.0" class="r"/><polygon points="100.0,52.0 148.0,76.0 100.0,100.0 52.0,76.0" class="t"/><polygon points="100.0,100.0 148.0,76.0 124.0,64.0" class="r"/><polygon points="52.0,76.0 100.0,100.0 124.0,64.0 76.0,40.0" class="t"/><path d="M82.0,45.0 C88.0,-0.6 112.0,17.4 118.0,63.0" class="s" style="stroke-width:1.6"/><circle cx="82.0" cy="45.0" r="2.4" class="a"/><circle cx="118.0" cy="63.0" r="2.4" class="a"/><polygon points="56.8,88.4 83.2,101.6 83.2,129.6 56.8,116.4" class="paper"/><line x1="60.4" y1="98.2" x2="79.6" y2="107.8" class="s"/><line x1="60.4" y1="106.2" x2="74.8" y2="113.4" class="s"/><line x1="60.4" y1="113.2" x2="78.4" y2="122.2" class="s"/></svg></div><div class="scap"><span class="n">02</span><b><span class="en">The box</span><span class="zh">餐盒</span></b><span><span class="en">Packed, with a label: what's inside, what else it needs.</span><span class="zh">装好盒，贴上标签：里面是什么，还要配什么。</span></span><code>gc-button.json</code></div></div><div class="sc"><div class="sp"><svg viewBox="0 0 200 170" aria-hidden="true" class="iso"><polygon points="23.5,112.8 74.5,138.2 74.5,144.2 23.5,118.8" class="l"/><polygon points="74.5,138.2 176.5,87.2 176.5,93.2 74.5,144.2" class="r"/><polygon points="125.5,61.8 176.5,87.2 74.5,138.2 23.5,112.8" class="t"/><polygon points="125.2,65.8 168.4,87.4 74.8,134.2 31.6,112.6" class="paper"/><polygon points="121.0,71.5 157.0,89.5 134.5,100.8 98.5,82.8" class="t"/><polygon points="92.5,85.8 128.5,103.8 106.0,115.0 70.0,97.0" class="slot"/><polygon points="64.0,100.0 100.0,118.0 77.5,129.2 41.5,111.2" class="slot"/><line x1="120.2" y1="82.4" x2="120.2" y2="60.4" class="dash"/><polygon points="108.2,50.4 120.2,56.4 120.2,66.4 108.2,60.4" class="am"/><polygon points="120.2,56.4 132.2,50.4 132.2,60.4 120.2,66.4" class="ad"/><polygon points="120.2,44.4 132.2,50.4 120.2,56.4 108.2,50.4" class="a"/><line x1="134.9" y1="86.1" x2="145.8" y2="91.5" class="s"/><line x1="127.8" y1="89.7" x2="134.9" y2="93.3" class="s"/><polygon points="79.8,86.6 91.8,92.6 91.8,102.6 79.8,96.6" class="l"/><polygon points="91.8,92.6 103.8,86.6 103.8,96.6 91.8,102.6" class="r"/><polygon points="91.8,80.6 103.8,86.6 91.8,92.6 79.8,86.6" class="t"/><line x1="106.5" y1="100.4" x2="117.2" y2="105.8" class="s"/><line x1="99.2" y1="104.0" x2="106.5" y2="107.6" class="s"/><polygon points="51.2,100.9 63.2,106.9 63.2,116.9 51.2,110.9" class="l"/><polygon points="63.2,106.9 75.2,100.9 75.2,110.9 63.2,116.9" class="r"/><polygon points="63.2,94.9 75.2,100.9 63.2,106.9 51.2,100.9" class="t"/><line x1="77.9" y1="114.6" x2="88.8" y2="120.0" class="s"/><line x1="70.8" y1="118.2" x2="77.9" y2="121.8" class="s"/></svg></div><div class="scap"><span class="n">03</span><b><span class="en">The app</span><span class="zh">外卖平台</span></b><span><span class="en">Every box in one place. Pick one.</span><span class="zh">所有餐盒都在这里，挑一个。</span></span><code>registry</code></div></div><div class="sc"><div class="sp"><svg viewBox="0 0 200 170" aria-hidden="true" class="iso"><polygon points="86.8,78.6 113.2,91.8 113.2,99.8 86.8,86.6" class="l"/><polygon points="113.2,91.8 120.4,88.2 120.4,96.2 113.2,99.8" class="r"/><polygon points="94.0,75.0 120.4,88.2 113.2,91.8 86.8,78.6" class="t"/><polygon points="41.2,109.4 113.2,145.4 113.2,159.4 41.2,123.4" class="l"/><polygon points="113.2,145.4 158.8,122.6 158.8,136.6 113.2,159.4" class="r"/><polygon points="86.8,86.6 158.8,122.6 113.2,145.4 41.2,109.4" class="t"/><polygon points="97.1,102.6 126.9,117.4 102.9,129.4 73.1,114.6" class="slot"/><line x1="73.1" y1="114.6" x2="73.1" y2="76.6" class="dash"/><line x1="102.9" y1="129.4" x2="102.9" y2="91.4" class="dash"/><line x1="126.9" y1="117.4" x2="126.9" y2="79.4" class="dash"/><g transform="translate(0 -50)"><polygon points="100.0,87.0 126.0,100.0 113.0,82.5 87.0,69.5" class="am"/><polygon points="74.0,100.0 100.0,113.0 100.0,141.0 74.0,128.0" class="am"/><polygon points="100.0,113.0 126.0,100.0 126.0,128.0 100.0,141.0" class="ad"/><polygon points="100.0,87.0 126.0,100.0 100.0,113.0 74.0,100.0" class="a"/><polygon points="100.0,113.0 126.0,100.0 113.0,82.5" class="ad"/><polygon points="74.0,100.0 100.0,113.0 113.0,82.5 87.0,69.5" class="a"/><path d="M90.2,73.1 C96.2,41.9 103.8,51.7 109.8,82.9" class="s" style="stroke-width:1.6"/><circle cx="90.2" cy="73.1" r="2.4" class="a"/><circle cx="109.8" cy="82.9" r="2.4" class="a"/></g></svg></div><div class="scap"><span class="n">04</span><b><span class="en">Delivered</span><span class="zh">送到</span></b><span><span class="en">One line, and it lands in your project.</span><span class="zh">一行命令，送进你的项目。</span></span><code>npx shadcn add</code></div></div></div>
+        <div class="why"><span><span class="en">Arrives complete</span><span class="zh">送到就能用</span></span><span><span class="en">Always lands in the same place</span><span class="zh">每次放在同一个位置</span></span><span><span class="en">Every AI tool can open it</span><span class="zh">AI 工具都能打开</span></span><span><span class="en">Engineers already know it</span><span class="zh">工程师本来就熟</span></span></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">2.4</span><span>Skill · SKILL.md</span></h3>
+        <p class="h"><span class="en">The manual that comes with the parts</span><span class="zh">零件附带的说明书</span></p>
+        <span class="like"><span class="en">Like IKEA</span><span class="zh">像宜家</span></span>
+        <p class="en">The registry makes each part right. The skill tells AI when to use which. One is the IKEA parts bag, the other the booklet.</p>
+        <p class="zh">registry 保证部件做得对，skill 告诉 AI 什么时候用哪个。一个是宜家的零件袋，一个是说明书。</p>
+        <p class="en"><a class="jump" href="#eval">See a real test: the same task with and without the skill → 3.4</a></p>
+        <p class="zh"><a class="jump" href="#eval">真实测试：同一个任务，给和不给 skill 各做一遍 → 看 3.4</a></p>
+      </div>
+      <div class="fig">
+        <div class="panel grid2 elev2">
+          <div class="cell">
+            <div class="hd bad"><span class="en">Parts only (registry)</span><span class="zh">只有零件（registry）</span></div>
+            <div class="pic"><div class="mcard">
+              <span class="k"><span class="en">Elevator EL-04 · 41% sure</span><span class="zh">电梯 EL-04 · 把握 41%</span></span>
+              <span><span class="en">Door sensor may be faulty.</span><span class="zh">门传感器可能有故障。</span></span>
+              <div class="row"><span class="b wrong"><span class="en">Apply fix</span><span class="zh">直接修复</span></span></div>
+            </div></div>
+            <div class="cap"><span class="k bad"><span class="en">✕ Wrong</span><span class="zh">✕ 错了</span></span><span><span class="en">The button is styled perfectly. But at 41% sure, nobody should fix anything yet.</span><span class="zh">按钮本身做得完全正确。但只有 41% 的把握，根本不该直接修。</span></span></div>
+          </div>
+          <div class="cell">
+            <div class="hd"><span class="en">Parts + manual (skill)</span><span class="zh">零件 + 说明书（skill）</span></div>
+            <div class="pic"><div class="mcard">
+              <span class="k"><span class="en">Elevator EL-04 · 41% sure</span><span class="zh">电梯 EL-04 · 把握 41%</span></span>
+              <span><span class="en">Door sensor may be faulty.</span><span class="zh">门传感器可能有故障。</span></span>
+              <div class="row"><span class="b"><span class="en">Assign check</span><span class="zh">派人检查</span></span></div>
+            </div></div>
+            <div class="cap"><span class="k"><span class="en">✓ Right</span><span class="zh">✓ 对了</span></span><span><span class="en">The skill says: under 50% sure, only send someone to check.</span><span class="zh">说明书里写着：把握低于 50%，只能先派人检查。</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">2.5</span><span>MCP</span></h3>
+        <p class="h"><span class="en">A help desk AI can ask any time</span><span class="zh">AI 随时能来问的窗口</span></p>
+        <span class="like"><span class="en">Like a new hire putting their hand up</span><span class="zh">像新同事举手提问</span></span>
+        <p class="en">A skill is read before work starts. MCP is a window AI can ask while it works, even where your files aren't. Each kind of question is one tool; we opened five.</p>
+        <p class="zh">Skill 是开工前读的。MCP 是干活时随时能问的窗口，文件不在手边也能问。每一类问题是一个 tool，这里开了 5 个。</p>
+      </div>
+      <div class="fig">
+        <div class="panel desk">
+          <div class="dcol">
+            <span class="dk"><span class="en">AI · the new hire</span><span class="zh">AI · 新同事</span></span>
+            <div class="who"><svg width="44" height="50" viewBox="0 0 56 64" aria-hidden="true"><path d="M28 14 v-8" class="ln"/><circle cx="28" cy="5" r="3.5" class="fa"/><rect x="8" y="14" width="40" height="30" rx="5" class="f1 ln"/><circle cx="21" cy="29" r="3.5" class="fa"/><circle cx="35" cy="29" r="3.5" class="fa"/><path d="M14 44 h28 l4 18 h-36 z" class="f2 ln"/></svg><span><span class="en">Has none of your files</span><span class="zh">手上没有你的任何文件</span></span></div>
+            <div class="dq"><span class="en">“41% sure. Can I put a fix button on the card?”</span><span class="zh">“把握 41%，卡片上能放修复按钮吗？”</span></div>
+          </div>
+          <div class="darr"><b>①</b><span class="en">asks</span><span class="zh">去问</span><i>→</i></div>
+          <div class="dcol">
+            <span class="dk"><span class="en">MCP · 5 windows</span><span class="zh">MCP · 5 个窗口</span></span>
+            <ul class="wins"><li class="on"><span><span class="en">Ask about rules</span><span class="zh">问规则</span></span><code>get_rule</code></li><li class=""><span><span class="en">Which parts exist</span><span class="zh">问有哪些部件</span></span><code>list_components</code></li><li class=""><span><span class="en">How a part works</span><span class="zh">问部件怎么用</span></span><code>get_component</code></li><li class=""><span><span class="en">Which colours</span><span class="zh">问颜色</span></span><code>get_tokens</code></li><li class=""><span><span class="en">Check my work</span><span class="zh">请它检查</span></span><code>check_code</code></li></ul>
+          </div>
+          <div class="darr"><b>②</b><span class="en">looks up</span><span class="zh">去查</span><i>→</i></div>
+          <div class="dcol">
+            <span class="dk"><span class="en">Your files</span><span class="zh">你的资料</span></span>
+            <ul class="files"><li class="on"><b>DESIGN.md</b><span><span class="en">rules</span><span class="zh">规则</span></span></li><li class=""><b>Components</b><span><span class="en">parts</span><span class="zh">部件</span></span></li><li class=""><b>tokens.json</b><span><span class="en">colours</span><span class="zh">颜色</span></span></li><li class=""><b>gc-check</b><span><span class="en">checker</span><span class="zh">检查工具</span></span></li></ul>
+          </div>
+          <div class="dans"><b>③</b><span class="k"><span class="en">Answer comes back to AI</span><span class="zh">答案带回给 AI</span></span><span class="t"><span class="en">“No. Below 50% sure, only send someone to check.”</span><span class="zh">“不能。把握低于 50%，只能派人去检查。”</span></span></div>
+        </div>
+        <div class="panel mlog">
+          <div class="mh"><span class="k"><span class="en">Real test · 13 Nov 2026</span><span class="zh">真实测试 · 2026 年 11 月 13 日</span></span><span><span class="en">Green Control MCP installed on Shuyi's Mac, called from Claude</span><span class="zh">Green Control MCP 装在 Shuyi 的 Mac 上，由 Claude 来调用</span></span></div>
+          <div class="mr"><code>get_rule</code><div><span class="q"><span class="en">“41% sure. Fix button?”</span><span class="zh">“41% 把握，能放修复按钮吗？”</span></span><span class="a"><span class="en">No. Only send someone to check.</span><span class="zh">不能，只能派人去查。</span></span></div></div><div class="mr"><code>list_components</code><div><span class="q"><span class="en">“Which parts are there?”</span><span class="zh">“有哪些现成部件？”</span></span><span class="a"><span class="en">7 components, 13 CSS parts.</span><span class="zh">7 个组件，13 种 CSS 部件。</span></span></div></div><div class="mr"><code>get_tokens</code><div><span class="q"><span class="en">“Night colours?”</span><span class="zh">“夜间用哪些颜色？”</span></span><span class="a"><span class="en">15 colours, each with its job.</span><span class="zh">15 个颜色，各自写了用途。</span></span></div></div><div class="mr"><code>check_code</code><div><span class="q"><span class="en">A card with 2 planted mistakes</span><span class="zh">故意写错 2 处的卡片</span></span><span class="a bad-t"><span class="en">Found both.</span><span class="zh">2 处都找出来了。</span></span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAYER 3 ============ -->
+  <section class="layer" id="layer3">
+    <div class="sec-head">
+      <span class="num">03</span>
+      <div><h2><span class="en">Check the work</span><span class="zh">检查做得对不对</span></h2><p><span class="en">What matters is who does the checking.</span><span class="zh">关键在于谁来检查。</span></p></div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">3.1</span><span class="en">Self-check vs. machine check</span><span class="zh">自查 vs 机器检查</span></h3>
+        <p class="h"><span class="en">Eyeballing it vs. using a ruler</span><span class="zh">用眼睛估，还是拿尺子量</span></p>
+        <p class="en">AI checking its own work is grading its own exam. A machine check is a ruler: same code, same answer, every time. Try both below.</p>
+        <p class="zh">AI 自查，等于自己批自己的卷子。机器检查是尺子：同样的代码，每次结果都一样。下面可以试。</p>
+      </div>
+      <div class="fig">
+        <div class="panel grid2">
+          <div class="cell"><div class="pic"><svg width="230" height="100" viewBox="0 0 230 100" aria-hidden="true"><path d="M20 50c24-28 70-28 94 0-24 28-70 28-94 0z" class="f1 ln"/><circle cx="67" cy="50" r="13" class="fa"/><path d="M130 50h80" class="ln" stroke-dasharray="4 4"/><text x="146" y="38" style="font:15px var(--mono);fill:var(--muted)">≈ 24?</text></svg></div><div class="cap"><span class="k"><span class="en">AI checks itself</span><span class="zh">AI 自查</span></span><span><span class="en">Grades its own exam.</span><span class="zh">自己批自己的卷子。</span></span></div></div>
+          <div class="cell"><div class="pic"><svg width="230" height="100" viewBox="0 0 230 100" aria-hidden="true"><rect x="14" y="50" width="200" height="28" class="f1 ln"/><path d="M30 50v12M46 50v7M62 50v12M78 50v7M94 50v12M110 50v7M126 50v12M142 50v7M158 50v12M174 50v7M190 50v12" class="ln"/><path d="M14 34h182M196 28v12M14 28v12" class="ln" style="stroke-width:1.8"/><text x="86" y="24" style="font:15px var(--mono);fill:var(--blue)">23 PX</text></svg></div><div class="cap"><span class="k"><span class="en">A machine checks</span><span class="zh">机器检查</span></span><span><span class="en">Same answer every time.</span><span class="zh">每次结果都一样。</span></span></div></div>
+        </div>
+        <div class="panel">
+          <div class="chk-code" id="checkCode">
+            <div><span class="n">1</span><span>.title  { color: var(--ink) }</span><span class="mk"></span></div>
+            <div><span class="n">2</span><span>.card   { background: var(--surface) }</span><span class="mk"></span></div>
+            <div data-bad><span class="n">3</span><span>.alert  { color: #ff6b1a }</span><span class="mk"><span class="en">✕ not a token</span><span class="zh">✕ 不是 token</span></span></div>
+            <div><span class="n">4</span><span>.button { background: var(--accent) }</span><span class="mk"></span></div>
+            <div data-bad><span class="n">5</span><span>.badge  { border-color: #d4d4d4 }</span><span class="mk"><span class="en">✕ not a token</span><span class="zh">✕ 不是 token</span></span></div>
+          </div>
+          <div class="chk"><button id="ckAgent" aria-pressed="false"><span class="en">AI checks itself</span><span class="zh">AI 自查</span></button><button id="ckMachine" aria-pressed="false"><span class="en">Machine checks</span><span class="zh">机器检查</span></button></div>
+          <div class="verdict" id="verdict"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">3.2</span><span>TypeScript · lint · CI</span></h3>
+        <p class="h"><span class="en">Two machine checks, explained with LEGO</span><span class="zh">两种机器检查，用乐高来理解</span></p>
+        <p class="en">TypeScript checks that the pieces fit. Lint checks your house rules. CI runs both on every change, like a security gate.</p>
+        <p class="zh">TypeScript 查零件拼不拼得上，lint 查合不合你们的规矩。CI 每次改动都自动跑一遍，像安检门。</p>
+      </div>
+      <div class="fig">
+        <div class="panel grid2">
+          <div class="cell"><div class="pic"><svg class="iso" viewBox="0 0 360 210" role="img" aria-label="LEGO bricks: a brick that does not fit"><defs><marker id="ah2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="var(--bad)"/></marker></defs><polygon points="102.0,122.0 166.0,154.0 166.0,174.0 102.0,142.0" class="l"/><polygon points="166.0,154.0 198.0,138.0 198.0,158.0 166.0,174.0" class="r"/><polygon points="134.0,106.0 198.0,138.0 166.0,154.0 102.0,122.0" class="t"/><path d="M127.2,114.0 L127.2,109.0 L140.8,109.0 L140.8,114.0 A6.8,3.4 0 0 1 127.2,114.0 Z" class="l"/><ellipse cx="134.0" cy="109.0" rx="6.8" ry="3.4" class="t"/><path d="M111.2,122.0 L111.2,117.0 L124.8,117.0 L124.8,122.0 A6.8,3.4 0 0 1 111.2,122.0 Z" class="l"/><ellipse cx="118.0" cy="117.0" rx="6.8" ry="3.4" class="t"/><path d="M143.2,122.0 L143.2,117.0 L156.8,117.0 L156.8,122.0 A6.8,3.4 0 0 1 143.2,122.0 Z" class="l"/><ellipse cx="150.0" cy="117.0" rx="6.8" ry="3.4" class="t"/><path d="M127.2,130.0 L127.2,125.0 L140.8,125.0 L140.8,130.0 A6.8,3.4 0 0 1 127.2,130.0 Z" class="l"/><ellipse cx="134.0" cy="125.0" rx="6.8" ry="3.4" class="t"/><path d="M159.2,130.0 L159.2,125.0 L172.8,125.0 L172.8,130.0 A6.8,3.4 0 0 1 159.2,130.0 Z" class="l"/><ellipse cx="166.0" cy="125.0" rx="6.8" ry="3.4" class="t"/><path d="M143.2,138.0 L143.2,133.0 L156.8,133.0 L156.8,138.0 A6.8,3.4 0 0 1 143.2,138.0 Z" class="l"/><ellipse cx="150.0" cy="133.0" rx="6.8" ry="3.4" class="t"/><path d="M175.2,138.0 L175.2,133.0 L188.8,133.0 L188.8,138.0 A6.8,3.4 0 0 1 175.2,138.0 Z" class="l"/><ellipse cx="182.0" cy="133.0" rx="6.8" ry="3.4" class="t"/><path d="M159.2,146.0 L159.2,141.0 L172.8,141.0 L172.8,146.0 A6.8,3.4 0 0 1 159.2,146.0 Z" class="l"/><ellipse cx="166.0" cy="141.0" rx="6.8" ry="3.4" class="t"/><g transform="rotate(11 160 70)"><polygon points="126.8,78.4 158.8,94.4 158.8,114.4 126.8,98.4" class="l"/><polygon points="158.8,94.4 190.8,78.4 190.8,98.4 158.8,114.4" class="r"/><polygon points="158.8,62.4 190.8,78.4 158.8,94.4 126.8,78.4" class="t"/><path d="M152.0,70.4 L152.0,65.4 L165.6,65.4 L165.6,70.4 A6.8,3.4 0 0 1 152.0,70.4 Z" class="l"/><ellipse cx="158.8" cy="65.4" rx="6.8" ry="3.4" class="t"/><path d="M136.0,78.4 L136.0,73.4 L149.6,73.4 L149.6,78.4 A6.8,3.4 0 0 1 136.0,78.4 Z" class="l"/><ellipse cx="142.8" cy="73.4" rx="6.8" ry="3.4" class="t"/><path d="M168.0,78.4 L168.0,73.4 L181.6,73.4 L181.6,78.4 A6.8,3.4 0 0 1 168.0,78.4 Z" class="l"/><ellipse cx="174.8" cy="73.4" rx="6.8" ry="3.4" class="t"/><path d="M152.0,86.4 L152.0,81.4 L165.6,81.4 L165.6,86.4 A6.8,3.4 0 0 1 152.0,86.4 Z" class="l"/><ellipse cx="158.8" cy="81.4" rx="6.8" ry="3.4" class="t"/></g><circle cx="236" cy="94" r="1.6" class="dot bad-f"/><line x1="236" y1="94" x2="191" y2="94" class="ld bad-l" marker-end="url(#ah2)"/><text x="244" y="98" text-anchor="start" class="lab bad-t en">DOESN'T CLICK IN</text><text x="244" y="98" text-anchor="start" class="lab bad-t zh">按不进去</text></svg></div><div class="cap"><span class="k">TypeScript</span><span><span class="en">Does it fit?</span><span class="zh">拼不拼得上？</span></span></div></div>
+          <div class="cell"><div class="pic"><svg class="iso" viewBox="0 0 360 210" role="img" aria-label="LEGO bricks: a brick that fits but is the wrong colour"><defs><marker id="ah3" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="var(--bad)"/></marker></defs><polygon points="102.0,122.0 166.0,154.0 166.0,174.0 102.0,142.0" class="l"/><polygon points="166.0,154.0 198.0,138.0 198.0,158.0 166.0,174.0" class="r"/><polygon points="134.0,106.0 198.0,138.0 166.0,154.0 102.0,122.0" class="t"/><path d="M127.2,114.0 L127.2,109.0 L140.8,109.0 L140.8,114.0 A6.8,3.4 0 0 1 127.2,114.0 Z" class="l"/><ellipse cx="134.0" cy="109.0" rx="6.8" ry="3.4" class="t"/><path d="M111.2,122.0 L111.2,117.0 L124.8,117.0 L124.8,122.0 A6.8,3.4 0 0 1 111.2,122.0 Z" class="l"/><ellipse cx="118.0" cy="117.0" rx="6.8" ry="3.4" class="t"/><path d="M143.2,122.0 L143.2,117.0 L156.8,117.0 L156.8,122.0 A6.8,3.4 0 0 1 143.2,122.0 Z" class="l"/><ellipse cx="150.0" cy="117.0" rx="6.8" ry="3.4" class="t"/><path d="M127.2,130.0 L127.2,125.0 L140.8,125.0 L140.8,130.0 A6.8,3.4 0 0 1 127.2,130.0 Z" class="l"/><ellipse cx="134.0" cy="125.0" rx="6.8" ry="3.4" class="t"/><polygon points="134.0,118.0 166.0,134.0 166.0,154.0 134.0,138.0" class="ol"/><polygon points="166.0,134.0 198.0,118.0 198.0,138.0 166.0,154.0" class="or"/><polygon points="166.0,102.0 198.0,118.0 166.0,134.0 134.0,118.0" class="ot"/><path d="M159.2,110.0 L159.2,105.0 L172.8,105.0 L172.8,110.0 A6.8,3.4 0 0 1 159.2,110.0 Z" class="ol"/><ellipse cx="166.0" cy="105.0" rx="6.8" ry="3.4" class="ot"/><path d="M143.2,118.0 L143.2,113.0 L156.8,113.0 L156.8,118.0 A6.8,3.4 0 0 1 143.2,118.0 Z" class="ol"/><ellipse cx="150.0" cy="113.0" rx="6.8" ry="3.4" class="ot"/><path d="M175.2,118.0 L175.2,113.0 L188.8,113.0 L188.8,118.0 A6.8,3.4 0 0 1 175.2,118.0 Z" class="ol"/><ellipse cx="182.0" cy="113.0" rx="6.8" ry="3.4" class="ot"/><path d="M159.2,126.0 L159.2,121.0 L172.8,121.0 L172.8,126.0 A6.8,3.4 0 0 1 159.2,126.0 Z" class="ol"/><ellipse cx="166.0" cy="121.0" rx="6.8" ry="3.4" class="ot"/><circle cx="236" cy="128" r="1.6" class="dot bad-f"/><line x1="236" y1="128" x2="186" y2="128" class="ld bad-l" marker-end="url(#ah3)"/><text x="244" y="124" text-anchor="start" class="lab bad-t en">CLICKS IN</text><text x="244" y="124" text-anchor="start" class="lab bad-t zh">能按上</text><text x="244" y="140" text-anchor="start" class="lab2 bad-t en">NOT OUR COLOUR</text><text x="244" y="140" text-anchor="start" class="lab2 bad-t zh">但不是我们的颜色</text></svg></div><div class="cap"><span class="k">Lint</span><span><span class="en">Does it follow our rules?</span><span class="zh">合不合我们的规矩？</span></span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">3.3</span><span class="en">gc-check, first run</span><span class="zh">gc-check 第一次运行</span></h3>
+        <p class="h"><span class="en">The ruler found what four rounds of eyes missed</span><span class="zh">尺子找出了四轮人眼都漏掉的问题</span></p>
+        <p class="en">After four rounds of people reviewing, one run of gc-check found these. To an eye, 4.33 and 4.5 look the same.</p>
+        <p class="zh">人看了四轮之后，gc-check 只跑一次就找出了这些。4.33 和 4.5，眼睛分不出来。</p>
+      </div>
+      <div class="fig">
+        <div class="panel find">
+          <div><span class="fk"><span class="en">Contrast · 3 pairs</span><span class="zh">对比度 · 3 组</span></span><div class="pair"><div class="cs" style="background:#e4e4e1;color:#6e6e69"><span><span class="en">Secondary text</span><span class="zh">辅助文字</span></span><b class="no">4.02:1 ✕</b></div><span class="arr">→</span><div class="cs" style="background:#e4e4e1;color:#666662"><span><span class="en">Secondary text</span><span class="zh">辅助文字</span></span><b class="ok">4.53:1 ✓</b></div></div><span class="fd"><span class="en">Grey text too faint on chips.</span><span class="zh">标签上的灰字太淡。</span></span></div>
+          <div><span class="fk"><span class="en">Focus ring · 2 files</span><span class="zh">焦点框 · 2 个文件</span></span><div class="pair"><span class="b">Assign</span><span class="arr">→</span><span class="b focus">Assign</span></div><span class="fd"><span class="en">Keyboard users couldn't see where they were.</span><span class="zh">用键盘时看不出停在哪。</span></span></div>
+          <div><span class="fk"><span class="en">Drift · 1 file</span><span class="zh">不同步 · 1 个文件</span></span><div class="pair"><code>registry.json</code><span class="fd" style="margin:0"><span class="en">missing the badge colour since v1.1</span><span class="zh">从 v1.1 起就少了标记色</span></span></div><span class="fd"><span class="en">A copy had fallen behind.</span><span class="zh">有一份副本没跟上。</span></span></div>
+          <div><span class="fk"><span class="en">Near-duplicate · 1 pair</span><span class="zh">几乎一样 · 1 组</span></span><div class="pair"><span class="sw" style="background:#111214"></span><span class="sw" style="background:#121214"></span><code>ΔE 0.4</code></div><span class="fd"><span class="en">Two blacks nobody can tell apart.</span><span class="zh">两个分不出的黑色，合成一个。</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic" id="eval">
+      <div class="col">
+        <h3><span class="n">3.4</span><span class="en">Eval</span><span class="zh">评测</span></h3>
+        <p class="h"><span class="en">How do you know the skill helps? Run the same task twice.</span><span class="zh">怎么知道 skill 有用？同一个任务做两遍</span></p>
+        <p class="en">Same task, two AIs, only one gets the skill. Measure both with the same ruler.</p>
+        <p class="zh">同一个任务交给两个 AI，只有一个拿到 skill，再用同一把尺子量。</p>
+      </div>
+      <div class="fig">
+        <div class="panel ev-task"><span class="k"><span class="en">Same task for both</span><span class="zh">两边拿到同一个任务</span></span><span><span class="en">"Build the screen for elevator EL-04. The AI is 41% sure."</span><span class="zh">“做电梯 EL-04 的页面，AI 的把握是 41%。”</span></span></div>
+        <div class="panel grid2 ev-shots">
+          <div class="cell"><div class="hd bad"><span class="en">Without the skill</span><span class="zh">不给 skill</span></div><img src="img/test-plain-elevator.webp" alt="" loading="lazy"><div class="cap"><span><span class="en">Tidy, but not ours: its own colours.</span><span class="zh">挺整齐，但不是我们的样子，颜色是它自己挑的。</span></span></div></div>
+          <div class="cell"><div class="hd"><span class="en">With the skill (v1.2, with the drawing skill)</span><span class="zh">给了 skill（v1.2，配合画图 skill）</span></div><img src="img/test-v12-elevator.webp" alt="" loading="lazy"><div class="cap"><span><span class="en">Ours: the real elevator, faulty part lit, only “Assign” at 41%.</span><span class="zh">就是我们的样子：电梯结构图，坏的零件亮起来；41% 把握只给“派人检查”。</span></span></div></div>
+        </div>
+        <div class="panel ev-score">
+          <div class="eh2"><span></span><span class="bad-t"><span class="en">Without</span><span class="zh">不给</span></span><span><span class="en">With</span><span class="zh">给了</span></span></div>
+          <div><span><b><span class="en">Colours the AI made up</span><span class="zh">AI 自己编的颜色</span></b><i><span class="en">fewer is better</span><span class="zh">越少越好</span></i></span><span class="v bad-t">17</span><span class="v">0</span></div>
+          <div><span><b><span class="en">Our ready-made parts used</span><span class="zh">用了多少我们现成的部件</span></b><i><span class="en">more is better</span><span class="zh">越多越好</span></i></span><span class="v bad-t">5</span><span class="v">19</span></div>
+        </div>
+        <details class="ev-more"><summary><span class="en">See every test (10 in total)</span><span class="zh">看每一次测试的分数（共 10 次）</span></summary>
+          <div class="panel evtab2">
+            <div class="eh"><span><span class="en">Test</span><span class="zh">测试的页面</span></span><span><span class="en">Colours AI made up · fewer is better</span><span class="zh">AI 自己编的颜色 · 越少越好</span></span><span><span class="en">Our parts used · more is better</span><span class="zh">用了我们的部件 · 越多越好</span></span></div>
+            <div class="grp bad-t"><span class="en">Without the skill · 2 tests</span><span class="zh">没给 skill · 2 次</span></div>
+            <div class="er plain"><span><span class="en">Battery</span><span class="zh">电池</span></span><span class="bar2"><i class="bad" style="width:100%"></i><b>47</b></span><span class="bar2"><i style="width:21%"></i><b>5</b></span></div><div class="er plain"><span><span class="en">Elevator</span><span class="zh">电梯</span></span><span class="bar2"><i class="bad" style="width:36%"></i><b>17</b></span><span class="bar2"><i style="width:21%"></i><b>5</b></span></div>
+            <div class="grp"><span class="en">With the skill · 8 tests, versions 1.0 to 1.3</span><span class="zh">给了 skill · 8 次，从 1.0 版到 1.3 版</span></div>
+            <div class="er"><span><span class="en">Battery</span><span class="zh">电池</span><span class="ver">v1.0</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:88%"></i><b>21</b></span></div><div class="er"><span><span class="en">Elevator</span><span class="zh">电梯</span><span class="ver">v1.0</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:79%"></i><b>19</b></span></div><div class="er"><span><span class="en">Battery</span><span class="zh">电池</span><span class="ver">v1.1</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:92%"></i><b>22</b></span></div><div class="er"><span><span class="en">Elevator</span><span class="zh">电梯</span><span class="ver">v1.1</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:100%"></i><b>24</b></span></div><div class="er"><span><span class="en">Battery</span><span class="zh">电池</span><span class="ver">v1.2</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:83%"></i><b>20</b></span></div><div class="er"><span><span class="en">Elevator</span><span class="zh">电梯</span><span class="ver">v1.2</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:79%"></i><b>19</b></span></div><div class="er"><span><span class="en">Cooling tower</span><span class="zh">冷却塔</span><span class="ver">v1.3</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:88%"></i><b>21</b></span></div><div class="er"><span><span class="en">EV charging</span><span class="zh">充电桩</span><span class="ver">v1.3</span></span><span class="bar2"><b>0</b></span><span class="bar2"><i style="width:88%"></i><b>21</b></span></div>
+          </div>
+          <div class="ev-read">
+            <p><span class="en"><b>How to read it:</b> without the skill, AI made up 17 to 47 colours and used about 5 of our parts. With it, every one of the 8 tests made up <b>0</b> colours and used around <b>20</b> parts.</span><span class="zh"><b>怎么看：</b>没给 skill 时，AI 自己编了 17 到 47 个颜色，只用到大约 5 个我们的部件。给了 skill 以后，8 次测试<b>全部 0 个</b>自编颜色，都用到了 <b>20 个左右</b>的部件。</span></p>
+            <p><span class="en"><b>Why the skill versions look the same:</b> from 1.0 on, these two basics were already right. Later versions improved things a ruler can't count (the equipment drawing, evidence that fits the topic), so people judged those by looking at the screens.</span><span class="zh"><b>为什么各版本分数差不多：</b>从 1.0 开始，这两项基本功就已经做对了。后面几版的进步（设备结构图、贴合主题的证据）没法用数字量，所以是人看页面来判断的。</span></p>
+            <p class="small"><span class="en">The 5 parts in the no-skill tests are a coincidence: a few of its class names happen to match ours.</span><span class="zh">没给 skill 的那 2 次也算到 5 个部件，只是因为它碰巧用了几个和我们同名的 class。</span></p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">3.5</span><span class="en">Who checks what</span><span class="zh">分工</span></h3>
+        <p class="h"><span class="en">Each checker is good at one thing</span><span class="zh">每种检查只擅长一件事</span></p>
+        <p class="en">Machines judge yes-or-no rules. AI builds fast. Only people can say whether a screen actually helps.</p>
+        <p class="zh">机器判对错，AI 负责快。这一屏有没有帮到人，只有人能判断。</p>
+      </div>
+      <div class="fig">
+        <div class="panel grid4 who">
+          <div class="cell"><svg width="52" height="52" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="20" r="10" class="f1 ln"/><path d="M10 50c2-12 34-12 36 0" class="ln"/></svg><b><span class="en">You</span><span class="zh">你</span></b><span><span class="en">Set the rules</span><span class="zh">定规则</span></span></div>
+          <div class="cell"><svg width="52" height="52" viewBox="0 0 56 56" aria-hidden="true"><rect x="6" y="22" width="44" height="16" class="f1 ln"/><path d="M14 22v6M22 22v4M30 22v6M38 22v4" class="ln"/></svg><b><span class="en">Machine</span><span class="zh">机器</span></b><span><span class="en">Yes-or-no rules</span><span class="zh">对错分明的规则</span></span></div>
+          <div class="cell"><svg width="52" height="52" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="10" r="4" class="f3 ln"/><circle cx="12" cy="28" r="4" class="f3 ln"/><circle cx="28" cy="28" r="5" class="fa"/><circle cx="44" cy="28" r="4" class="f3 ln"/><circle cx="28" cy="46" r="4" class="f3 ln"/></svg><b>AI</b><span><span class="en">Builds, then self-checks</span><span class="zh">搭页面，再自查</span></span></div>
+          <div class="cell"><svg width="52" height="52" viewBox="0 0 56 56" aria-hidden="true"><path d="M8 30c10-16 30-16 40 0-10 16-30 16-40 0z" class="f1 ln"/><circle cx="28" cy="30" r="7" class="fa"/></svg><b><span class="en">People</span><span class="zh">人</span></b><span><span class="en">The final call</span><span class="zh">最后拍板</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">3.6</span><span>Pull request</span></h3>
+        <p class="h"><span class="en">AI can suggest. People decide.</span><span class="zh">AI 可以提建议，人来决定</span></p>
+        <span class="like"><span class="en">Like Google Docs suggestion mode</span><span class="zh">像 Google Docs 的建议模式</span></span>
+        <p class="en">When AI finds a gap in the rules, it only suggests. A person accepts or rejects. Trust grows in steps.</p>
+        <p class="zh">AI 发现规则有缺口时只提建议，由人决定接不接受。信任是一步步放开的。</p>
+      </div>
+      <div class="fig">
+        <div class="panel doc">
+          <span class="k">DESIGN.md</span>
+          <p class="line"><span class="en">Owner of a plan: <del>written as plain text</del> <ins>use the Owner row component</ins></span><span class="zh">方案负责人：<del>直接写成文字</del> <ins>使用“负责人”行组件</ins></span></p>
+          <div class="note"><span class="who-ai"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="2.3" r="1.5" class="f3"/><circle cx="2.3" cy="7" r="1.5" class="f3"/><circle cx="7" cy="7" r="1.6" class="fa"/><circle cx="11.7" cy="7" r="1.5" class="f3"/><circle cx="7" cy="11.7" r="1.5" class="f3"/></svg>AI</span><span><span class="en">"5 screens drew their own owner badge."</span><span class="zh">“有 5 个页面各自画了负责人标签。”</span></span><span class="acts"><span><span class="en">Reject</span><span class="zh">拒绝</span></span><span class="ok"><span class="en">Accept</span><span class="zh">接受</span></span></span></div>
+        </div>
+        <div class="panel grid3 trust">
+          <div class="cell"><span class="step"><i class="on"></i><i></i><i></i></span><b><span class="en">Suggest only</span><span class="zh">只提建议</span></b><span><span class="en">Can propose, can't change anything.</span><span class="zh">能提，不能改。</span></span></div>
+          <div class="cell"><span class="step"><i class="on"></i><i class="on"></i><i></i></span><b><span class="en">Fix small things</span><span class="zh">自己改小问题</span></b><span><span class="en">Typos and renames, on its own.</span><span class="zh">错字、改名这类，可以直接改。</span></span></div>
+          <div class="cell"><span class="step"><i class="on"></i><i class="on"></i><i class="on"></i></span><b><span class="en">Big changes</span><span class="zh">大改动</span></b><span><span class="en">Brand and rules always go past a person.</span><span class="zh">品牌和规则，永远要人过目。</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHOLE PICTURE ============ -->
+  <section class="layer" id="whole">
+    <div class="sec-head">
+      <span class="num">04</span>
+      <div><h2><span class="en">Putting it all together</span><span class="zh">串起来看</span></h2><p><span class="en">Every word on this page is one stop on the same line.</span><span class="zh">这页的每个词，都是同一条流水线上的一站。</span></p></div>
+    </div>
+    <div class="topic">
+      <div class="col">
+        <h3><span class="n">4.1</span><span class="en">One change, start to finish</span><span class="zh">一次改动，从头走到尾</span></h3>
+        <p class="h"><span class="en">Make the brand blue a little brighter</span><span class="zh">把品牌蓝调亮一点</span></p>
+        <p class="en">One ordinary change, start to finish. When AI finds a gap, the fix goes back to step 1.</p>
+        <p class="zh">一次普通的改动，从头走到尾。AI 发现缺口，就回到第 1 步改规则。</p>
+      </div>
+      <div class="fig">
+        <div class="panel pipe">
+          <div class="band"><span class="bk">01 · <span class="en">Rules</span><span class="zh">规则</span></span><ol><li><span class="sd">1</span><div><b><span class="en">You make the brand blue a little brighter in Figma</span><span class="zh">你在 Figma 里把品牌蓝调亮一点</span></b><code>token</code></div></li><li><span class="sd">2</span><div><b><span class="en">The new value is synced into tokens.json, by a plugin, a script, or AI through Figma MCP</span><span class="zh">新值同步进 tokens.json：用插件、脚本，或让 AI 通过 Figma MCP 带过来</span></b><code>structured file · sync</code></div></li><li><span class="sd">3</span><div><b><span class="en">Every component changes colour on its own</span><span class="zh">所有组件自动跟着变色</span></b><code>component · props</code></div></li></ol></div>
+          <div class="band"><span class="bk">02 · <span class="en">Package</span><span class="zh">打包</span></span><ol><li><span class="sd">4</span><div><b><span class="en">The new version goes into the registry</span><span class="zh">新版本组件放进 registry</span></b><code>registry · shadcn</code></div></li><li><span class="sd">5</span><div><b><span class="en">AI reads the skill, or asks through MCP</span><span class="zh">AI 读 skill，或者通过 MCP 来问</span></b><code>skill · MCP</code></div></li><li><span class="sd">6</span><div><b><span class="en">AI builds a new screen</span><span class="zh">AI 搭出一个新页面</span></b></div></li></ol></div>
+          <div class="band"><span class="bk">03 · <span class="en">Check</span><span class="zh">检查</span></span><ol><li><span class="sd">7</span><div><b><span class="en">TypeScript and lint check it</span><span class="zh">TypeScript 和 lint 自动检查</span></b><code>typescript · lint (gc-check)</code></div></li><li><span class="sd">8</span><div><b><span class="en">CI blocks anything that fails</span><span class="zh">CI 拦下没通过的</span></b><code>CI</code></div></li><li><span class="sd">9</span><div><b><span class="en">AI spots a gap in the rules and suggests a fix</span><span class="zh">AI 发现规则有缺口，提一条修改建议</span></b><code>pull request</code></div></li><li><span class="sd">10</span><div><b><span class="en">You press Accept. The rules update</span><span class="zh">你点“接受”，规则更新</span></b></div></li></ol></div>
+        </div>
+        <div class="loopback"><svg width="100%" height="30" viewBox="0 0 600 30" preserveAspectRatio="none" aria-hidden="true"><path d="M590 2 V18 H10 V4" class="ln" vector-effect="non-scaling-stroke"/><path d="M5 10 L10 2 L15 10" class="ln" vector-effect="non-scaling-stroke"/></svg><span class="en">Step 10 feeds back into step 1</span><span class="zh">第 10 步回到第 1 步，循环继续</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GLOSSARY ============ -->
+  <section class="end" id="glossary">
+    <div class="sec-head">
+      <span class="num">A–Z</span>
+      <div><h2><span class="en">Every word, in its layer</span><span class="zh">所有新词，按层归位</span></h2><p><span class="en">The seven marked "key" are the ones worth remembering.</span><span class="zh">标了“重点”的七个最值得记住。</span></p></div>
+    </div>
+    <div class="gfilter" id="glossFilter" role="group" aria-label="Filter by layer">
+      <button aria-pressed="true" data-f="all"><span class="en">All</span><span class="zh">全部</span></button>
+      <button aria-pressed="false" data-f="1"><span class="en">01 Rules</span><span class="zh">01 规则</span></button>
+      <button aria-pressed="false" data-f="2"><span class="en">02 Package</span><span class="zh">02 打包</span></button>
+      <button aria-pressed="false" data-f="3"><span class="en">03 Check</span><span class="zh">03 检查</span></button>
+    </div>
+    <div class="gloss cards" id="gloss"></div>
+  </section>
+
+  <footer>
+    <p class="en">Examples come from the Green Control design system. Further reading: Headway, "Design Systems for AI Agents"; Builder.io, "How to Make AI Agents Follow Your Design System"; Supernova, "AI-Ready Design Systems"; Brad Frost, "Agentic Design Systems in 2026".</p>
+    <p class="zh">文中例子来自 Green Control 设计系统。延伸阅读：Headway《Design Systems for AI Agents》；Builder.io《How to Make AI Agents Follow Your Design System》；Supernova《AI-Ready Design Systems》；Brad Frost《Agentic Design Systems in 2026》。</p>
+  </footer>
+</main>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const T = {
+    en: { apply: "Apply", applying: "Applying…", pick: "Pick one to see what it finds.", aiB: '"All good ✓"', aiM: "It missed two lines.", mB: "2 problems", mM: "Fix lines 3 and 5 before it counts.", layers: ["", "Rules", "Package", "Check"], key: "key" },
+    zh: { apply: "应用", applying: "应用中…", pick: "选一种，看看它能找出什么。", aiB: "“都没问题 ✓”", aiM: "漏掉了两行。", mB: "2 处问题", mM: "第 3、5 行改完才算通过。", layers: ["", "规则", "打包", "检查"], key: "重点" },
+  };
+  let lang = "en";
+  try { const saved = localStorage.getItem("gc-explainer-lang"); if (saved === "zh" || saved === "en") lang = saved; } catch (e) {}
+
+  // props demo
+  const st = { v: "primary", l: false, d: false };
+  function renderDemo() {
+    const t = T[lang], label = st.l ? t.applying : t.apply;
+    $("#demoStage").innerHTML = `<button class="gbtn ${st.v} ${st.l ? "loading" : ""}" ${st.l || st.d ? "disabled" : ""}>${st.l ? '<span class="spin"></span>' : ""}${label}</button>`;
+    let p = "";
+    if (st.v !== "primary") p += ` <span class="p">variant="${st.v}"</span>`;
+    if (st.l) p += ` <span class="p">loading</span>`;
+    if (st.d) p += ` <span class="p">disabled</span>`;
+    $("#demoCode").innerHTML = `&lt;Button${p}&gt;${label}&lt;/Button&gt;`;
+  }
+  $$("#demo .opts").forEach((g) => g.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    $$("button", g).forEach((x) => x.setAttribute("aria-pressed", x === b));
+    const k = g.dataset.k; st[k] = k === "v" ? b.dataset.v : b.dataset.v === "1"; renderDemo();
+  }));
+
+  // check demo
+  const lines = $$("#checkCode > div");
+  let who = null;
+  function renderVerdict() {
+    const t = T[lang], v = $("#verdict");
+    if (!who) { v.className = "verdict"; v.innerHTML = `<span class="muted">${t.pick}</span>`; }
+    else if (who === "agent") { v.className = "verdict pass"; v.innerHTML = `<span class="bubble">${t.aiB}</span><span class="muted">${t.aiM}</span>`; }
+    else { v.className = "verdict fail"; v.innerHTML = `<span class="bubble">${t.mB}</span><span class="muted">${t.mM}</span>`; }
+  }
+  function check(w) {
+    who = w;
+    $("#ckAgent").setAttribute("aria-pressed", w === "agent");
+    $("#ckMachine").setAttribute("aria-pressed", w === "machine");
+    lines.forEach((l) => l.classList.remove("flag"));
+    if (w === "machine") lines.forEach((l, i) => { if (l.hasAttribute("data-bad")) setTimeout(() => l.classList.add("flag"), 120 + i * 90); });
+    renderVerdict();
+  }
+  $("#ckAgent").onclick = () => check("agent");
+  $("#ckMachine").onclick = () => check("machine");
+
+  // glossary
+  const G = [
+    ["DESIGN.md", 1, "The rule book: every rule, written as plain text people and AI can both read.", "规则手册：所有规定写成纯文字，人和 AI 都能直接读。", 1],
+    [".md", 1, "A plain-text file type, like .png is an image type.", "纯文字文档的格式，就像 .png 是图片的格式。", 0],
+    ["Token", 1, "Any value with a name instead of a raw number. Comes in two kinds: primitive and semantic.", "给数值起的名字，用名字代替直接写数字。分两种：原色 token 和语义 token。", 1],
+    ["Component", 1, "A reusable part. Like a main component in Figma.", "可复用的部件，相当于 Figma 里的主组件。", 0],
+    ["Component state", 1, "Hover, loading, disabled, error…", "悬停、加载、禁用、出错……每一种都要画。", 1],
+    ["Primitive token", 1, "Named by what it looks like: blue-600 = #1f4fff. The only place the raw value is written.", "按“长什么样”起名：blue-600 = #1f4fff。真正的色值只在这里写一次。", 0],
+    ["Semantic token", 1, "Named by what it means: accent → blue-600. Points to a primitive. Night and day swap these.", "按“用来干什么”起名：accent → blue-600。不写色值，只指向原色。日间夜间切换的就是它。", 0],
+    ["Structured file", 2, "A form, not an essay. tokens.json is one.", "写成表格而不是作文的文件，tokens.json 就是。", 0],
+    ["Props", 2, "A component's options. Figma properties, in code.", "组件的选项，等于代码里的 Figma 属性面板。", 0],
+    [".tsx", 2, "A file that holds one finished part, like a button, as code: how it looks and which options it has. A .png holds a picture; a .tsx holds a part you can drop straight into a page.", "装着一个做好的部件（比如按钮）的文件。里面是代码，写着它长什么样、有哪些选项。.png 装的是图片，.tsx 装的是能直接放进页面用的部件。", 0],
+    ["Registry", 2, "The takeout platform for components.", "组件的外卖平台。", 1],
+    ["shadcn", 2, "The standard takeout box.", "最常见的标准餐盒规格。", 0],
+    ["Skill · SKILL.md", 2, "The short manual AI reads first: what to read, how to work, the checklist before handing back.", "AI 先读的简短说明书：先读什么、怎么干活、交活前对哪张清单。", 1],
+    ["MCP", 2, "A standard interface any AI tool can use to ask your system questions.", "让任何 AI 工具都能随时来问设计系统的统一接口。", 1],
+    ["Contrast", 3, "How readable text is on its background. Body text needs 4.5:1.", "文字和背景的对比度，正文至少 4.5:1。", 0],
+    ["Drift", 3, "The same colour is saved in several places (code, registry, Figma). One copy gets changed, the others don't, and now they disagree. Green Control's registry.json had been missing a colour since v1.1.", "同一个颜色存了好几份（代码里、registry 里、Figma 里）。改了其中一份，别的没跟着改，几份就对不上了。比如 Green Control 的 registry.json 从 v1.1 起就一直少了一个颜色。", 0],
+    ["Eval", 3, "Scoring AI output the same way every time, to prove a change helped.", "每次用同一套标准给 AI 的产出打分，证明改动真的有用。", 0],
+    ["TypeScript", 3, "Checks that the pieces fit together.", "检查零件拼不拼得上。", 0],
+    ["Lint", 3, "Checks your house rules.", "检查是否符合你们自己的规矩。", 1],
+    ["CI", 3, "Runs every check on every change. The security gate.", "每次改代码自动跑一遍所有检查，像安检门。", 0],
+    ["Pull request", 3, "A suggested change, waiting for Accept.", "一条等人点“接受”的修改建议。", 0],
+  ];
+  const ICON = {"DESIGN.md": "<rect x=\"10\" y=\"8\" width=\"28\" height=\"34\" class=\"f1 ln\"/><path d=\"M14 8v34\" class=\"ln\"/><path d=\"M19 16h14M19 22h14M19 28h10\" class=\"ln\"/>", ".md": "<path d=\"M12 6h18l8 8v28H12z\" class=\"fw ln\"/><path d=\"M30 6v8h8\" class=\"ln\"/><text x=\"25\" y=\"34\" text-anchor=\"middle\" class=\"tx\" style=\"font-size:9px\">MD</text>", "Token": "<rect x=\"5\" y=\"15\" width=\"18\" height=\"18\" class=\"fa\"/><path d=\"M23 24h4\" class=\"ln\"/><path d=\"M27 18h12l5 6-5 6H27z\" class=\"f1 ln\"/><circle cx=\"31\" cy=\"24\" r=\"1.6\" class=\"ln\"/>", "Primitive token": "<rect x=\"10\" y=\"6\" width=\"28\" height=\"24\" class=\"fa\"/><rect x=\"10\" y=\"34\" width=\"28\" height=\"8\" class=\"f1 ln\"/><path d=\"M14 38h14\" class=\"ln\"/>", "Component": "<rect x=\"6\" y=\"16\" width=\"36\" height=\"16\" class=\"fa\"/><path d=\"M14 24h20\" style=\"stroke:#fff;stroke-width:2;stroke-linecap:round\"/>", "Component state": "<rect x=\"6\" y=\"6\" width=\"36\" height=\"10\" class=\"fa\"/><rect x=\"6\" y=\"19\" width=\"36\" height=\"10\" class=\"f3\"/><rect x=\"6\" y=\"32\" width=\"36\" height=\"10\" fill=\"none\" class=\"ln\" stroke-dasharray=\"3 3\"/>", "Structured file": "<rect x=\"8\" y=\"8\" width=\"32\" height=\"32\" class=\"fw ln\"/><path d=\"M8 18h32M8 28h32M20 8v32\" class=\"ln\"/>", "Props": "<rect x=\"8\" y=\"10\" width=\"20\" height=\"10\" rx=\"5\" class=\"fa\"/><circle cx=\"23\" cy=\"15\" r=\"3.5\" class=\"fw\"/><rect x=\"8\" y=\"28\" width=\"20\" height=\"10\" rx=\"5\" class=\"f2 ln\"/><circle cx=\"13\" cy=\"33\" r=\"3.5\" class=\"fw ln\"/><path d=\"M32 15h8M32 33h8\" class=\"ln\"/>", ".tsx": "<path d=\"M12 6h18l8 8v28H12z\" class=\"fw ln\"/><path d=\"M30 6v8h8\" class=\"ln\"/><path d=\"M20 24l-4 4 4 4M30 24l4 4-4 4M27 22l-4 12\" class=\"ln\"/>", "Registry": "<rect x=\"6\" y=\"8\" width=\"36\" height=\"32\" class=\"f1 ln\"/><path d=\"M6 24h36\" class=\"ln\"/><rect x=\"10\" y=\"12\" width=\"8\" height=\"8\" class=\"f3\"/><rect x=\"20\" y=\"12\" width=\"8\" height=\"8\" class=\"fa\"/><rect x=\"30\" y=\"12\" width=\"8\" height=\"8\" class=\"f3\"/><rect x=\"10\" y=\"28\" width=\"8\" height=\"8\" class=\"f3\"/><rect x=\"20\" y=\"28\" width=\"8\" height=\"8\" class=\"f3\"/>", "shadcn": "<path d=\"M14 18 C16 4 32 4 34 18\" class=\"ln\"/><polygon points=\"10,20 38,20 34,42 14,42\" class=\"f1 ln\"/><polygon points=\"10,20 38,20 32,14 16,14\" class=\"f2 ln\"/>", "Skill · SKILL.md": "<rect x=\"8\" y=\"8\" width=\"32\" height=\"32\" class=\"f3 ln\" transform=\"rotate(-4 24 24)\"/><path d=\"M14 18h20M14 24h16M14 30h12\" style=\"stroke:#fff;stroke-width:1.6;stroke-linecap:round\" transform=\"rotate(-4 24 24)\"/>", "MCP": "<rect x=\"6\" y=\"10\" width=\"36\" height=\"28\" class=\"fw ln\"/><rect x=\"10\" y=\"16\" width=\"8\" height=\"16\" class=\"fa\"/><rect x=\"20\" y=\"16\" width=\"8\" height=\"16\" class=\"f2\"/><rect x=\"30\" y=\"16\" width=\"8\" height=\"16\" class=\"f2\"/>", "Contrast": "<circle cx=\"24\" cy=\"24\" r=\"16\" class=\"fw ln\"/><path d=\"M24 8a16 16 0 0 1 0 32z\" class=\"fa\"/><path d=\"M14 28l3-9 3 9M15 25h4\" class=\"ln\"/><path d=\"M28 28l3-9 3 9M29 25h4\" style=\"stroke:#fff;stroke-width:1.4;fill:none\"/>", "Drift": "<rect x=\"6\" y=\"14\" width=\"16\" height=\"16\" fill=\"#1f4fff\"/><rect x=\"26\" y=\"14\" width=\"16\" height=\"16\" fill=\"#4a6bff\"/><path d=\"M20 38h8M20 42h8M26 34l-4 12\" class=\"lnb\"/>", "Eval": "<path d=\"M8 40h32\" class=\"ln\"/><rect x=\"10\" y=\"26\" width=\"7\" height=\"14\" class=\"lnbfill\"/><rect x=\"21\" y=\"12\" width=\"7\" height=\"28\" class=\"fa\"/><rect x=\"32\" y=\"16\" width=\"7\" height=\"24\" class=\"fa\"/>", "TypeScript": "<rect x=\"6\" y=\"26\" width=\"24\" height=\"12\" class=\"f2 ln\"/><rect x=\"9\" y=\"22\" width=\"6\" height=\"4\" class=\"f2 ln\"/><rect x=\"20\" y=\"22\" width=\"6\" height=\"4\" class=\"f2 ln\"/><rect x=\"24\" y=\"8\" width=\"16\" height=\"10\" class=\"f2 ln\" transform=\"rotate(14 32 13)\"/><path d=\"M36 26l6 6M42 26l-6 6\" class=\"lnb\"/>", "Lint": "<rect x=\"8\" y=\"8\" width=\"32\" height=\"32\" class=\"fw ln\"/><path d=\"M13 16l3 3 5-5M13 26l3 3 5-5\" class=\"ln\"/><path d=\"M25 17h10M25 27h10\" class=\"ln\"/><path d=\"M13 35l6 0\" class=\"lnb\"/><path d=\"M25 35h10\" class=\"ln\"/>", "CI": "<path d=\"M10 40V14h28v26\" class=\"ln\"/><path d=\"M10 14l14-8 14 8\" class=\"ln\"/><path d=\"M18 40V24h12v16\" class=\"f1 ln\"/><circle cx=\"24\" cy=\"20\" r=\"2\" class=\"fa\"/>", "Pull request": "<rect x=\"8\" y=\"8\" width=\"32\" height=\"32\" class=\"fw ln\"/><path d=\"M13 17h14\" class=\"lnb\"/><rect x=\"13\" y=\"23\" width=\"20\" height=\"5\" class=\"f3\"/><circle cx=\"34\" cy=\"35\" r=\"6\" class=\"fa\"/><path d=\"M31 35l2 2 4-4\" style=\"stroke:#fff;stroke-width:1.6;fill:none\"/>", "Semantic token": "<path d=\"M4 18h14l5 6-5 6H4z\" class=\"f1 ln\"/><circle cx=\"8\" cy=\"24\" r=\"1.6\" class=\"ln\"/><path d=\"M24 24h6\" class=\"ln\"/><path d=\"M28 21l3 3-3 3\" class=\"ln\"/><rect x=\"33\" y=\"17\" width=\"12\" height=\"14\" class=\"fa\"/>"};
+  let filter = "all";
+  function renderGloss() {
+    const t = T[lang];
+    $("#gloss").innerHTML = G.filter((g) => filter === "all" || String(g[1]) === filter).map(([term, l, en, zh, k]) => `<div class="gc"><svg viewBox="0 0 48 48" aria-hidden="true">${ICON[term] || ""}</svg><div><span class="t">${term}${k ? `<span class="key">${t.key}</span>` : ""}</span><span class="l">0${l} ${t.layers[l]}</span><span class="d">${lang === "zh" ? zh : en}</span></div></div>`).join("");
+  }
+  $("#glossFilter").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    $$("#glossFilter button").forEach((x) => x.setAttribute("aria-pressed", x === b)); filter = b.dataset.f; renderGloss();
+  });
+
+  // MCP walkthrough
+  const W = {
+    en: [
+      { you: '"Make a card for elevator EL-04. We\'re 41% sure."', so: "AI has the task, but none of your files. Press Next to see what it does." },
+      { tool: "get_rule", plain: "Ask about rules", ai: "41% sure. How should this be handled?", desk: "Below 50%, never fix directly. Only send someone to check.", so: 'So the card gets "Assign check", and no "Apply fix".' },
+      { tool: "list_components", plain: "Ask which parts exist", ai: "What ready-made parts can I use?", desk: "A state tag, a confidence meter, a button.", so: "It places all three. No styling yet." },
+      { tool: "get_component", plain: "Ask how a part works", ai: "How should the button look and behave?", desk: "Primary style. Shows loading after a click.", so: "The dashed placeholder becomes the real button." },
+      { tool: "get_tokens", plain: "Ask about colours", ai: 'Which colour marks "issue"?', desk: "accent, which is #1f4fff.", so: "The tag and the meter switch to the official colour." },
+      { tool: "check_code", plain: "Ask for a check", ai: "I'm done. Anything wrong?", desk: "The meter track uses #999, a colour you typed in yourself. It isn't one of ours.", so: "The red outline is what the checker found." },
+      { done: true, so: "It swaps #999 for the official line colour, checks again, and passes. You only said one sentence." },
+    ],
+    zh: [
+      { you: "“帮我做 EL-04 电梯的卡片，把握度 41%。”", so: "AI 接到了任务，但手上没有你的任何文件。点“下一步”，看它怎么做。" },
+      { tool: "get_rule", plain: "问规则", ai: "把握度 41%，这种情况该怎么处理？", desk: "低于 50% 不能直接修，只能派人去现场检查。", so: "所以卡片上只放“派人检查”，不放“直接修复”。" },
+      { tool: "list_components", plain: "问有哪些部件", ai: "有哪些现成的部件可以用？", desk: "状态标签、把握度条、按钮。", so: "它把三个部件摆上去，样式还没管。" },
+      { tool: "get_component", plain: "问部件怎么用", ai: "按钮应该长什么样、怎么用？", desk: "用主要样式，点了以后显示“加载中”。", so: "虚线框变成了真正的按钮。" },
+      { tool: "get_tokens", plain: "问颜色", ai: "“有问题”要用什么颜色标出来？", desk: "用 accent，也就是 #1f4fff。", so: "状态标签和把握度条换成了规定的颜色。" },
+      { tool: "check_code", plain: "请它检查", ai: "我做完了，帮我看看哪里不对？", desk: "把握度条的底色是你自己写的 #999，不是规定的颜色。", so: "标红的地方，就是检查工具找出来的问题。" },
+      { done: true, so: "它把 #999 换成规定的颜色，再查一次，通过了。整个过程你只说了一句话。" },
+    ],
+  };
+  const WC = {
+    en: { title: "Elevator EL-04", tag: "ISSUE", sure: "41% SURE", check: "Assign check", fix: "Apply fix", empty: "Nothing yet", flag: "✕ #999 is not a token", ok: "✓ Passed the check", ai: "AI asks", desk: "Desk answers", you: "You say" },
+    zh: { title: "电梯 EL-04", tag: "问题", sure: "把握 41%", check: "派人检查", fix: "直接修复", empty: "还是空的", flag: "✕ #999 不是规定的颜色", ok: "✓ 检查通过", ai: "AI 问", desk: "窗口答", you: "你说" },
+  };
+  let ws = 0;
+  function renderWalk() { if (!document.getElementById("walkDots")) return;
+    const s = W[lang][ws], c = WC[lang], n = W[lang].length;
+    $("#walkDots").innerHTML = W[lang].map((_, i) => `<i class="${i <= ws ? "on" : ""}"></i>`).join("");
+    let h = "";
+    if (s.you) h += `<div class="bub you"><span class="who">${c.you}</span><span>${s.you}</span></div>`;
+    if (s.ai) h += `<div class="bub ai"><span class="who">${c.ai}</span><span>${s.ai}</span></div><div class="bub desk"><span class="who">${c.desk} · ${s.plain} <code>${s.tool}</code></span><span>${s.desk}</span></div>`;
+    h += `<p class="so">${s.so}</p>`;
+    $("#walkTalk").innerHTML = h;
+    let card;
+    if (ws === 0) card = `<div class="mc empty">${c.empty}</div>`;
+    else {
+      const colored = ws >= 4, fixed = ws >= 6;
+      card = `<div class="mc"><span class="ttl">${c.title}</span>`;
+      if (ws >= 2) card += `<div class="row"><span class="tagx ${colored ? "c" : ""} ${ws === 4 ? "fresh" : ""}">${c.tag}</span></div><div class="meter ${ws === 5 ? "flag" : ""}"><span>${c.sure}</span><div class="bar ${fixed ? "ok" : ""}"><i class="${colored ? "c" : ""}"></i></div></div>`;
+      if (ws === 5) card += `<span class="flagnote">${c.flag}</span>`;
+      card += `<div class="row">${ws >= 3 ? `<span class="b ${ws === 3 ? "fresh" : ""}">${c.check}</span>` : `<span class="ph">${c.check}</span>`}<span class="no">${c.fix}</span></div>`;
+      if (fixed) card += `<span class="okmark">${c.ok}</span>`;
+      card += `</div>`;
+    }
+    $("#walkCard").innerHTML = card;
+    $("#walkPrev").disabled = ws === 0;
+    $("#walkNext").disabled = ws === n - 1;
+  }
+  if (document.getElementById("walkPrev")) $("#walkPrev").onclick = () => { if (ws > 0) { ws--; renderWalk(); } };
+  if (document.getElementById("walkNext")) $("#walkNext").onclick = () => { if (ws < W[lang].length - 1) { ws++; renderWalk(); } };
+
+  // token demo
+  const td = $("#tdemo");
+  if (td) {
+    const setC = (c) => {
+      $$(".sws button", td).forEach((b) => b.setAttribute("aria-pressed", b.dataset.c === c));
+      td.style.setProperty("--cL0", c);
+      for (let i = 0; i < 5; i++) td.style.setProperty("--cR" + i, c);
+      for (let i = 1; i < 5; i++) td.style.setProperty("--cL" + i, "#1f4fff");
+      const first = $("#tdL .tp .tag"); if (first) first.textContent = c;
+      const changed = c !== "#1f4fff";
+      $("#tdLres").classList.toggle("warn", changed);
+      $("#tdLres").innerHTML = changed ? (lang === "zh" ? "只有按钮变了，另外 4 处还是旧的蓝。还得一处一处去找。" : "Only the button changed. The other 4 are still the old blue. Go find them by hand.") : (lang === "zh" ? "改了一处，只有那一处变。" : "Change one, and only that one changes.");
+      $("#tdRres").innerHTML = lang === "zh" ? "改一次，5 个部件一起变。" : "Change it once, all 5 follow.";
+    };
+    $$(".sws button", td).forEach((b) => b.addEventListener("click", () => setC(b.dataset.c)));
+    td._set = () => setC($(".sws button[aria-pressed=true]", td).dataset.c);
+    setC("#1f4fff");
+  }
+
+  // language
+  function setLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.title = l === "zh" ? "教 AI 用好你的设计系统" : "Teaching AI Your Design System";
+    $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === l));
+    try { localStorage.setItem("gc-explainer-lang", l); } catch (e) {}
+    renderDemo(); renderVerdict(); renderGloss(); renderWalk(); const tdd = document.getElementById("tdemo"); if (tdd && tdd._set) tdd._set();
+  }
+  $$(".lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  setLang(lang);
+
+  // nav highlight
+  const links = $$(".bar nav a");
+  addEventListener("scroll", () => {
+    let on = null;
+    ["layer1", "layer2", "layer3", "whole", "glossary"].forEach((id) => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 120) on = id; });
+    links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + on));
+  }, { passive: true });
+})();
+
+  // ---------- motion ----------
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hero = document.querySelector(".hero-anim");
+  if (hero) {
+    const open = () => { hero.classList.remove("open", "ready", "hov"); void hero.getBoundingClientRect(); requestAnimationFrame(() => hero.classList.add("open")); setTimeout(() => hero.classList.add("ready"), 2300); };
+    if (RM) hero.classList.add("open", "ready"); else setTimeout(open, 200);
+    const fig = hero.closest(".fig");
+    const rb = document.createElement("button"); rb.className = "replay"; rb.type = "button"; rb.innerHTML = '<span class="en">↻ Replay</span><span class="zh">↻ 重播</span>'; rb.onclick = open; fig.appendChild(rb);
+    hero.querySelectorAll(".pl").forEach((p) => {
+      p.addEventListener("mouseenter", () => { if (!hero.classList.contains("ready")) return; hero.classList.add("hov"); hero.querySelectorAll(`[data-p="${p.dataset.p}"]`).forEach((x) => x.classList.add("on")); });
+      p.addEventListener("mouseleave", () => { hero.classList.remove("hov"); hero.querySelectorAll(".on").forEach((x) => x.classList.remove("on")); });
+    });
+  }
+  if (!RM && "IntersectionObserver" in window) {
+    const figs = [...document.querySelectorAll(".fig")].filter((f) => !f.querySelector(".hero-anim"));
+    figs.forEach((f) => { f.classList.add("rv"); f.querySelectorAll(".iso").forEach((sv) => { let k = 0; sv.querySelectorAll(".ld").forEach((l) => { l.style.setProperty("--k", k); const lab = l.nextElementSibling; let n = lab; while (n && n.matches && n.matches(".lab, .lab2")) { n.style.setProperty("--k", k); n = n.nextElementSibling; } const d = l.previousElementSibling; if (d && d.matches(".dot")) d.style.setProperty("--k", k); k++; }); }); });
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("shown"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -12% 0px" });
+    figs.forEach((f) => io.observe(f));
+  }
+  const gl = document.getElementById("gloss");
+  const markIcons = () => document.querySelectorAll("#gloss svg").forEach((sv) => sv.querySelectorAll("rect, path, circle, polygon, line, ellipse").forEach((e) => e.setAttribute("pathLength", "1")));
+  markIcons(); if (gl) new MutationObserver(markIcons).observe(gl, { childList: true });
+  if (false && gl) gl.addEventListener("mousemove", (e) => { const c = e.target.closest(".gc"); if (!c) return; const r = c.getBoundingClientRect(); c.style.setProperty("--mx", (e.clientX - r.left) + "px"); c.style.setProperty("--my", (e.clientY - r.top) + "px"); });
+</script>
+</body>
+</html>
