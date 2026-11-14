@@ -524,7 +524,9 @@ footer { margin: 64px 0 0; padding: 22px 0 48px; border-top: 1px solid var(--rul
 html[lang="zh"] .col > .h { font-size: 21px; }
 .col > .like { grid-column: 1; grid-row: 3; margin-top: 6px; }
 .col > p:not(.h) { grid-column: 2; grid-row: 1 / span 3; align-self: end; color: var(--muted); max-width: 56ch; }
-.col > a, .col > .more { grid-column: 2; }
+.col > a, .col > .more { grid-column: 2; grid-row: 4; margin-top: 4px; }
+.col > p:not(.h) { grid-row: 1 / span 3; }
+.col > p.en ~ p.en, .col > p.zh ~ p.zh { grid-row: 4; align-self: start; margin-top: 4px; }
 .fig .caption { display: none; }
 .fig { gap: 14px; }
 @media (max-width: 860px) { .col { grid-template-columns: 1fr; } .col > * { grid-column: 1 !important; grid-row: auto !important; } }
