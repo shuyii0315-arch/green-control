@@ -47,7 +47,7 @@ body{background:#fff;font-family:Geist,system-ui,sans-serif;color:#1A1A1A;-webki
 .copy{all:unset;cursor:pointer;justify-self:start;margin-top:8px;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#fff;font:500 12px Geist,system-ui,sans-serif;color:#1A1A1A;box-shadow:inset 0 0 0 .5px rgba(26,26,26,.14);transition:background .2s}
 .copy:hover{background:#F0EFEC}
 
-.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:34px 24px 26px;border-radius:18px;background:#F7F7F7;box-shadow:inset 0 0 0 .5px rgba(26,26,26,.06)}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:22px 0 6px}
 .bk{display:grid;justify-items:center;gap:16px;text-decoration:none;color:inherit;outline:none}
 .bk-in{position:relative;width:180px;height:255px;transform:rotate(var(--r,-1.5deg));transition:transform .45s cubic-bezier(.32,.72,0,1)}
 .bk:nth-child(2) .bk-in{--r:1deg}.bk:nth-child(3) .bk-in{--r:-.5deg}
@@ -135,7 +135,7 @@ body.m-full .demo{position:fixed;inset:0;height:auto;min-height:0;border-radius:
     <span class="bk-cap">One skill for the whole AI flow, five for component details.</span>
    </a>
   </div>
-  <div class="inst"><code>npx skills add shuyii0315-arch/green-control</code><button class="copy" id="copy" type="button">Copy</button></div>
+
  </div>
 
  <div class="spec"><div class="tabs" id="tabs" role="tablist" aria-label="Moments in the prototype">
@@ -171,7 +171,6 @@ $("#expand").onclick = () => setFull(!document.body.classList.contains("m-full")
 addEventListener("keydown", (e) => { if (e.key === "Escape" && document.body.classList.contains("m-full")) setFull(false) })
 const flash = (b, t) => { const o = b.innerHTML; b.querySelector("span") ? (b.querySelector("span").textContent = t) : (b.textContent = t); setTimeout(() => (b.innerHTML = o), 1400) }
 $("#share").onclick = async () => { const u = location.href.split("#")[0]; try { if (navigator.share && matchMedia("(pointer:coarse)").matches) { await navigator.share({ title: "Green Control", url: u }); return } await navigator.clipboard.writeText(u); flash($("#share"), "Copied") } catch (_) {} }
-$("#copy").onclick = async () => { try { await navigator.clipboard.writeText("npx skills add shuyii0315-arch/green-control"); flash($("#copy"), "Copied") } catch (_) {} }
 const SPEC = {
   over: ["One building you can turn and zoom. A problem is marked on the building; click it and the view flies down to the machine.",
     [["Turn", "drag, full circle"], ["Frames", "drawn every <u>4°</u>"], ["Zoom", "pinch or ctrl + scroll"], ["Filters", "Cooling · Power · Storage · EV"]]],
