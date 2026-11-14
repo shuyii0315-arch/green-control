@@ -2388,7 +2388,7 @@ const COMPONENTS = [
 
 /* ---------- pages ---------- */
 const NAV = [
-  ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
+  ["Start", [["overview", "Overview"], ["sources", "Where the rules come from"], ["howto", "How to use"], ["skills", "Skills"]]],
   ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials & motion"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
   ["AI behaviour", [["rules", "Rules, states, voice"], ["states", "States & confidence", 1], ["voice", "How the AI speaks", 1]]],
   ["Components", COMPONENTS.map((c) => [c.id, c.name])],
@@ -2401,7 +2401,7 @@ const head = (crumb, title, lede, acts = "") => `<header class="ph"><span class=
 const PAGES = {};
 
 /* OVERVIEW */
-PAGES.overview = () => `${head("Green Control · Design System 1.5", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
+PAGES.overview = () => `${head("Green Control · Design System 1.7", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
 <div class="hero-fig"><div class="dots"></div><img src="img/proto-investigate.webp" alt="The Green Control prototype: the chiller plant with three numbered evidence marks, and the AI panel"><span class="cap">Prototype · Investigate Chiller 2</span></div>
 <div class="ostats">${[["15", "components", "6 atoms · 6 molecules · 3 organisms"], ["6", "AI states", "watching to undone"], ["3", "confidence bands", "plan · draft · check"], ["2", "themes", "night and day, one set of names"], ["16", "Figma components", "matched to code"]].map(([n, k, d]) => `<div><span class="t-num">${n}</span><span class="t-small muted">${k}</span></div>`).join("")}</div>
 
@@ -2618,6 +2618,53 @@ PAGES.rules = () => `${head("AI behaviour", "Five rules that come before any pix
 <tr><td class="mono accent">below 50%</td><td>Only suggest a check</td><td>No plan. "Ask a technician to check …" + Assign</td></tr></tbody></table>
 <p class="t-small muted" style="margin-top:12px">The thresholds are tokens (<span class="t-data">ai.confidence-act</span>, <span class="t-data">ai.confidence-review</span>), so how the AI behaves is part of the system, not a note beside it.</p>`;
 
+/* WHERE THE RULES COME FROM */
+const SRC = [
+  ["Industry", "What operators already expect from control-room screens", "ISA-101: grey by default, colour only for the abnormal, every value shown against its normal range. ISA-18.2: every alarm asks for a defined response. WCAG: contrast and focus."],
+  ["Product", "What Green Control cares about most", "Evidence first, people decide. The AI may look, compare and suggest; a person applies, and every step can be undone."],
+  ["Task", "What the person on shift is doing right now", "Detect, diagnose, respond or review. Each asks something different of the screen."],
+];
+const DIFF = [
+  ["Night is the default theme", "ISA-101 recommends a light-grey background to cut glare. The day theme follows it.", "Watching goes on through night shifts in dimmed rooms, where a bright screen glares. To confirm with operators."],
+  ["One accent, no priority colours", "ISA-101 plants use several alarm colours, one per priority.", "One accent keeps the screen calm and the problem unmistakable. It leaves an open question: which fault gets the accent when two arrive at once?"],
+];
+const TASKS = [
+  ["Detect", "Scanning many machines, mostly normal", "Stay grey. Make the one abnormal thing obvious at a glance. Every alert asks for one action.", "Drawing and dot field · Alert card with Investigate · Accent only on the problem"],
+  ["Diagnose", "Working out why", "Show each reading against its normal range, in the order it was checked. Say how sure.", "Evidence chips and cards · Confidence meter · Competing causes"],
+  ["Respond", "Deciding what to do", "Offer one next step, sized to the confidence. Change nothing without a tap.", "Plan rail · Apply or Assign · Owner row"],
+  ["Review", "Checking what happened, or taking it back", "Show what changed, when and by whom. Offer Undo.", "Toast with Undo · Actions timeline"],
+];
+const SAME = [
+  ["Rail, stage with the drawing, AI panel", "How many evidence cards: how many sources the AI actually checked (1 to 4)"],
+  ["Square corners; round only for live state", "The card tags: the kind of situation (fault, opportunity, unsure)"],
+  ["The accent marks only the problem or the one action", "What the AI may do and which buttons appear: the confidence band"],
+  ["The spark appears only where the AI speaks or acts", "How the AI words it: the same confidence band"],
+  ["Every applied step can be undone; every machine name is a link", "The drawing and the lit part: which machine, which part is at fault"],
+  ["Only token colours, sizes and radii", "The theme: night or day re-points colour meanings, never the structure"],
+];
+const TESTS = [
+  ["Calm by default, one accent", "One fault on a plant screen: the grey version against a colourful one", "Time to find the fault; how often the wrong machine is picked"],
+  ["Every alert asks for one action", "Replay a busy shift", "Alerts per 10 minutes (ISA-18.2 treats more than 10 as a flood); alerts closed with no action"],
+  ["Say less when unsure", "Plans at 41%, 58% and 88% confidence", "How often a plan is applied and then undone"],
+  ["Evidence before advice", "The same plan with and without evidence cards", "Whether the operator can say why the AI suggested it"],
+];
+PAGES.sources = () => `${head("Start", "Where the rules come from", "Every rule has a source, a reason and a way to test it. Where Green Control differs from the industry habit, it says so.")}
+<h2 id="three">Three sources</h2><p class="sub">Each rule in DESIGN.md is tagged with one or more of these.</p>
+<div class="wf-trust">${SRC.map(([k, t, d]) => `<div><span class="t-label accent">${k}</span><b>${t}</b><span>${d}</span></div>`).join("")}</div>
+<h2 id="differ">Where we differ from the industry habit</h2><p class="sub">A difference that is not written down gets lost: the next screen, or the next agent, falls back to the default.</p>
+<table class="table"><thead><tr><th>Our choice</th><th>The industry habit</th><th>Why we differ</th></tr></thead><tbody>${DIFF.map(([a, b, c]) => `<tr><td><b>${a}</b></td><td>${b}</td><td>${c}</td></tr>`).join("")}</tbody></table>
+<h2 id="tasks">What the person is doing</h2><p class="sub">Sort screens by the person's task, not by how they look. Operator response is usually described as detect, diagnose, respond; every step here can be undone, so review is the fourth.</p>
+<table class="table"><thead><tr><th>Task</th><th>The person is</th><th>The screen must</th><th>Parts</th></tr></thead><tbody>${TASKS.map(([a, b, c, d]) => `<tr><td class="mono">${a}</td><td>${b}</td><td>${c}</td><td class="muted">${d}</td></tr>`).join("")}</tbody></table>
+<h2 id="same">Same everywhere, varies by rule</h2><p class="sub">A screen should never differ by accident, and never be forced to look the same when the situation is different.</p>
+<table class="table"><thead><tr><th>Same on every screen</th><th>Varies, and what decides it</th></tr></thead><tbody>${SAME.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join("")}</tbody></table>
+<h2 id="test">How we would test the rules</h2><p class="sub">So far the rules are tested with AI agents: can an agent that never saw the prototype build a new screen that follows them? They are not yet tested with operators. The plan:</p>
+<table class="table"><thead><tr><th>Rule</th><th>Test with operators</th><th>Measure</th></tr></thead><tbody>${TESTS.map(([a, b, c]) => `<tr><td><b>${a}</b></td><td>${b}</td><td>${c}</td></tr>`).join("")}</tbody></table>
+<h2 id="open">Open questions</h2>
+<div class="rules">
+<div class="rule"><span class="t-label accent">Q1</span><span class="t-strong">Alarm priority</span><span class="why2 muted">ISA-18.2 asks for three or four priorities. Green Control has none: when two faults arrive at once, which gets the accent?</span></div>
+<div class="rule"><span class="t-label accent">Q2</span><span class="t-strong">Night as the default</span><span class="why2 muted">It differs from ISA-101's light-grey background. Needs operators on night shifts to confirm.</span></div>
+</div>`;
+
 /* STATES */
 PAGES.states = () => `${head("AI behaviour", "States & confidence", "One case, six states, three levels of confidence.")}${aiTabs("states")}
 <div class="flow" id="flow" role="group" aria-label="AI state"></div>
@@ -2802,6 +2849,8 @@ PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and wit
 
 /* TEST */
 const CHANGELOG = [
+  { v: "1.7", t: "Every rule says where it comes from", why: "Found by sorting each rule by its source: industry habit, product principle or the operator's task. The same check showed a gap: no alarm priority.", items: ["Rules are tagged Industry (ISA-101, ISA-18.2, WCAG), Product or Task.", "Two deliberate differences from the industry habit are written down with their reasons: night as the default theme, and one accent instead of one colour per priority.", "Screens are sorted by what the person is doing: detect, diagnose, respond, review.", "A plan for testing the rules with operators, not only with AI agents.", "Open questions: alarm priority, and night as the default."], img: [] },
+  { v: "1.6", t: "Every rule says why", why: "Found when a reviewer asked why the corners are square and the document had no answer.", items: ["Every look and layout rule now says why, and what breaks if it is ignored.", "The 64px rail and the 400px AI panel have their reasons written down.", "A table of what stays the same on every screen and what varies, and by which rule."], img: [] },
   { v: "1.5", t: "A machine checks too", why: "Found by gc-check, the first automatic check, on its first run. Four rounds of reviewing screens by eye had missed all of it.", items: ["Secondary text now passes 4.5:1 on raised and chip backgrounds in both themes (#666662 day, #8f949c night).", "Every clickable component has a keyboard focus ring; so does the Ask input's send button.", "Colours have a primitive layer: 17 raw colours, each written once. Two near-identical blacks merged.", "One script writes tokens.json into every file that copies it. Its first run found registry.json missing the badge colour since 1.1.", "A Workflow page: the six-step loop for building with AI, one real loop, and what AI may change.", "How the AI speaks: wording for each confidence band.", "A Figma library with the same tokens as variables (night and day) and every component state as variants."], img: [] },
   { v: "1.4", t: "Room for any topic", why: "Found building a cooling tower (2 checks, 58%) and EV charging (4 checks, 83%).", items: ["The evidence row tightens its gaps for three and four cards.", "The art box keeps any drawing's proportions; the assemble lines up inside it.", "A sticky action bar keeps Apply in reach when the thread is long.", "Opportunity tag, done plan steps, action rows positioned by variables, motion token names fixed.", "Competing causes are listed in the draft band too; the 62° view is defined as azimuth."], img: [] },
   { v: "1.3", t: "Evidence follows the question", why: "Found building a battery plan: a saving has no cause, so a fixed What → Where → Why did not fit.", items: ["The evidence row is no longer a template: one card per check the AI really made, tagged with the person's next question for this topic.", "Patterns for a fault, an opportunity, an unsure case and a single reading.", "Owner row, causes list and suggested check, for what agents had to invent.", "gc-tokens.css exports space, type, radius, motion and the AI thresholds; one badge colour everywhere."], img: ["test-v13-tower", "test-v13-ev"] },
@@ -3174,6 +3223,101 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+ "Where the rules come from": "规则从哪里来",
+ "Every rule has a source, a reason and a way to test it. Where Green Control differs from the industry habit, it says so.": "每条规则都有来源、理由和验证方法。和行业习惯不一样的地方，会写明为什么。",
+ "Three sources": "三个来源",
+ "Each rule in DESIGN.md is tagged with one or more of these.": "DESIGN.md 里的每条规则，都标了来自其中哪一个或几个。",
+ "Industry": "行业",
+ "Product": "产品",
+ "Task": "任务",
+ "What operators already expect from control-room screens": "值班员对监控界面已经形成的习惯",
+ "ISA-101: grey by default, colour only for the abnormal, every value shown against its normal range. ISA-18.2: every alarm asks for a defined response. WCAG: contrast and focus.": "ISA-101：默认灰色，颜色只给异常，数值要和正常范围一起显示。ISA-18.2：每条报警都要对应明确的处理动作。WCAG：对比度和焦点。",
+ "What Green Control cares about most": "Green Control 最在乎的",
+ "Evidence first, people decide. The AI may look, compare and suggest; a person applies, and every step can be undone.": "先给证据，人来决定。AI 可以看、对比、建议；执行要人来点，每一步都能撤销。",
+ "What the person on shift is doing right now": "值班的人此刻在做什么",
+ "Detect, diagnose, respond or review. Each asks something different of the screen.": "发现、判断、处理或回看。每一种对屏幕的要求都不同。",
+ "Where we differ from the industry habit": "和行业习惯不一样的地方",
+ "A difference that is not written down gets lost: the next screen, or the next agent, falls back to the default.": "不写下来的差异会丢：下一个屏幕、下一个 AI agent 会回到默认做法。",
+ "Our choice": "我们的选择",
+ "The industry habit": "行业习惯",
+ "Why we differ": "为什么不一样",
+ "Night is the default theme": "默认是夜间主题",
+ "ISA-101 recommends a light-grey background to cut glare. The day theme follows it.": "ISA-101 建议用浅灰背景减少眩光。日间主题遵循这一点。",
+ "Watching goes on through night shifts in dimmed rooms, where a bright screen glares. To confirm with operators.": "夜班在调暗的控制室里持续值守，亮屏幕会刺眼。待和值班员确认。",
+ "One accent, no priority colours": "一个强调色，不按优先级分颜色",
+ "ISA-101 plants use several alarm colours, one per priority.": "按 ISA-101 做的工厂界面，用几种报警颜色区分优先级。",
+ "One accent keeps the screen calm and the problem unmistakable. It leaves an open question: which fault gets the accent when two arrive at once?": "一个强调色让画面安静、问题一眼可见。但留下一个问题：两个故障同时出现时，强调色给谁？",
+ "What the person is doing": "值班的人在做什么",
+ "Sort screens by the person's task, not by how they look. Operator response is usually described as detect, diagnose, respond; every step here can be undone, so review is the fourth.": "按人的任务给屏幕分类，而不是按长相。值班员处理异常通常分为发现、判断、处理三步；这里每一步都能撤销，所以加上第四步：回看。",
+ "The person is": "此时在",
+ "The screen must": "屏幕要做到",
+ "Parts": "对应组件",
+ "Detect": "发现",
+ "Diagnose": "判断",
+ "Respond": "处理",
+ "Review": "回看",
+ "Scanning many machines, mostly normal": "扫视很多设备，大多正常",
+ "Stay grey. Make the one abnormal thing obvious at a glance. Every alert asks for one action.": "保持灰色。让唯一的异常一眼可见。每条提醒只对应一个动作。",
+ "Drawing and dot field · Alert card with Investigate · Accent only on the problem": "设备图和点阵 · 带“查看”按钮的提醒卡 · 强调色只在问题上",
+ "Working out why": "弄清楚原因",
+ "Show each reading against its normal range, in the order it was checked. Say how sure.": "每个读数都和正常范围一起显示，按查看顺序排列。说明有几成把握。",
+ "Evidence chips and cards · Confidence meter · Competing causes": "证据标签和卡片 · 把握度 · 可能原因列表",
+ "Deciding what to do": "决定怎么做",
+ "Offer one next step, sized to the confidence. Change nothing without a tap.": "只给一个下一步，力度跟把握度匹配。不点就不改任何东西。",
+ "Plan rail · Apply or Assign · Owner row": "方案步骤 · 执行或指派 · 负责人一行",
+ "Checking what happened, or taking it back": "查看发生了什么，或撤回",
+ "Show what changed, when and by whom. Offer Undo.": "显示改了什么、什么时候、谁改的。提供撤销。",
+ "Toast with Undo · Actions timeline": "带撤销的提示 · 操作时间线",
+ "Same everywhere, varies by rule": "哪些统一，哪些按规则变",
+ "A screen should never differ by accident, and never be forced to look the same when the situation is different.": "屏幕不能无缘无故不一样，也不能在情况不同时被硬做成一样。",
+ "Same on every screen": "每个屏幕都一样",
+ "Varies, and what decides it": "会变，由什么决定",
+ "Rail, stage with the drawing, AI panel": "侧栏、中间的设备图、AI 面板",
+ "How many evidence cards: how many sources the AI actually checked (1 to 4)": "证据卡几张：AI 实际查了几个来源（1 到 4 张）",
+ "Square corners; round only for live state": "直角；圆形只表示实时状态",
+ "The card tags: the kind of situation (fault, opportunity, unsure)": "证据卡的标签：情况类型（故障、省钱机会、没把握）",
+ "The accent marks only the problem or the one action": "强调色只标问题或唯一的动作",
+ "What the AI may do and which buttons appear: the confidence band": "AI 能做到哪一步、出现哪些按钮：由把握度决定",
+ "The spark appears only where the AI speaks or acts": "spark 只出现在 AI 说话或行动的地方",
+ "How the AI words it: the same confidence band": "AI 怎么措辞：同样由把握度决定",
+ "Every applied step can be undone; every machine name is a link": "每个执行的步骤都能撤销；每个设备名都是链接",
+ "The drawing and the lit part: which machine, which part is at fault": "设备图和亮起的零件：哪台设备、哪个零件出问题",
+ "Only token colours, sizes and radii": "只用 token 里的颜色、尺寸和圆角",
+ "The theme: night or day re-points colour meanings, never the structure": "主题：夜间或日间只换颜色含义，不换结构",
+ "How we would test the rules": "怎么验证这些规则",
+ "So far the rules are tested with AI agents: can an agent that never saw the prototype build a new screen that follows them? They are not yet tested with operators. The plan:": "目前只用 AI agent 测过：没见过原型的 agent，能不能照着规则做出新屏幕？还没用真实值班员测过。计划如下：",
+ "Rule": "规则",
+ "Test with operators": "怎么和值班员测",
+ "Measure": "看什么指标",
+ "Calm by default, one accent": "默认安静，只有一个强调色",
+ "One fault on a plant screen: the grey version against a colourful one": "同一个故障，灰色版和彩色版对比",
+ "Time to find the fault; how often the wrong machine is picked": "找到故障用了多久；点错设备的比例",
+ "Every alert asks for one action": "每条提醒只对应一个动作",
+ "Replay a busy shift": "重放一个繁忙的班次",
+ "Alerts per 10 minutes (ISA-18.2 treats more than 10 as a flood); alerts closed with no action": "每 10 分钟的提醒数（ISA-18.2 把超过 10 条视为报警泛滥）；没处理就关掉的提醒",
+ "Say less when unsure": "没把握时少说",
+ "Plans at 41%, 58% and 88% confidence": "把握度 41%、58%、88% 的方案",
+ "How often a plan is applied and then undone": "执行后又撤销的比例",
+ "Evidence before advice": "先证据，后建议",
+ "The same plan with and without evidence cards": "同一个方案，有证据卡和没证据卡",
+ "Whether the operator can say why the AI suggested it": "值班员能不能说出 AI 为什么这么建议",
+ "Open questions": "还没想清楚的问题",
+ "Alarm priority": "报警优先级",
+ "ISA-18.2 asks for three or four priorities. Green Control has none: when two faults arrive at once, which gets the accent?": "ISA-18.2 建议三到四级优先级。Green Control 还没有：两个故障同时出现时，强调色给谁？",
+ "Night as the default": "默认夜间主题",
+ "It differs from ISA-101's light-grey background. Needs operators on night shifts to confirm.": "这和 ISA-101 的浅灰背景不一样。需要夜班值班员来确认。",
+ "Every rule says where it comes from": "每条规则都写明来源",
+ "Found by sorting each rule by its source: industry habit, product principle or the operator's task. The same check showed a gap: no alarm priority.": "把每条规则按来源分：行业习惯、产品原则、值班员的任务。同一次检查还发现一个缺口：没有报警优先级。",
+ "Rules are tagged Industry (ISA-101, ISA-18.2, WCAG), Product or Task.": "规则标上来源：行业（ISA-101、ISA-18.2、WCAG）、产品或任务。",
+ "Two deliberate differences from the industry habit are written down with their reasons: night as the default theme, and one accent instead of one colour per priority.": "写下两处和行业习惯刻意不同的地方及原因：默认夜间主题；只用一个强调色，而不是每个优先级一种颜色。",
+ "Screens are sorted by what the person is doing: detect, diagnose, respond, review.": "按值班的人在做什么给屏幕分类：发现、判断、处理、回看。",
+ "A plan for testing the rules with operators, not only with AI agents.": "增加用真实值班员验证规则的计划，不只用 AI agent。",
+ "Open questions: alarm priority, and night as the default.": "列出待解决的问题：报警优先级、默认夜间主题。",
+ "Every rule says why": "每条规则都写明理由",
+ "Found when a reviewer asked why the corners are square and the document had no answer.": "有人问“为什么用直角”，文档里找不到答案。",
+ "Every look and layout rule now says why, and what breaks if it is ignored.": "每条视觉和布局规则都写上理由，以及不遵守会怎样。",
+ "The 64px rail and the 400px AI panel have their reasons written down.": "64px 侧栏和 400px AI 面板的理由写了下来。",
+ "A table of what stays the same on every screen and what varies, and by which rule.": "新增一张表：哪些每个屏幕都一样，哪些会变、按什么规则变。",
  "Abnormal behaviour detected on an elevator. Don't worry, our smart AI is on it!": "检测到电梯异常行为。别担心，我们的智能 AI 正在处理！",
  "EL-04's doors are working harder and closing slower than usual: +18% current since 06:10, 3.4 s per cycle.": "EL-04 的门比平时更吃力、关得更慢：06:10 起电流 +18%，每次开关 3.4 秒。",
  "I compared door current with its 30-day baseline and matched the passenger reports. Three causes fit, so a technician should check first.": "我对比了门电流和它过去 30 天的正常值，也核对了乘客反馈。有三种原因都说得通，所以先派技术员看一下。",
@@ -4132,7 +4276,7 @@ segInd(document);
  "What's wrong, where, what it costs, and one way in.": "出了什么问题、在哪、多花多少钱，再给一个入口。",
  "A plan, one step at a time.": "一步一步的方案。",
  "Unsure? List the causes and the one check that tells them apart.": "没把握时：列出可能原因，和能分清它们的那项检查。",
- "Green Control · Design System 1.5": "Green Control · 设计系统 1.5",
+ "Green Control · Design System 1.7": "Green Control · 设计系统 1.7",
  "How Green Control looks and how its AI behaves. Built for people and for coding agents.": "Green Control 的视觉规范和 AI 行为规范。设计师、工程师和 AI 编程工具都能直接用。",
  "Figma components": "个 Figma 组件",
  "matched to code": "和代码一一对应",
