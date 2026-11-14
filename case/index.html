@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Green Control</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Nothing+You+Could+Do&family=Reenie+Beanie&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{height:100%}body{min-height:100%}
@@ -46,6 +46,34 @@ body{background:#fff;font-family:Geist,system-ui,sans-serif;color:#1A1A1A;-webki
 .cmd ul li::before{content:"/";color:#5f5d59;margin-right:2px}
 .copy{all:unset;cursor:pointer;justify-self:start;margin-top:8px;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#fff;font:500 12px Geist,system-ui,sans-serif;color:#1A1A1A;box-shadow:inset 0 0 0 .5px rgba(26,26,26,.14);transition:background .2s}
 .copy:hover{background:#F0EFEC}
+
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:34px 24px 26px;border-radius:18px;background:#F7F7F7;box-shadow:inset 0 0 0 .5px rgba(26,26,26,.06)}
+.bk{display:grid;justify-items:center;gap:16px;text-decoration:none;color:inherit;outline:none}
+.bk-in{position:relative;width:180px;height:255px;transform:rotate(var(--r,-1.5deg));transition:transform .45s cubic-bezier(.32,.72,0,1)}
+.bk:nth-child(2) .bk-in{--r:1deg}.bk:nth-child(3) .bk-in{--r:-.5deg}
+.bk:hover .bk-in,.bk:focus-visible .bk-in{transform:rotate(var(--r,-1.5deg)) translateY(-6px)}
+.bk:focus-visible .bk-cover{outline:2px solid #1A1A1A;outline-offset:6px}
+.bk-paper{position:absolute;inset:0;background:#fff 0 0/100% auto no-repeat;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 6px 14px -8px rgba(0,0,0,.25);transform:translate(2px,1px) rotate(.6deg);transition:transform .5s cubic-bezier(.34,1.36,.64,1)}
+.bk:hover .bk-paper,.bk:focus-visible .bk-paper{transform:translate(52px,-12px) rotate(5deg)}
+.bk-code{background:#fff;display:flex;align-items:flex-start;justify-content:flex-end;padding:22px 6px}
+.bk-code code{font:400 9px/1.7 'Geist Mono',ui-monospace,monospace;color:#1A1A1A;width:52px}
+.bk-cover{position:absolute;inset:0;background:#f6f4ef;overflow:hidden;box-shadow:inset 0 0 0 1px #e4e0d7,0 1px 2px rgba(0,0,0,.06),0 14px 26px -16px rgba(0,0,0,.4);transition:transform .5s cubic-bezier(.34,1.36,.64,1)}
+.bk:hover .bk-cover,.bk:focus-visible .bk-cover{transform:translate(-6px,3px) rotate(-1.5deg)}
+.bk-fold{position:absolute;left:11px;top:0;bottom:0;width:1px;background:#e4e0d7}.bk-st{position:absolute;left:5px;width:2px;height:9px;background:#c3c0b8}
+.bk-st:nth-of-type(2){top:63px!important}.bk-st:nth-of-type(3){top:183px!important}
+.bk-top,.bk-foot{position:absolute;left:23px;right:14px;display:flex;justify-content:space-between;align-items:baseline;font:400 8px 'Geist Mono',ui-monospace,monospace;color:#7d7a72}
+.bk-top{top:15px}.bk-foot{bottom:14px}
+.bk-art{position:absolute;left:20px;top:30px;width:146px;height:123px}
+.bk-art svg{width:100%!important;height:100%!important;display:block}
+.bk-list{position:absolute;left:28px;top:40px;display:grid;gap:5px;font:400 10px 'Geist Mono',ui-monospace,monospace;color:#2f55e4}
+.bk-list span:first-child{font-weight:500}
+.bk-h{position:absolute;left:23px;right:12px;bottom:31px;font:15px/1.35 'Nothing You Could Do',cursive;color:#1c1b19}
+.bk-sig{font:17px/.6 'Reenie Beanie',cursive;color:#2f55e4}
+.bk-cap{max-width:200px;text-align:center;font-size:12.5px;line-height:1.5;color:#6B6B67}
+.inst{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;font:400 12px 'Geist Mono',ui-monospace,monospace;color:#55534F}
+.inst code{padding:5px 10px;border-radius:7px;background:#F7F7F7}
+@media (max-width:760px){.shelf{grid-template-columns:1fr;gap:34px}.inst{flex-wrap:wrap}}
+@media (prefers-reduced-motion:reduce){.bk-in,.bk-paper,.bk-cover{transition:none}}
 /* spec */
 .spec{margin-top:36px;padding-top:24px;border-top:.5px solid rgba(26,26,26,.1)}
 .tabs{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:#F7F7F7}.tabs button{all:unset;cursor:pointer;height:28px;padding:0 13px;border-radius:999px;font:500 12.5px Geist,system-ui,sans-serif;color:#8E8C87;transition:background .2s,color .2s}.tabs button.on{background:#fff;color:#1A1A1A;box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -81,21 +109,37 @@ body.m-full .demo{position:fixed;inset:0;height:auto;min-height:0;border-radius:
 
  <div class="ds" aria-labelledby="ds-title">
   <div class="ds-h"><h2 id="ds-title">Built on its own design system</h2><p>Made for people and for the coding AI that builds the screens.</p></div>
-  <div class="ds-grid">
-   <a class="card main" href="../system/" target="_blank" rel="noopener">
-    <div class="pic"><img src="ds-system.jpg" alt="Green Control design system docs" loading="lazy"></div>
-    <div class="tx"><b>Design system <svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></b><span>Colour, type, 15 components, and the rules for how the AI shows what it knows.</span></div>
+  <div class="shelf">
+   <a class="bk" href="../system/" target="_blank" rel="noopener" data-paper="ds-system-p.jpg">
+    <div class="bk-in"><div class="bk-paper"></div><div class="bk-cover"><i class="bk-fold"></i><i class="bk-st" style="top:74px"></i><i class="bk-st" style="top:213px"></i>
+     <div class="bk-top"><span>green control</span><span>01</span></div>
+     <svg class="bk-art" viewBox="0 0 166 140" aria-hidden="true"><g fill="none" stroke="#2f55e4" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="20" y="16" width="22" height="22" rx="3" fill="#2f55e4"/><rect x="48" y="16" width="22" height="22" rx="3" fill="#c7d3fb"/><rect x="76" y="16" width="22" height="22" rx="3"/><rect x="104" y="16" width="22" height="22" rx="3" stroke-dasharray="2 2.5"/>
+      <text x="20" y="74" fill="#2f55e4" stroke="none" font-family="Georgia,serif" font-size="30">Aa</text><path d="M66 56h60M66 64h46M66 72h54" stroke-width="1"/>
+      <rect x="20" y="92" width="52" height="18" rx="9" fill="#2f55e4"/><path d="M36 101h20" stroke="#fff"/><rect x="80" y="92" width="46" height="18" rx="4"/><path d="M88 101h22"/>
+      <rect x="20" y="118" width="106" height="8" rx="2"/><rect x="20" y="118" width="60" height="8" rx="2" fill="#c7d3fb"/></g></svg>
+     <div class="bk-h">Design<br>system</div>
+     <div class="bk-foot"><span class="bk-sig">Shuyi</span><span>15 components</span></div></div></div>
+    <span class="bk-cap">Colour, type, components, and how the AI shows what it knows.</span>
    </a>
-   <a class="card" href="../guide/" target="_blank" rel="noopener">
-    <div class="pic"><img src="ds-guide.jpg" alt="Teaching guide" loading="lazy"></div>
-    <div class="tx"><b>Teaching guide <svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></b><span>How the system is taught to an AI: define the rules, package them, check the work.</span></div>
+   <a class="bk" href="../guide/" target="_blank" rel="noopener" data-paper="../notes/guide-sheet.jpg">
+    <div class="bk-in"><div class="bk-paper"></div><div class="bk-cover"><i class="bk-fold"></i><i class="bk-st" style="top:74px"></i><i class="bk-st" style="top:213px"></i>
+     <div class="bk-top"><span>green control</span><span>02</span></div>
+     <div class="bk-art bk-load" data-src="../notes/cover-art.svg"></div>
+     <div class="bk-h">Teaching AI<br>my design system</div>
+     <div class="bk-foot"><span class="bk-sig">Shuyi</span><span>18 min read</span></div></div></div>
+    <span class="bk-cap">How the system is taught to an AI: define, package, check.</span>
    </a>
-   <div class="card">
-    <div class="cmd"><code><em>$</em> npx skills add<br>&nbsp; shuyii0315-arch/green-control</code>
-     <ul><li>green-control</li><li>gc-motion</li><li>gc-states</li><li>gc-break-ui</li><li>gc-a11y</li><li>gc-responsive</li></ul></div>
-    <div class="tx"><b>Skills</b><span>One skill for the whole AI flow, five for component details.</span><button class="copy" id="copy" type="button">Copy command</button></div>
-   </div>
+   <a class="bk" href="../system/#/skills" target="_blank" rel="noopener" data-paper="">
+    <div class="bk-in"><div class="bk-paper bk-code"><code>$ npx<br>skills add<br>…/green-<br>control<br><br>6 ×<br>SKILL.md</code></div><div class="bk-cover"><i class="bk-fold"></i><i class="bk-st" style="top:74px"></i><i class="bk-st" style="top:213px"></i>
+     <div class="bk-top"><span>green control</span><span>03</span></div>
+     <div class="bk-list"><span>/green-control</span><span>/gc-motion</span><span>/gc-states</span><span>/gc-break-ui</span><span>/gc-a11y</span><span>/gc-responsive</span></div>
+     <div class="bk-h">Skills</div>
+     <div class="bk-foot"><span class="bk-sig">Shuyi</span><span>1 + 5</span></div></div></div>
+    <span class="bk-cap">One skill for the whole AI flow, five for component details.</span>
+   </a>
   </div>
+  <div class="inst"><code>npx skills add shuyii0315-arch/green-control</code><button class="copy" id="copy" type="button">Copy</button></div>
  </div>
 
  <div class="spec"><div class="tabs" id="tabs" role="tablist" aria-label="Moments in the prototype">
@@ -151,5 +195,13 @@ function show(k) {
 }
 tabs.forEach((b) => (b.onclick = () => show(b.dataset.k)))
 show("over")
+
+// books: the page inside is a real screenshot; the guide cover reuses the Notes art and snaps its parts in on hover
+document.querySelectorAll(".bk").forEach((b) => {
+  const pp = b.dataset.paper; if (pp) b.querySelector(".bk-paper").style.backgroundImage = `url(${pp})`
+  const on = () => { b.classList.remove("nb-hot"); void b.offsetWidth; b.classList.add("nb-hot") }, off = () => b.classList.remove("nb-hot")
+  b.addEventListener("pointerenter", on); b.addEventListener("pointerleave", off); b.addEventListener("focus", on); b.addEventListener("blur", off)
+})
+document.querySelectorAll(".bk-load").forEach((el) => fetch(el.dataset.src).then((r) => (r.ok ? r.text() : "")).then((t) => { if (t) el.innerHTML = t }).catch(() => {}))
 </script>
 </body></html>
