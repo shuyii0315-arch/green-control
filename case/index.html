@@ -9,10 +9,13 @@ body{background:#fff;font-family:Geist,system-ui,sans-serif;color:#1A1A1A;-webki
 .demo{position:relative;height:min(820px,calc(100vh - 150px));min-height:520px;background:#F7F7F7;border-radius:22px;overflow:hidden;box-shadow:inset 0 0 0 .5px rgba(26,26,26,.06)}
 .frame{position:absolute;left:50%;top:50%;width:1440px;height:900px;transform-origin:0 0;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.08)}
 .frame iframe{display:block;width:100%;height:100%;border:0}
-.dctl{position:absolute;top:16px;z-index:20;display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(255,255,255,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 3px rgba(0,0,0,.05),inset 0 0 0 .5px rgba(26,26,26,.08)}.dctl.l{left:16px}.dctl.r{right:16px}
-.dctl button,.acts button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:999px;font:500 12.5px Geist,system-ui,sans-serif;color:#3A3936;transition:background .2s}
-.dctl.r button{padding:0 8px}.dctl button:hover,.acts button:hover{background:rgba(26,26,26,.06)}.dctl button[aria-pressed="true"]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.dctl button:focus-visible,.acts button:focus-visible,.acts a:focus-visible,.tabs button:focus-visible,.ds a:focus-visible,.copy:focus-visible{outline:2px solid #1A1A1A;outline-offset:2px}
+.dctl{position:absolute;top:16px;z-index:20;display:flex;gap:2px;padding:3px;border-radius:10px;background:rgba(255,255,255,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 3px rgba(0,0,0,.05),inset 0 0 0 .5px rgba(26,26,26,.08)}.dctl.l{left:16px}.dctl.r{right:16px}
+.dctl button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:7px;font:500 12.5px Geist,system-ui,sans-serif;color:#3A3936;transition:background .2s,color .2s}
+.acts button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:999px;font:500 12.5px Geist,system-ui,sans-serif;color:#3A3936;transition:background .2s}
+.dctl.r button,.dctl #theme{padding:0 8px}.dctl button:hover,.acts button:hover{background:rgba(26,26,26,.06)}
+.demo.dark .dctl{background:rgba(44,44,42,.72);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.08)}.demo.dark .dctl button{color:#D9D7D2}.demo.dark .dctl button:hover{background:rgba(255,255,255,.08)}.demo.dark .dctl .sep{background:rgba(255,255,255,.12)}
+.dctl button:focus-visible{outline:1.5px solid rgba(26,26,26,.4);outline-offset:1px}.demo.dark .dctl button:focus-visible{outline-color:rgba(255,255,255,.5)}
+.acts button:focus-visible,.acts a:focus-visible,.tabs button:focus-visible,.ds a:focus-visible,.copy:focus-visible{outline:2px solid #1A1A1A;outline-offset:2px}
 .dctl svg,.acts svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .dctl .sep{width:.5px;background:rgba(26,26,26,.12);margin:6px 2px}
 .info{padding:22px 4px 0}
@@ -53,7 +56,7 @@ body{background:#fff;font-family:Geist,system-ui,sans-serif;color:#1A1A1A;-webki
 body.m-full{max-width:none;padding:0;overflow:hidden;height:100%}body.m-full .pg-top,body.m-full .info{display:none}
 body.m-full .demo{position:fixed;inset:0;height:auto;min-height:0;border-radius:0;box-shadow:none;z-index:50}
 @media (max-width:860px){.ds-grid{grid-template-columns:1fr 1fr}.ds-grid .main{grid-column:1/-1}}
-@media (max-width:760px){body{padding:0 16px 96px}.pg-top{height:52px}.demo{height:auto;aspect-ratio:1440/1040;min-height:0;border-radius:18px}#day,#night,.dctl .sep{display:none}.dctl{top:12px}.dctl.l{left:12px}.dctl.r{right:12px}.dctl span{display:none}
+@media (max-width:760px){body{padding:0 16px 96px}.pg-top{height:52px}.demo{height:auto;aspect-ratio:1440/1040;min-height:0;border-radius:18px}.dctl{top:12px}.dctl.l{left:12px}.dctl.r{right:12px}.dctl span{display:none}
  .sp{grid-template-columns:1fr;gap:16px}.sp p{padding-top:0;max-width:none}.sp .rows{grid-template-columns:80px 1fr;padding:16px 18px}.tabs{display:flex;overflow-x:auto;max-width:100%;scrollbar-width:none}.tabs button{flex:none;padding:0 10px;font-size:12px}
  .ds-grid{grid-template-columns:1fr}.ds-h{flex-direction:column;gap:4px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -65,8 +68,7 @@ body.m-full .demo{position:fixed;inset:0;height:auto;min-height:0;border-radius:
  <div class="dctl l">
   <button id="replay" title="Back to the start"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span>Replay</span></button>
   <i class="sep"></i>
-  <button id="day" aria-pressed="true"><span>Day</span></button>
-  <button id="night" aria-pressed="false"><span>Night</span></button>
+  <button id="theme" title="Switch to Night" aria-label="Switch to Night"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
  </div>
  <div class="dctl r"><button id="expand" title="Full screen" aria-label="Full screen"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button></div>
  <div class="frame" id="frame"><iframe id="proto" title="Green Control prototype" src="../?theme=day" loading="eager"></iframe></div>
@@ -115,9 +117,14 @@ function fit() {
 addEventListener("resize", fit); new ResizeObserver(fit).observe(demo); fit()
 const load = (extra = "") => { proto.src = "../?theme=" + theme + extra + "&r=" + Date.now() }
 $("#replay").onclick = () => load()
-const setTheme = (t) => { theme = t; $("#day").setAttribute("aria-pressed", t === "day"); $("#night").setAttribute("aria-pressed", t === "night"); demo.style.background = t === "day" ? "#F7F7F7" : "#1C1C1B"; load() }
-$("#day").onclick = () => theme !== "day" && setTheme("day")
-$("#night").onclick = () => theme !== "night" && setTheme("night")
+const MOON = '<svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>', SUN = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+$("#theme").onclick = () => {
+  theme = theme === "day" ? "night" : "day"
+  const dark = theme === "night", b = $("#theme"), t = dark ? "Switch to Day" : "Switch to Night"
+  b.innerHTML = dark ? SUN : MOON; b.title = t; b.setAttribute("aria-label", t)
+  demo.classList.toggle("dark", dark); demo.style.background = dark ? "#1C1C1B" : "#F7F7F7"
+  load()
+}
 const EXI = $("#expand").innerHTML, MNI = '<svg viewBox="0 0 24 24"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>'
 const setFull = (m) => { document.body.classList.toggle("m-full", m); $("#expand").innerHTML = m ? MNI : EXI; $("#expand").title = m ? "Exit full screen" : "Full screen"; $("#expand").setAttribute("aria-label", $("#expand").title); fit() }
 $("#expand").onclick = () => setFull(!document.body.classList.contains("m-full"))
