@@ -1017,6 +1017,19 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 @keyframes mxBeat { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
 @keyframes mxPulse { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .mx-spin, .mx-think i, .mx-live::after { animation: none; } }
+
+/* component motion */
+.mo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.mo { display: grid; gap: 8px; align-content: start; padding: 12px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.mo-stage { position: relative; min-height: 150px; display: grid; place-items: center; padding: 20px; background: var(--bg-page); overflow: hidden; }
+.mo-stage.tall { min-height: 360px; place-items: center end; padding: 0; }
+.mo-stage.tall .mo-inner { width: 340px; }
+.mo-inner { max-width: 100%; }
+.mo-cap { display: grid; gap: 2px; }
+.mo .pbtn { justify-self: start; }
+.moseg { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 2px; box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; }
+.moseg span { position: relative; padding: 4px 14px; text-align: center; }
+.moseg i { position: absolute; left: 2px; top: 2px; bottom: 2px; width: calc(50% - 2px); background: var(--sel-bg, var(--bg-raised)); }
 </style>
 </head>
 <body>
@@ -1578,6 +1591,7 @@ Every rule says why. If a case seems to need an exception, read the reason first
 - **Motion is picked by what the movement does, from one list: hover and press `feedback` 120 ms; a label or chip `small-in` 240 / `small-out` 160 ms; a panel or sheet `in` 420 / `out` 280 ms; the layout `move` 520 ms; the drawing `camera` 900 ms; in progress `loop` 1200 ms; live `ambient` 2400 ms. Curves: `ease` for entering and moving, `exit` for leaving, `spring` only for arrivals, `wave` for loops, `linear` for things that spin. No other numbers. Respect reduced motion.**
   - Why: one list makes every screen move at the same rhythm, and a machine can check it (before 1.9 the prototype had 38 different durations). Leaving is one step shorter than arriving: what arrives needs to be seen, what leaves does not. A spring says "this is new", so it is kept for arrivals; used everywhere, nothing would feel new.
   - Exception: one-off sequences (the figure assembling, the scan) are written inside their component and marked as exceptions.
+  - Each component says which of these it uses (see the component pages); a component never brings its own numbers.
   - Source: [Product]; reduced motion from [Industry] WCAG.
 - **Colours come in three layers:** `primitive.color.*` (raw values) → `color.*` semantic (what it means) → component (`cta-*`, `sel-*`, `badge-bg`). UI code only uses semantic or component tokens. A theme only re-points semantic tokens.
   - Why: a theme or brand change then edits one layer, not every screen.
@@ -2626,10 +2640,55 @@ const SCENES = {
   ],
 };
 
+
+/* ---------- each component's motion: which tokens it uses, playable on its own markup ---------- */
+const stN = (id, name) => { const st = CMP(id).states.find((x) => x[0] === name); return st ? st[2] : CMP(id).html; };
+const MO_IN = (t) => ({ a: "opacity:0;transform:translateY(10px)", b: "opacity:1;transform:none", tin: `opacity ${t}ms var(--ease), transform ${t}ms var(--ease)`, tout: "opacity 280ms var(--exit), transform 280ms var(--exit)", hold: 1500 });
+const MO_PRESS = { a: "", b: "transform:scale(0.97);filter:brightness(0.82)", tin: "transform 120ms var(--ease), filter 120ms var(--ease)", tout: "transform 240ms var(--spring), filter 120ms var(--ease)", hold: 320 };
+const MOTIONS = {
+  button: [{ l: "Press", tok: "feedback 120 ms · ease; springs back in 240 ms", html: '<button class="pbtn primary">Apply</button>', sel: "button", ...MO_PRESS }],
+  segmented: [{ l: "The selection slides", tok: "small-in 240 ms · ease", html: '<div class="moseg"><i></i><span>Night</span><span>Day</span></div>', sel: ".moseg i", a: "", b: "transform:translateX(100%)", tin: "transform 240ms var(--ease)", tout: "transform 240ms var(--ease)", hold: 900 }],
+  "ask-input": [{ l: "Focus", tok: "feedback 120 ms · ease", html: askBox(), sel: ".askbox", cls: "is-focus", hold: 1200 }],
+  "state-tag": [{ l: "Investigating", tok: "loop 1200 ms · wave", loop: true, html: stateTag("busy", "Investigating") }],
+  "object-link": [{ l: "Hover: the dot grows", tok: "feedback 120 ms; the dot uses the spring", html: link("Chiller 2"), sel: ".link", cls: "is-hover", hold: 1200 }],
+  spark: [{ l: "Thinking", tok: "loop 1200 ms · wave", loop: true, html: stN("spark", "Thinking") }],
+  "evidence-chip": [{ l: "A check lands", tok: "in 420 ms · spring", html: chip(1, "More power"), sel: ".echip", a: "opacity:0;transform:scale(0.6)", b: "opacity:1;transform:none", tin: "opacity 240ms var(--ease), transform 420ms var(--spring)", tout: "opacity 160ms var(--exit), transform 160ms var(--exit)", hold: 1400 }, { l: "Linked hover", tok: "feedback 120 ms · ease", html: chip(1, "More power"), sel: ".echip", cls: "is-hover", hold: 1200 }],
+  "evidence-card": [{ l: "Opens under its chip", tok: "small-in 240 ms · ease; closes in 160 ms", html: stN("evidence-card", "Default"), ...MO_IN(240), tout: "opacity 160ms var(--exit), transform 160ms var(--exit)" }],
+  "confidence-meter": [{ l: "Segments fill", tok: "small-in 240 ms each, 16 ms apart", html: confBlock(86), stag: ".conf-bar > *", a: "opacity:0.15", b: "", tin: "opacity 240ms var(--ease)", step: 16, hold: 1600 }],
+  toast: [{ l: "Arrives, then leaves", tok: "in: move 520 ms · spring · out: small-out 160 ms · exit", html: toastS(), a: "opacity:0;transform:translateY(-14px)", b: "opacity:1;transform:none", tin: "opacity 240ms var(--ease), transform 520ms var(--spring)", tout: "opacity 160ms var(--exit), transform 160ms var(--exit)", hold: 1500 }],
+  "action-row": [{ l: "Running", tok: "loop 1200 ms · linear", loop: true, html: stN("action-row", "Running") }],
+  "owner-row": [{ l: "Press Assign", tok: "feedback 120 ms · ease", html: ownerS(), sel: ".pbtn", ...MO_PRESS }],
+  "alert-card": [{ l: "A new alert arrives", tok: "in 420 ms · ease; leaves in 280 ms · exit", html: alertS("is-new"), ...MO_IN(420) }],
+  "plan-rail": [{ l: "A step lands", tok: "in 420 ms · ease", html: stN("plan-rail", "Current"), ...MO_IN(420) }],
+  "causes-check": [{ l: "Appears in the panel", tok: "in 420 ms · ease", html: causesS, ...MO_IN(420) }],
+  "ai-panel": [{ l: "Opens, then closes", tok: "in 420 ms · ease · out 280 ms · exit", html: AIP_PLAN, a: "transform:translateX(110%)", b: "transform:none", tin: "transform 420ms var(--ease)", tout: "transform 280ms var(--exit)", hold: 1700, tall: true }],
+};
+function moPlay(card) {
+  const m = MOTIONS[card.dataset.c][+card.dataset.i], st = card.querySelector(".mo-stage");
+  (st._t || []).forEach(clearTimeout); st._t = [];
+  if (m.stag) {
+    const els = [...st.querySelectorAll(m.stag)];
+    els.forEach((e) => { e.style.transition = "none"; e.style.cssText += ";" + m.a; });
+    requestAnimationFrame(() => requestAnimationFrame(() => els.forEach((e, i) => { e.style.transition = m.tin; e.style.transitionDelay = i * m.step + "ms"; e.style.opacity = ""; })));
+    return;
+  }
+  const el = st.querySelector(m.sel || ".mo-inner > *");
+  if (m.cls) { el.classList.add(m.cls); st._t.push(setTimeout(() => el.classList.remove(m.cls), m.hold)); return; }
+  const set = (css) => { if (m.a) m.a.split(";").forEach((d) => { const k = d.split(":")[0]; if (k) el.style.removeProperty(k); }); if (m.b) m.b.split(";").forEach((d) => { const k = d.split(":")[0]; if (k) el.style.removeProperty(k); }); el.style.cssText += ";" + css; };
+  el.style.transition = "none"; set(m.a);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.style.transition = m.tin; set(m.b);
+    st._t.push(setTimeout(() => { el.style.transition = m.tout; set(m.a); }, m.hold));
+    st._t.push(setTimeout(() => { el.style.transition = "none"; set(m.b); }, m.hold + 700));
+  }));
+}
+const moSection = (c) => MOTIONS[c.id] ? `<h2 id="motion">Motion</h2><p class="sub">Uses the tokens from <a href="#/motion">Motion</a>; no numbers of its own.</p>
+<div class="mo-grid">${MOTIONS[c.id].map((m, i) => `<div class="mo" data-c="${c.id}" data-i="${i}"><div class="mo-stage${m.tall ? " tall" : ""}"><div class="mo-inner">${m.html}</div></div><div class="mo-cap"><span class="t-strong t-small">${m.l}</span><span class="mono t-small muted">${m.tok}</span></div>${m.loop ? '<span class="t-small muted">Runs while the work runs.</span>' : '<button class="pbtn mo-play">Play</button>'}</div>`).join("")}</div>` : "";
+
 /* ---------- pages ---------- */
 const NAV = [
   ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
-  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials & motion"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
+  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials"], ["motion", "Motion"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
   ["AI behaviour", [["rules", "Rules, states, voice"], ["states", "States & confidence", 1], ["voice", "How the AI speaks", 1]]],
   ["Components", COMPONENTS.map((c) => [c.id, c.name])],
   ["Behind the scenes", [["eval", "Eval"], ["changelog", "Changelog"]]],
@@ -2790,7 +2849,7 @@ PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement
 <p class="sub">Under "reduce motion", every animation stops and transitions take 1ms.</p>`;
 
 /* MATERIALS */
-PAGES.materials = () => `${head("Foundations", "Materials & motion", "Three surfaces, three particle effects, and motion chosen by what moves.")}
+PAGES.materials = () => `${head("Foundations", "Materials", "Three surfaces and three particle effects.")}
 <h2 id="surfaces" style="margin-top:12px">Surfaces</h2>
 <p class="sub">Three layers, from back to front.</p><div class="mat mat3"><div class="dots"></div><img src="img/plant-${root.dataset.gc}.webp" data-night="img/plant-night.webp" data-day="img/plant-day.webp" alt="" class="matimg">
 <div class="mp glass mp-one"><span class="mnum">2</span><div class="block mp-in"><span class="mnum">3</span><span class="t-small">Chiller 2 · 0.71 kW/t</span></div></div>
@@ -2806,8 +2865,7 @@ PAGES.materials = () => `${head("Foundations", "Materials & motion", "Three surf
 </div>
 <h2 id="assemble">Assemble</h2>
 <div class="particle-demo" id="pdemo"><div class="dots"></div><div class="pool"></div><img id="pimg" alt="Chiller plant" style="opacity:0"><span class="cap">Fig. 02 — Chiller plant, iso 62°</span><button class="pbtn replay" id="replay">Replay</button></div>
-<h2 id="motion">Motion</h2>
-${PAGES.motion().replace(/^<header[\s\S]*?<\/header>/, "")}`;
+<p class="sub" style="margin-top:28px">How things move: see <a href="#/motion">Motion</a>.</p>`;
 
 /* ILLUSTRATION */
 const BLD_FLOORS = [["Roof", 17], ["L13–27", 27], ["L12", 37], ["L2–11", 47], ["L1", 57], ["B1", 66.5], ["B2", 76]];
@@ -2896,6 +2954,7 @@ ${c.states ? `<h2 id="states">States</h2>
 ${SCENES[c.id] ? `<h2 id="scenes">In use</h2><p class="sub">The same component in each situation it meets. Under each: what changes.</p>
 <div class="stategrid scenegrid${c.id === "ai-panel" ? " wide" : ""}">${SCENES[c.id].map(([l, ch, h]) => `<div class="stcell"><div class="stcell-stage"><div class="inner">${h}</div></div><div class="stcell-cap"><span class="t-strong t-small">${l}</span><span class="t-small muted">${ch}</span></div></div>`).join("")}</div>` : `<h2 id="usage">Usage</h2>
 <div class="do-dont"><div class="tile"><span class="t-label">Use</span>${c.use.map((u) => `<span class="t-small">${u}</span>`).join("")}</div><div class="tile"><span class="t-label">Don't</span>${c.not.map((u) => `<span class="t-small muted">${u}</span>`).join("")}</div></div>`}
+${moSection(c)}
 <h2 id="react">Use it in code</h2>
 ${REACT_SRC[c.id] ? `<div class="csteps">
   <div class="cstep"><div class="step-hd"><span class="no">1</span><span class="t-strong">Install</span><span class="t-small muted">Adds the component to a React project, with the theme and anything it depends on.</span></div>
@@ -3048,7 +3107,7 @@ PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and wit
 
 /* TEST */
 const CHANGELOG = [
-  { v: "1.9", t: "One rhythm for everything that moves", why: "The docs said one curve, but the prototype used 38 durations and six curves; the site and the motion skill each listed different numbers again.", items: ["Motion is picked by what moves: hover, a chip, a panel, the layout, the drawing, a loop.", "New: an exit curve, so what leaves doesn't linger; leaving is one step shorter than arriving.", "Every transition in the prototype, this site and the component code now uses only these values."], img: [] },
+  { v: "1.9", t: "One rhythm for everything that moves", why: "The docs said one curve, but the prototype used 38 durations and six curves; the site and the motion skill each listed different numbers again.", items: ["Motion is picked by what moves: hover, a chip, a panel, the layout, the drawing, a loop.", "New: an exit curve, so what leaves doesn't linger; leaving is one step shorter than arriving.", "Every transition in the prototype, this site and the component code now uses only these values.", "Motion has its own page under Foundations, and each component page shows which tokens it uses, playable on the component itself."], img: [] },
   { v: "1.8", t: "Components shown where they are used", why: "A do/don't list says little. One sheet on a phone app serves comments, sharing and settings; a component page should show the same: one part, many situations.", items: ["Each component page now shows the component in each situation it meets, with one line on what changes.", "New: AI panel. One frame for every AI answer: a fault, a saving, a draft, a low-confidence check.", "The AI panel shows how it fits a desktop, a tablet and a phone."], img: [] },
   { v: "1.7", t: "Reasons tied to control-room practice", why: "Found by asking where each rule comes from: the industry habit, the product principle, or what the person on shift is doing.", items: ["Color, Evidence card and Alert card now say which control-room guidance (ISA-101, ISA-18.2) their rule follows.", "The two places Green Control differs from that guidance are written down with reasons: night as the default theme, one accent instead of one colour per priority.", "DESIGN.md tags every rule with its source and adds a plan for testing the rules with operators.", "Open question: when two faults arrive at once, which one gets the accent?"], img: [] },
   { v: "1.6", t: "Every rule says why", why: "Found when a reviewer asked why the corners are square and the document had no answer.", items: ["Every look and layout rule now says why, and what breaks if it is ignored.", "The 64px rail and the 400px AI panel have their reasons written down.", "A table of what stays the same on every screen and what varies, and by which rule."], img: [] },
@@ -3233,7 +3292,6 @@ async function assembleDemo() {
   im.style.transition = "opacity 600ms var(--ease)"; im.style.opacity = 1; cv.style.transition = "opacity 600ms var(--ease)"; cv.style.opacity = 0; setTimeout(() => cv.remove(), 700);
 }
 INIT.materials = () => {
-  if (INIT.motion) INIT.motion();
   $("#replay").onclick = assembleDemo;
   const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { assembleDemo(); io.disconnect(); } }, { threshold: 0.4 });
   io.observe($("#pdemo"));
@@ -3312,6 +3370,7 @@ const plain = (h) => { const d = document.createElement("div"); d.innerHTML = h;
 const promptFor = (c) => `Build a Green Control "${c.name}".\nRead ${BASE}llms.txt and SKILL.md first.\n${c.what}\nUse when: ${c.use.join(" ")} Not for: ${c.not.join(" ")}\nOn phones: ${c.resp[2]}\nUse only Green Control tokens, square corners, one accent, night and day.\nStart from this markup:\n${pretty(c.html)}`;
 COMPONENTS.forEach((c, i) => {
   INIT[c.id] = () => {
+    $$(".mo-play").forEach((b) => (b.onclick = () => moPlay(b.closest(".mo"))));
     $$(".codebox pre").slice(-1)[0].textContent = pretty(c.html);
     $$("[data-copyreact]").forEach((b) => (b.onclick = () => copyText(b.dataset.copyreact === "install" ? `npx shadcn@latest add ${BASE}r/gc-${c.id}.json` : b.dataset.copyreact === "usage" ? REACT_USAGE[c.id] : REACT_SRC[c.id], b)));
     $("[data-copycode]").onclick = (e) => copyText(pretty(c.html), e.currentTarget);
@@ -3426,6 +3485,43 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Motion has its own page under Foundations, and each component page shows which tokens it uses, playable on the component itself.": "动效在“基础”下单独成页；每个组件页写明它用哪些 token，点“播放”就能在组件本身上看到。",
+  "Materials": "材质",
+  "Three surfaces and three particle effects.": "三种表面、三种粒子效果。",
+  "How things move: see": "东西怎么动，见",
+  "Uses the tokens from": "用的是这一页里的 token：",
+  "; no numbers of its own.": "；组件自己不定数字。",
+  "Runs while the work runs.": "事情在进行，它就一直转。",
+  "Press": "按下",
+  "feedback 120 ms · ease; springs back in 240 ms": "反馈 120 ms · 移动曲线；松手用弹簧 240 ms 回弹",
+  "The selection slides": "选中块滑过去",
+  "small-in 240 ms · ease": "小件进 240 ms · 移动曲线",
+  "Focus": "聚焦",
+  "feedback 120 ms · ease": "反馈 120 ms · 移动曲线",
+  "Investigating": "调查中",
+  "loop 1200 ms · wave": "循环 1200 ms · 往返曲线",
+  "Hover: the dot grows": "悬停：圆点变大",
+  "feedback 120 ms; the dot uses the spring": "反馈 120 ms；圆点用弹簧",
+  "Thinking": "思考中",
+  "A check lands": "查完一项",
+  "in 420 ms · spring": "进 420 ms · 弹簧",
+  "Linked hover": "联动高亮",
+  "Opens under its chip": "在标签下面展开",
+  "small-in 240 ms · ease; closes in 160 ms": "小件进 240 ms · 移动曲线；收起 160 ms",
+  "Segments fill": "格子依次填满",
+  "small-in 240 ms each, 16 ms apart": "每格 240 ms，间隔 16 ms",
+  "Arrives, then leaves": "出现，再消失",
+  "in: move 520 ms · spring · out: small-out 160 ms · exit": "进：520 ms · 弹簧 · 出：160 ms · 离开曲线",
+  "Running": "进行中",
+  "loop 1200 ms · linear": "循环 1200 ms · 匀速",
+  "Press Assign": "按下“派给”",
+  "A new alert arrives": "新提醒出现",
+  "in 420 ms · ease; leaves in 280 ms · exit": "进 420 ms · 移动曲线；出 280 ms · 离开曲线",
+  "A step lands": "新步骤出现",
+  "in 420 ms · ease": "进 420 ms · 移动曲线",
+  "Appears in the panel": "在面板里出现",
+  "Opens, then closes": "打开，再关上",
+  "in 420 ms · ease · out 280 ms · exit": "进 420 ms · 移动曲线 · 出 280 ms · 离开曲线",
   "Press Play on any card.": "每张卡片都可以点“播放”。",
   "Leaving is one step shorter than arriving: what arrives needs to be seen, what leaves does not. Press Play on any card.": "离开比进来短一档：进来的东西要被看到，离开的不需要。每张卡片都可以点“播放”。",
   "Hover, press": "悬停、按下",
