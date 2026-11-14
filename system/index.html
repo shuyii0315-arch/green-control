@@ -954,6 +954,26 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .state .sg-busy { animation: busyFade 1.2s var(--ease) infinite; }
 @keyframes busyFade { 50% { opacity: 0.25; } }
 @media (prefers-reduced-motion: reduce) { .state .sg-busy { animation: none; } }
+/* scenes: a component in each situation it meets */
+.scenegrid .stcell-cap { padding-right: 14px; }
+.scenegrid.wide { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+.aip { width: 100%; max-width: 330px; display: grid; text-align: left; }
+.aip-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.aip-st { margin-left: auto; }
+.aip-band { padding: 5px 12px; background: var(--accent); color: var(--on-accent); font: 10px/14px var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.aip-body { display: grid; gap: 10px; padding: 12px; }
+.aip-act { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); }
+.aip-act .pbtn.primary { flex: 1; }
+.aip-ask { padding: 0 12px 12px; }
+.aip-ask .askbox { width: 100%; max-width: none; }
+.aip-devices { display: flex; gap: 18px; align-items: flex-end; justify-content: center; flex-wrap: wrap; }
+.aip-devices > div { display: grid; gap: 8px; justify-items: center; text-align: center; max-width: 120px; }
+.dv { position: relative; box-shadow: inset 0 0 0 1px var(--line); background: var(--bg-page); overflow: hidden; }
+.dv .art { position: absolute; background-image: radial-gradient(var(--dot) 0.8px, transparent 0.8px); background-size: 5px 5px; }
+.dv .pn { position: absolute; background: var(--glass-raised); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.dv-d { width: 120px; height: 75px; } .dv-d .art { inset: 0 34% 0 0; } .dv-d .pn { top: 0; right: 0; bottom: 0; width: 33%; }
+.dv-t { width: 66px; height: 88px; } .dv-t .art { inset: 0 0 45% 0; } .dv-t .pn { left: 0; right: 0; bottom: 0; height: 45%; }
+.dv-p { width: 42px; height: 88px; } .dv-p .art { inset: 0 0 76% 0; } .dv-p .pn { left: 0; right: 0; bottom: 0; height: 76%; }
 </style>
 </head>
 <body>
@@ -962,7 +982,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
   <button class="menu-btn" id="menuBtn" aria-label="Open navigation">Menu</button>
   <a class="brand" href="#/overview" aria-label="Green Control Design System, home">
     <svg class="logo" viewBox="0 0 28 28" aria-hidden="true" data-logo></svg>
-    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.7</span>
+    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.8</span>
   </a>
   <div class="right">
     <a class="btn-ghost proto" href="https://shuyii0315-arch.github.io/green-control/" target="_blank" rel="noopener">Prototype ↗</a>
@@ -1398,7 +1418,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 <script type="text/plain" id="f-design"># Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.7.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.8.
 
 ## The one idea
 
@@ -1589,7 +1609,7 @@ The rules have been tested with AI agents (see Changelog): can an agent that has
 
 ## Components
 
-Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Confidence meter · Toast with Undo · Action row · Owner row (team + person on shift + Assign) · Causes list + Suggested check (below 50%) · Art box (keeps labels on the drawing) · Segmented control · Buttons (primary `.cta`, secondary `.pbtn`; square, no pill) · Logo.
+AI panel (the frame stays the same; what goes inside changes with the situation) · Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Confidence meter · Toast with Undo · Action row · Owner row (team + person on shift + Assign) · Causes list + Suggested check (below 50%) · Art box (keeps labels on the drawing) · Segmented control · Buttons (primary `.cta`, secondary `.pbtn`; square, no pill) · Logo.
 
 ## Machine check
 
@@ -1597,6 +1617,7 @@ Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Conf
 
 ## Changelog
 
+- **1.8** Each component is shown in the situations it meets, with one line on what changes, instead of do/don't lists. New: AI panel, one frame for every AI answer (fault, saving, draft, low confidence), on desktop, tablet and phone.
 - **1.7** Rules now say where they come from: [Industry] (ISA-101, ISA-18.2, WCAG), [Product] (evidence first, people decide) or [Task]. Two places where Green Control differs from the industry habit are written down with their reasons. New: screens sorted by what the person is doing (detect, diagnose, respond, review); a plan for testing the rules with operators; open questions.
 - **1.6** Every look and layout rule now says why, and what breaks if it is ignored, so a person or an agent can tell a real exception from a mistake. New table: what stays the same on every screen, and what varies and by which rule.
 - **1.5** Added "How the AI speaks": wording per confidence band, words the AI never uses, and how it reports Undo. The first machine check, `gc-check`, found what four rounds of reviewing screens had missed: secondary text (`muted`) fell short of 4.5:1 on raised and chip backgrounds in both themes (now #666662 day, #8f949c night); the component CSS had no keyboard focus ring; the Ask input's send button had none either; two near-identical blacks (#111214, #121214); and `registry.json`'s copy of the theme had been missing the badge colour since 1.1. Colours now have a primitive layer, and one script keeps every copy in sync.
@@ -2386,6 +2407,109 @@ const COMPONENTS = [
     states: [S("Below 50%", "Causes equally possible; only a check.", causesS), S("Draft band", "A leading cause carries the confidence; the others read 'maybe'.", causesS.replace("What it could be · 41%", "What it could be · 58%").replace('<span>Debris in the door track</span><span class="t-label">possible</span>', '<span>Debris in the door track</span><span class="t-label accent">likely</span>').replace(/<span class="t-label">possible<\/span>/g, '<span class="t-label">maybe</span>'))] },
 ];
 
+/* ---------- scenes: the same component in each situation it meets ---------- */
+const aip = (state, band, body, act) => `<div class="glass aip"><div class="aip-head">${SPARK}<span class="t-strong t-small">Green Control</span><span class="t-label muted aip-st">${state}</span></div>${band ? `<div class="aip-band">${band}</div>` : ""}<div class="aip-body">${body}</div>${act ? `<div class="aip-act">${act}</div>` : ""}<div class="aip-ask">${askBox()}</div></div>`;
+const AIP_PLAN = aip("Proposed", "Issue · CH-02 · ¥312 today", `<span class="t-small">Chiller 2 draws 14% more power than Chiller 1 for the same cooling. Moving 20% of the load fixes it today.</span>${chips(3)}${confBlock(88)}`, '<button class="pbtn primary">Apply</button>');
+const AIP_SAVE = aip("Proposed", "Opportunity · BT-01 · saves ¥21,500", `<span class="t-small">Tomorrow 14:00–17:00 passes the 3,100 kW limit by 250 kW. Charging BT-01 tonight covers it.</span><div class="chips">${chip(1, "Peak tomorrow")}${chip(2, "Battery at 64%")}${chip(3, "250 kW fits")}${chip(4, "Free tomorrow")}</div>${confBlock(88)}`, '<button class="pbtn primary">Apply</button>');
+const AIP_DRAFT = aip("Draft", "Issue · CT-2", `<span class="t-small">Most likely the CT-2 fan (58%). Fouled fill isn't ruled out yet.</span>${chips(2)}${confBlock(58)}`, '<button class="pbtn">Review</button><button class="pbtn primary">Apply</button>');
+const AIP_CHECK = aip("Check", "Issue · EL-04", `<span class="t-small">The data fits three causes equally, so I'm not suggesting a fix.</span><div class="chips">${chip(1, "Door current +18%")}${chip(2, "2 reports")}</div>${confBlock(41)}`, '<button class="pbtn primary">Assign a check</button><button class="pbtn">Keep watching</button>');
+const AIP_DEVICES = `<div class="aip-devices"><div><div class="dv dv-d"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Desktop · 400px column</span></div><div><div class="dv dv-t"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Tablet · sheet over the drawing</span></div><div><div class="dv dv-p"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Phone · full screen</span></div></div>`;
+const AIP_COMPONENT = { id: "ai-panel", group: "Organisms", name: "AI panel", html: AIP_PLAN,
+    what: "Where the AI reports. The frame is fixed: header, band, thread, action bar, ask box. What sits inside follows the situation and the confidence.",
+    use: ["Every equipment screen: on the right on a monitor, as a sheet on smaller screens."], not: ["A second panel for the same machine.", "A pop-up dialog instead of the panel."],
+    resp: ["400px column on the right.", "A sheet over the drawing; the drawing stays on top.", "Full screen; the action bar spans the width at the bottom."],
+    states: [S("Checking", "Reads sources one at a time; each lands as a chip.", aip("Investigating", "Issue · CH-02 · ¥312 today", `<span class="t-small muted">Checking 3 sources…</span><div class="chips">${chip(1, "More power")}${chip(2, "Running hot")}${chip(3, "Overdue cleaning", "is-checking")}</div>`, "")), S("Proposed", "Evidence, confidence, one plan.", AIP_PLAN), S("Applied", "Says what changed, with Undo.", aip("Applied", "Issue · CH-02 · ¥312 today", `<span class="t-small">Moved 20% of the load to Chiller 1.</span>${toastS("", "Plan applied")}`, ""))] };
+COMPONENTS.push(AIP_COMPONENT);
+const CMP = (id) => COMPONENTS.find((c) => c.id === id);
+const stOf = (id, i) => CMP(id).states[i][2];
+const alertOpp = alertS("", stateTag("opportunity", "Opportunity")).replace("Cooling · issue", "Storage · opportunity").replace(`${link("Chiller 2")} uses more power than it should`, `${link("BT-01")} can avoid tomorrow's peak charge`).replace("About ¥250 a day above normal", "Saves about ¥21,500");
+const alertUnsure = alertS("", stateTag("issue", "Issue")).replace("Cooling · issue", "Lifts · issue").replace(`${link("Chiller 2")} uses more power than it should`, `${link("EL-04")} doors close slower than usual`).replace("About ¥250 a day above normal", "2 passenger reports today");
+const SCENES = {
+  "button": [
+    ["Something to look at", "Investigate is the only button on an alert.", alertS()],
+    ["A plan to apply", "Apply sits on the current step only.", stOf("plan-rail", 1)],
+    ["Not sure enough", "The main button becomes a check, never a fix.", '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="pbtn primary">Assign a check</button><button class="pbtn">Keep watching</button></div>'],
+    ["Who should act", "Assign is secondary: it picks a person, not a fix.", ownerS()],
+  ],
+  "segmented": [
+    ["Theme", "Two options, one always on.", '<div class="seg" role="group"><button aria-pressed="true">Night</button><button aria-pressed="false">Day</button></div>'],
+    ["Time range of a reading", "Three options; only the chart under it changes.", '<div class="seg" role="group"><button aria-pressed="false">Today</button><button aria-pressed="true">7 d</button><button aria-pressed="false">30 d</button></div>'],
+  ],
+  "ask-input": [
+    ["On a machine", "The placeholder names the machine on screen.", askBox()],
+    ["On a floor", "The same box names the floor instead.", askBox().replace("Ask about Chiller 2…", "Ask about B1…")],
+  ],
+  "state-tag": [
+    ["On an alert", "Issue: the accent, with how big it is.", stateTag("up", "+14% power")],
+    ["A saving, not a fault", "Opportunity: same colour, a diamond and a different word.", stOf("state-tag", 2)],
+    ["While the AI checks", "Investigating: neutral; the square pulses.", stOf("state-tag", 3)],
+    ["On the timeline", "Resolved: neutral again, with a tick.", stOf("state-tag", 4)],
+  ],
+  "object-link": [
+    ["In what the AI says", "The machine it means, one tap away.", `<span class="t-small">Most likely ${link("Chiller 2")}: it draws 14% more power.</span>`],
+    ["Who is on shift", "Teams and people link the same way.", ownerS("", "")],
+    ["A removed work order", "The name stays readable, struck through.", stOf("object-link", 3)],
+  ],
+  "spark": [
+    ["Where the AI speaks", "Next to its name, at the top of the panel.", `<div style="display:flex;align-items:center;gap:8px">${SPARK}<span class="t-strong t-small">Green Control</span></div>`],
+    ["While it reads sources", "The dots pulse in turn.", stOf("spark", 1)],
+  ],
+  "evidence-chip": [
+    ["A fault", "Three checks: what, where, why.", chips(3)],
+    ["A saving", "Four checks, named for the questions a saving raises.", `<div class="chips">${chip(1, "Peak tomorrow")}${chip(2, "Battery at 64%")}${chip(3, "250 kW fits")}${chip(4, "Free tomorrow")}</div>`],
+    ["Unsure", "Only what the AI could see; the rest becomes a check.", `<div class="chips">${chip(1, "Door current +18%")}${chip(2, "2 reports")}</div>`],
+    ["Still reading", "A spinner until the source lands.", `<div class="chips">${chip(1, "More power")}${chip(2, "Running hot")}${chip(3, "Overdue cleaning", "is-checking")}</div>`],
+  ],
+  "evidence-card": [
+    ["A fault", "Today's reading against the normal range and the 30-day tick.", evCardS(ev[0])],
+    ["A saving", "The same card holds a forecast.", evCardS({ n: 1, tab: "What's coming", value: "3,350", unit: "kW peak tomorrow", cap: "limit is 3,100 kW", now: 0.92 })],
+    ["Unsure", "One reading; the card does not guess a cause.", evCardS({ n: 1, tab: "What we see", value: "+18%", unit: "door motor current", cap: "since 06:10 today", now: 0.7 })],
+    ["Old reading", "Over 15 minutes: faded and dated, never hidden.", stOf("evidence-card", 2)],
+  ],
+  "confidence-meter": [
+    ["A plan · 88%", "The AI may offer a plan with Apply.", confBlock(88)],
+    ["A draft · 58%", "Review comes before Apply.", confBlock(58)],
+    ["A check · 41%", "Turns to the accent; no fix is offered.", confBlock(41)],
+  ],
+  "toast": [
+    ["After Apply", "Says what changed; Undo for 6 seconds.", toastS("", "Plan applied")],
+    ["After Assign", "The same toast, for a person instead of a machine.", toastS("", "Assigned to Ana Ruiz")],
+    ["After Undo", "Says what is back; no second Undo.", stOf("toast", 3)],
+  ],
+  "action-row": [
+    ["Running now", "A bar and a percentage.", stOf("action-row", 1)],
+    ["Booked for later", "A time, no bar yet.", stOf("action-row", 0)],
+    ["Failed", "Always says why, in the accent.", stOf("action-row", 4)],
+  ],
+  "owner-row": [
+    ["Chiller fault", "The AI suggests the team on shift.", ownerS()],
+    ["Elevator, unsure", "Another team; Assign sends a check, not a fix.", ownerS().replace("Maintenance B", "Vertical Transport").replace("Ana Ruiz", "Lin Wei")],
+    ["After Assign", "Who has it now, with Undo beside it.", stOf("owner-row", 2)],
+  ],
+  "alert-card": [
+    ["A fault", "Issue tag, the cost, Investigate.", alertS()],
+    ["A saving", "Opportunity tag; the cost line becomes the saving.", alertOpp],
+    ["Unsure what it is", "The same card; how unsure shows after Investigate, not here.", alertUnsure],
+    ["Fixed", "Faded, Resolved, no button.", stOf("alert-card", 3)],
+  ],
+  "plan-rail": [
+    ["Sure · 88%", "Apply on the current step.", stOf("plan-rail", 1)],
+    ["Likely · 58%", "Draft label; Review before Apply.", stOf("plan-rail", 2)],
+    ["After Apply", "Done with a tick and the time.", stOf("plan-rail", 4)],
+  ],
+  "causes-check": [
+    ["Unsure · 41%", "All causes possible; one check tells them apart.", stOf("causes-check", 0)],
+    ["Likely · 58%", "One cause leads; the others stay as maybe.", stOf("causes-check", 1)],
+  ],
+  "ai-panel": [
+    ["A fault · 88%", "Evidence, then confidence, then one plan with Apply.", AIP_PLAN],
+    ["A saving · 88%", "Same frame; four checks, and the band names the saving.", AIP_SAVE],
+    ["Likely · 58%", "Draft: the action bar holds Review and Apply.", AIP_DRAFT],
+    ["Unsure · 41%", "No plan: the action bar holds a check instead.", AIP_CHECK],
+    ["Across screens", "The frame moves; the order inside never changes.", AIP_DEVICES],
+  ],
+};
+
 /* ---------- pages ---------- */
 const NAV = [
   ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
@@ -2401,7 +2525,7 @@ const head = (crumb, title, lede, acts = "") => `<header class="ph"><span class=
 const PAGES = {};
 
 /* OVERVIEW */
-PAGES.overview = () => `${head("Green Control · Design System 1.7", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
+PAGES.overview = () => `${head("Green Control · Design System 1.8", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
 <div class="hero-fig"><div class="dots"></div><img src="img/proto-investigate.webp" alt="The Green Control prototype: the chiller plant with three numbered evidence marks, and the AI panel"><span class="cap">Prototype · Investigate Chiller 2</span></div>
 <div class="ostats">${[["15", "components", "6 atoms · 6 molecules · 3 organisms"], ["6", "AI states", "watching to undone"], ["3", "confidence bands", "plan · draft · check"], ["2", "themes", "night and day, one set of names"], ["16", "Figma components", "matched to code"]].map(([n, k, d]) => `<div><span class="t-num">${n}</span><span class="t-small muted">${k}</span></div>`).join("")}</div>
 
@@ -2649,8 +2773,9 @@ COMPONENTS.forEach((c, i) => {
   PAGES[c.id] = () => `${head("Components", c.name, c.what)}
 ${c.states ? `<h2 id="states">States</h2>
 <div class="stategrid">${c.states.map(([l, w, h], si) => `<div class="stcell"${w ? ` title="${w.replace(/"/g, "&quot;")}"` : ""}><div class="stcell-stage"><div class="inner">${h}</div></div><div class="stcell-cap"><span class="t-strong t-small">${l}</span>${stCode(c, si, h)}</div></div>`).join("")}</div>` : ""}
-<h2 id="usage">Usage</h2>
-<div class="do-dont"><div class="tile"><span class="t-label">Use</span>${c.use.map((u) => `<span class="t-small">${u}</span>`).join("")}</div><div class="tile"><span class="t-label">Don't</span>${c.not.map((u) => `<span class="t-small muted">${u}</span>`).join("")}</div></div>
+${SCENES[c.id] ? `<h2 id="scenes">In use</h2><p class="sub">The same component in each situation it meets. Under each: what changes.</p>
+<div class="stategrid scenegrid${c.id === "ai-panel" ? " wide" : ""}">${SCENES[c.id].map(([l, ch, h]) => `<div class="stcell"><div class="stcell-stage"><div class="inner">${h}</div></div><div class="stcell-cap"><span class="t-strong t-small">${l}</span><span class="t-small muted">${ch}</span></div></div>`).join("")}</div>` : `<h2 id="usage">Usage</h2>
+<div class="do-dont"><div class="tile"><span class="t-label">Use</span>${c.use.map((u) => `<span class="t-small">${u}</span>`).join("")}</div><div class="tile"><span class="t-label">Don't</span>${c.not.map((u) => `<span class="t-small muted">${u}</span>`).join("")}</div></div>`}
 <h2 id="react">Use it in code</h2>
 ${REACT_SRC[c.id] ? `<div class="csteps">
   <div class="cstep"><div class="step-hd"><span class="no">1</span><span class="t-strong">Install</span><span class="t-small muted">Adds the component to a React project, with the theme and anything it depends on.</span></div>
@@ -2803,6 +2928,7 @@ PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and wit
 
 /* TEST */
 const CHANGELOG = [
+  { v: "1.8", t: "Components shown where they are used", why: "A do/don't list says little. One sheet on a phone app serves comments, sharing and settings; a component page should show the same: one part, many situations.", items: ["Each component page now shows the component in each situation it meets, with one line on what changes.", "New: AI panel. One frame for every AI answer: a fault, a saving, a draft, a low-confidence check.", "The AI panel shows how it fits a desktop, a tablet and a phone."], img: [] },
   { v: "1.7", t: "Reasons tied to control-room practice", why: "Found by asking where each rule comes from: the industry habit, the product principle, or what the person on shift is doing.", items: ["Color, Evidence card and Alert card now say which control-room guidance (ISA-101, ISA-18.2) their rule follows.", "The two places Green Control differs from that guidance are written down with reasons: night as the default theme, one accent instead of one colour per priority.", "DESIGN.md tags every rule with its source and adds a plan for testing the rules with operators.", "Open question: when two faults arrive at once, which one gets the accent?"], img: [] },
   { v: "1.6", t: "Every rule says why", why: "Found when a reviewer asked why the corners are square and the document had no answer.", items: ["Every look and layout rule now says why, and what breaks if it is ignored.", "The 64px rail and the 400px AI panel have their reasons written down.", "A table of what stays the same on every screen and what varies, and by which rule."], img: [] },
   { v: "1.5", t: "A machine checks too", why: "Found by gc-check, the first automatic check, on its first run. Four rounds of reviewing screens by eye had missed all of it.", items: ["Secondary text now passes 4.5:1 on raised and chip backgrounds in both themes (#666662 day, #8f949c night).", "Every clickable component has a keyboard focus ring; so does the Ask input's send button.", "Colours have a primitive layer: 17 raw colours, each written once. Two near-identical blacks merged.", "One script writes tokens.json into every file that copies it. Its first run found registry.json missing the badge colour since 1.1.", "A Workflow page: the six-step loop for building with AI, one real loop, and what AI may change.", "How the AI speaks: wording for each confidence band.", "A Figma library with the same tokens as variables (night and day) and every component state as variants."], img: [] },
@@ -3177,6 +3303,154 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Components shown where they are used": "组件放进它真正被用到的场景里",
+  "A do/don't list says little. One sheet on a phone app serves comments, sharing and settings; a component page should show the same: one part, many situations.": "“用法/别这样”的清单说明不了什么。手机 App 里同一个底部弹层要承接评论、分享、设置；组件页也该这样讲：一个组件，多个场景。",
+  "Each component page now shows the component in each situation it meets, with one line on what changes.": "每个组件页都改成展示它在各个场景里的样子，下面一句话说明变了什么。",
+  "New: AI panel. One frame for every AI answer: a fault, a saving, a draft, a low-confidence check.": "新增：AI 面板。所有 AI 回答都用同一个框：故障、节能机会、草稿、把握度低时的核查。",
+  "The AI panel shows how it fits a desktop, a tablet and a phone.": "AI 面板展示了它在电脑、平板、手机上分别怎么放。",
+ "In use": "在不同场景里",
+ "The same component in each situation it meets. Under each: what changes.": "同一个组件在它会遇到的每种场景里的样子。每张图下面写：这个场景变了什么。",
+ "AI panel": "AI 面板",
+ "Where the AI reports. The frame is fixed: header, band, thread, action bar, ask box. What sits inside follows the situation and the confidence.": "AI 汇报的地方。框架固定：顶栏、提示条、对话、操作栏、提问框。里面放什么，跟着场景和把握度变。",
+ "Proposed": "已给方案",
+ "Draft": "草稿",
+ "Check": "建议检查",
+ "Issue · CH-02 · ¥312 today": "问题 · CH-02 · 今天 ¥312",
+ "Opportunity · BT-01 · saves ¥21,500": "机会 · BT-01 · 省 ¥21,500",
+ "Issue · CT-2": "问题 · CT-2",
+ "Issue · EL-04": "问题 · EL-04",
+ "Chiller 2 draws 14% more power than Chiller 1 for the same cooling. Moving 20% of the load fixes it today.": "同样的制冷量，Chiller 2 比 Chiller 1 多耗电 14%。把 20% 的负荷转过去，今天就能解决。",
+ "Tomorrow 14:00–17:00 passes the 3,100 kW limit by 250 kW. Charging BT-01 tonight covers it.": "明天 14:00–17:00 会超出 3,100 kW 上限 250 kW。今晚给 BT-01 充电就能补上。",
+ "Most likely the CT-2 fan (58%). Fouled fill isn't ruled out yet.": "最可能是 CT-2 的风机（58%）。填料脏堵还不能排除。",
+ "The data fits three causes equally, so I'm not suggesting a fix.": "数据和三种原因都对得上，所以我先不建议修什么。",
+ "Peak tomorrow": "明天高峰",
+ "Battery at 64%": "电池 64%",
+ "250 kW fits": "250 kW 够用",
+ "Free tomorrow": "明天空闲",
+ "Door current +18%": "门电机电流 +18%",
+ "2 reports": "2 条反馈",
+ "Desktop · 400px column": "桌面 · 400px 右栏",
+ "Tablet · sheet over the drawing": "平板 · 盖在设备图上的面板",
+ "Phone · full screen": "手机 · 全屏",
+ "Storage · opportunity": "储能 · 机会",
+ "can avoid tomorrow's peak charge": "能避开明天的高峰电费",
+ "Saves about ¥21,500": "约省 ¥21,500",
+ "Lifts · issue": "电梯 · 问题",
+ "doors close slower than usual": "关门比平时慢",
+ "2 passenger reports today": "今天有 2 位乘客反馈",
+ "Something to look at": "有事要看",
+ "Investigate is the only button on an alert.": "提醒卡上只有一个按钮：查原因。",
+ "A plan to apply": "有方案要执行",
+ "Apply sits on the current step only.": "执行按钮只出现在当前这一步。",
+ "Not sure enough": "把握不够",
+ "The main button becomes a check, never a fix.": "主按钮变成派人检查，不会是修复。",
+ "Who should act": "谁来处理",
+ "Assign is secondary: it picks a person, not a fix.": "指派是次要按钮：它选的是人，不是修复方案。",
+ "Theme": "主题",
+ "Two options, one always on.": "两个选项，总有一个开着。",
+ "Time range of a reading": "读数的时间范围",
+ "Three options; only the chart under it changes.": "三个选项；只有下面的图表跟着变。",
+ "Today": "今天",
+ "7 d": "7 天",
+ "30 d": "30 天",
+ "On a machine": "在一台设备上",
+ "The placeholder names the machine on screen.": "提示文字写的是屏幕上这台设备。",
+ "On a floor": "在一层楼上",
+ "The same box names the floor instead.": "同一个输入框，改成写楼层。",
+ "Ask about B1…": "问问 B1…",
+ "On an alert": "在提醒卡上",
+ "Issue: the accent, with how big it is.": "问题：用强调色，并写出有多严重。",
+ "A saving, not a fault": "是省钱机会，不是故障",
+ "Opportunity: same colour, a diamond and a different word.": "机会：同样的颜色，换成菱形和不同的字。",
+ "While the AI checks": "AI 查看时",
+ "Investigating: neutral; the square pulses.": "查看中：中性色，方块闪动。",
+ "On the timeline": "在时间线上",
+ "Resolved: neutral again, with a tick.": "已解决：回到中性色，带一个勾。",
+ "In what the AI says": "在 AI 说的话里",
+ "The machine it means, one tap away.": "它说的那台设备，点一下就到。",
+ "Most likely": "最可能是",
+ ": it draws 14% more power.": "：它多耗电 14%。",
+ "Who is on shift": "谁在值班",
+ "Teams and people link the same way.": "团队和人也是同样的链接。",
+ "A removed work order": "已删除的工单",
+ "The name stays readable, struck through.": "名字还能看清，加删除线。",
+ "Where the AI speaks": "AI 说话的地方",
+ "Next to its name, at the top of the panel.": "在面板顶部，它的名字旁边。",
+ "While it reads sources": "读取来源时",
+ "The dots pulse in turn.": "几个点轮流闪动。",
+ "A fault": "故障",
+ "Three checks: what, where, why.": "三项检查：是什么、在哪里、为什么。",
+ "A saving": "省钱机会",
+ "Four checks, named for the questions a saving raises.": "四项检查，按省钱时会问的问题命名。",
+ "Unsure": "没把握",
+ "Only what the AI could see; the rest becomes a check.": "只放 AI 看得到的；剩下的变成一项检查。",
+ "Still reading": "还在读取",
+ "A spinner until the source lands.": "来源读到之前显示转圈。",
+ "Today's reading against the normal range and the 30-day tick.": "今天的读数，对比正常范围和 30 天基线。",
+ "The same card holds a forecast.": "同一张卡，放的是预测值。",
+ "What's coming": "将会发生什么",
+ "kW peak tomorrow": "kW 明天峰值",
+ "limit is 3,100 kW": "上限 3,100 kW",
+ "One reading; the card does not guess a cause.": "只有一个读数；卡片不猜原因。",
+ "What we see": "我们看到的",
+ "door motor current": "门电机电流",
+ "since 06:10 today": "从今天 06:10 开始",
+ "Old reading": "旧读数",
+ "Over 15 minutes: faded and dated, never hidden.": "超过 15 分钟：变淡并标上时间，但不隐藏。",
+ "A plan · 88%": "方案 · 88%",
+ "The AI may offer a plan with Apply.": "AI 可以给出方案和执行按钮。",
+ "A draft · 58%": "草稿 · 58%",
+ "Review comes before Apply.": "先复核，再执行。",
+ "A check · 41%": "检查 · 41%",
+ "Turns to the accent; no fix is offered.": "变成强调色；不给修复方案。",
+ "After Apply": "执行之后",
+ "Says what changed; Undo for 6 seconds.": "说明改了什么；6 秒内可以撤销。",
+ "After Assign": "指派之后",
+ "The same toast, for a person instead of a machine.": "同样的提示，对象是人，不是设备。",
+ "Assigned to Ana Ruiz": "已指派给 Ana Ruiz",
+ "After Undo": "撤销之后",
+ "Says what is back; no second Undo.": "说明恢复了什么；不再提供撤销。",
+ "Running now": "正在执行",
+ "A bar and a percentage.": "进度条和百分比。",
+ "Booked for later": "预约在之后",
+ "A time, no bar yet.": "显示时间，还没有进度条。",
+ "Failed": "失败",
+ "Always says why, in the accent.": "一定写出原因，用强调色。",
+ "Chiller fault": "冷机故障",
+ "The AI suggests the team on shift.": "AI 建议当班的团队。",
+ "Elevator, unsure": "电梯，没把握",
+ "Another team; Assign sends a check, not a fix.": "换一个团队；指派的是检查，不是修复。",
+ "Who has it now, with Undo beside it.": "现在由谁负责，旁边可以撤销。",
+ "Issue tag, the cost, Investigate.": "问题标签、损失、查原因按钮。",
+ "Opportunity tag; the cost line becomes the saving.": "机会标签；损失那一行变成能省多少。",
+ "Unsure what it is": "不确定是什么问题",
+ "The same card; how unsure shows after Investigate, not here.": "同一张卡；有多不确定，点查原因之后才显示，不在这里。",
+ "Fixed": "已修好",
+ "Faded, Resolved, no button.": "变淡，标已解决，没有按钮。",
+ "Sure · 88%": "有把握 · 88%",
+ "Apply on the current step.": "当前这一步有执行按钮。",
+ "Likely · 58%": "较可能 · 58%",
+ "Draft label; Review before Apply.": "标为草稿；先复核再执行。",
+ "Unsure · 41%": "没把握 · 41%",
+ "All causes possible; one check tells them apart.": "几种原因都有可能；一项检查就能分清。",
+ "One cause leads; the others stay as maybe.": "一个原因领先；其他标为也可能。",
+ "A fault · 88%": "故障 · 88%",
+ "Evidence, then confidence, then one plan with Apply.": "先证据，再把握度，最后一个方案和执行按钮。",
+ "A saving · 88%": "省钱机会 · 88%",
+ "Same frame; four checks, and the band names the saving.": "同样的框架；四项检查，提示条写明能省多少。",
+ "Draft: the action bar holds Review and Apply.": "草稿：操作栏放复核和执行。",
+ "No plan: the action bar holds a check instead.": "没有方案：操作栏换成派人检查。",
+ "Across screens": "不同屏幕上",
+ "The frame moves; the order inside never changes.": "框架位置会变；里面的顺序永远不变。",
+ "Done with a tick and the time.": "完成后打勾，标上时间。",
+ "Checking": "查看中",
+ "Applied": "已执行",
+ "Investigating": "查看中",
+ "Checking 3 sources…": "正在查 3 个来源…",
+ "Moved 20% of the load to Chiller 1.": "已把 20% 的负荷转到 Chiller 1。",
+ "Reads sources one at a time; each lands as a chip.": "一次读一个来源；读完一个，出现一个证据标签。",
+ "Evidence, confidence, one plan.": "证据、把握度、一个方案。",
+ "Says what changed, with Undo.": "说明改了什么，可以撤销。",
  "Grey by default, colour only where attention is needed: the same rule control-room screens follow (ISA-101). The difference: ISA-101 uses one colour per alarm priority; Green Control has one accent. Which fault gets it when two arrive at once is not decided yet.": "默认灰色，只在需要注意的地方用颜色：控制室界面也遵循同样的规则（ISA-101）。不同的是，ISA-101 每个报警优先级一种颜色，Green Control 只有一个强调色。两个故障同时出现时给谁，还没定。",
  "Night is the default because plants are watched through the night in dimmed rooms, where a bright screen glares. Control-room guidance (ISA-101) prefers a light-grey background; the day theme follows it.": "默认是夜间主题，因为设备整夜有人值守，控制室灯光调暗，亮屏幕刺眼。控制室规范（ISA-101）建议浅灰背景，日间主题遵循这一点。",
  "Reasons tied to control-room practice": "理由对上了控制室的行业做法",
@@ -4148,7 +4422,7 @@ segInd(document);
  "What's wrong, where, what it costs, and one way in.": "出了什么问题、在哪、多花多少钱，再给一个入口。",
  "A plan, one step at a time.": "一步一步的方案。",
  "Unsure? List the causes and the one check that tells them apart.": "没把握时：列出可能原因，和能分清它们的那项检查。",
- "Green Control · Design System 1.7": "Green Control · 设计系统 1.7",
+ "Green Control · Design System 1.8": "Green Control · 设计系统 1.8",
  "How Green Control looks and how its AI behaves. Built for people and for coding agents.": "Green Control 的视觉规范和 AI 行为规范。设计师、工程师和 AI 编程工具都能直接用。",
  "Figma components": "个 Figma 组件",
  "matched to code": "和代码一一对应",

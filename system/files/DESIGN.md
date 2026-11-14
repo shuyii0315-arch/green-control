@@ -1,7 +1,7 @@
 # Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.7.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.8.
 
 ## The one idea
 
@@ -192,7 +192,7 @@ The rules have been tested with AI agents (see Changelog): can an agent that has
 
 ## Components
 
-Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Confidence meter · Toast with Undo · Action row · Owner row (team + person on shift + Assign) · Causes list + Suggested check (below 50%) · Art box (keeps labels on the drawing) · Segmented control · Buttons (primary `.cta`, secondary `.pbtn`; square, no pill) · Logo.
+AI panel (the frame stays the same; what goes inside changes with the situation) · Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Confidence meter · Toast with Undo · Action row · Owner row (team + person on shift + Assign) · Causes list + Suggested check (below 50%) · Art box (keeps labels on the drawing) · Segmented control · Buttons (primary `.cta`, secondary `.pbtn`; square, no pill) · Logo.
 
 ## Machine check
 
@@ -200,6 +200,7 @@ Alert card · Evidence chip · Evidence card · Plan rail (check / step) · Conf
 
 ## Changelog
 
+- **1.8** Each component is shown in the situations it meets, with one line on what changes, instead of do/don't lists. New: AI panel, one frame for every AI answer (fault, saving, draft, low confidence), on desktop, tablet and phone.
 - **1.7** Rules now say where they come from: [Industry] (ISA-101, ISA-18.2, WCAG), [Product] (evidence first, people decide) or [Task]. Two places where Green Control differs from the industry habit are written down with their reasons. New: screens sorted by what the person is doing (detect, diagnose, respond, review); a plan for testing the rules with operators; open questions.
 - **1.6** Every look and layout rule now says why, and what breaks if it is ignored, so a person or an agent can tell a real exception from a mistake. New table: what stays the same on every screen, and what varies and by which rule.
 - **1.5** Added "How the AI speaks": wording per confidence band, words the AI never uses, and how it reports Undo. The first machine check, `gc-check`, found what four rounds of reviewing screens had missed: secondary text (`muted`) fell short of 4.5:1 on raised and chip backgrounds in both themes (now #666662 day, #8f949c night); the component CSS had no keyboard focus ring; the Ask input's send button had none either; two near-identical blacks (#111214, #121214); and `registry.json`'s copy of the theme had been missing the badge colour since 1.1. Colours now have a primitive layer, and one script keeps every copy in sync.
