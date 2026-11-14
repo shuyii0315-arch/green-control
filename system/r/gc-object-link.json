@@ -1,19 +1,19 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "gc-object-link",
-  "type": "registry:ui",
-  "title": "Green Control · Object link",
-  "description": "A dot and an underlined name that opens a machine, team or work order. Missing state.",
-  "dependencies": [],
-  "registryDependencies": [
-    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
-  ],
-  "files": [
-    {
-      "path": "registry/green-control/ui/object-link.tsx",
-      "type": "registry:ui",
-      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\n/**\n * Whenever the AI names a machine, a team or a work order, it is an object link:\n * a dot and an underlined name that opens exactly that thing.\n * `missing`: the object was removed; the name stays readable, struck through.\n */\nexport interface ObjectLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {\n  missing?: boolean\n}\n\nexport function ObjectLink({ missing = false, className, children, ...props }: ObjectLinkProps) {\n  return (\n    <a\n      data-slot=\"object-link\"\n      aria-disabled={missing || undefined}\n      className={cn(\n        \"inline-flex cursor-pointer items-center gap-1.5 text-link underline decoration-1 underline-offset-[3px] outline-none transition-[text-decoration-thickness,background-color] duration-150 hover:bg-link/8 hover:decoration-2 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-foreground\",\n        \"before:size-1.5 before:shrink-0 before:rounded-full before:bg-current before:content-['']\",\n        missing && \"pointer-events-none cursor-default text-muted-foreground line-through before:bg-transparent before:shadow-[inset_0_0_0_1px_currentColor]\",\n        className\n      )}\n      {...props}\n    >\n      {children}\n    </a>\n  )\n}\n",
-      "target": "components/ui/object-link.tsx"
-    }
-  ]
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-object-link",
+ "type": "registry:ui",
+ "title": "Green Control · Object link",
+ "description": "A dot and an underlined name that opens a machine, team or work order. Missing state.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/object-link.tsx",
+   "type": "registry:ui",
+   "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\n/**\n * Whenever the AI names a machine, a team or a work order, it is an object link:\n * a dot and an underlined name that opens exactly that thing.\n * `missing`: the object was removed; the name stays readable, struck through.\n */\nexport interface ObjectLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {\n  missing?: boolean\n}\n\nexport function ObjectLink({ missing = false, className, children, ...props }: ObjectLinkProps) {\n  return (\n    <a\n      data-slot=\"object-link\"\n      aria-disabled={missing || undefined}\n      className={cn(\n        \"inline-flex cursor-pointer items-center gap-1.5 text-link underline decoration-1 underline-offset-[3px] outline-none transition-[text-decoration-thickness,background-color] duration-150 hover:bg-link/8 hover:decoration-2 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-foreground\",\n        \"before:size-1.5 before:shrink-0 before:rounded-full before:bg-current before:content-[''] before:transition-transform before:duration-[260ms] before:ease-spring hover:before:scale-[1.4]\",\n        missing && \"pointer-events-none cursor-default text-muted-foreground line-through before:bg-transparent before:shadow-[inset_0_0_0_1px_currentColor]\",\n        className\n      )}\n      {...props}\n    >\n      {children}\n    </a>\n  )\n}\n",
+   "target": "components/ui/object-link.tsx"
+  }
+ ]
 }

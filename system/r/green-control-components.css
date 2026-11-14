@@ -121,3 +121,57 @@
 /* Every clickable part shows where the keyboard is. Same ring everywhere: 1.5px in the text colour, 2px out. */
 :where(.cta, .pbtn, .seg button, .link, .echip, button, a[href], [role="button"]):focus-visible { outline: 1.5px solid var(--text); outline-offset: 2px; }
 
+
+/* ---------- motion polish v2 ----------
+   press: instant on pointer-down, springy release · selection slides, never jumps
+   fills grow from the start · nothing loops slower than 1 s except live progress */
+.cta, .pbtn { transition: transform 260ms var(--spring), background 160ms var(--ease), opacity 200ms, filter 200ms; }
+.cta:active, .pbtn:active, .is-active { transform: scale(0.97); transition: transform 80ms ease-out, background 80ms; }
+.seg { position: relative; isolation: isolate; }
+.seg-ind { position: absolute; top: 2px; bottom: 2px; left: 0; width: 0; background: var(--sel-bg); z-index: -1; pointer-events: none; transition: transform 300ms var(--ease), width 300ms var(--ease); }
+.seg.has-ind button[aria-pressed="true"] { background: transparent; }
+.seg.has-ind button { transition: color 240ms var(--ease); }
+.seg.no-anim .seg-ind { transition: none; }
+.link .g { transition: transform 260ms var(--spring); }
+.link:hover .g, .link.is-hover .g { transform: scale(1.4); }
+.link { transition: text-decoration-thickness 160ms, background 160ms, text-underline-offset 160ms; }
+.link:hover, .link.is-hover { text-underline-offset: 4px; }
+.echip { transition: box-shadow 200ms var(--ease), background 200ms, transform 260ms var(--spring); }
+.echip:hover, .echip.is-hover { transform: translateY(-1px); }
+.echip:not(.is-checking) .num { animation: pop 420ms var(--spring) both; }
+@keyframes pop { from { transform: scale(0.4); opacity: 0; } }
+.conf-bar i { transform-origin: left center; }
+.conf-bar.grow i.on, .conf-bar.grow i.hot { animation: segIn 420ms var(--ease) both; animation-delay: calc(var(--i, 0) * 16ms); }
+@keyframes segIn { from { transform: scaleX(0); opacity: 0.3; } }
+.alert { transition: background 200ms var(--ease), transform 300ms var(--ease), box-shadow 300ms var(--ease); }
+.alert:hover, .alert.is-hover { transform: translateY(-2px); }
+.alert.glass:hover, .alert.glass.is-hover { box-shadow: inset 0 1px 0 var(--edge-hi), 0 22px 48px rgba(0,0,0,0.16); }
+.alert.is-new::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); transform-origin: top; animation: edgeIn 600ms var(--ease) both; }
+@keyframes edgeIn { from { transform: scaleY(0); } }
+.state.busy i { animation: breathe 1.2s var(--ease) infinite; }
+@keyframes breathe { 50% { opacity: 0.25; transform: scale(0.7); } }
+.spark.is-thinking circle { animation: dot 1.1s var(--ease) infinite; transform-box: fill-box; transform-origin: center; }
+.spark.is-thinking circle:nth-child(2) { animation-delay: 140ms; } .spark.is-thinking circle:nth-child(3) { animation-delay: 280ms; }
+.spark.is-thinking circle:nth-child(4) { animation-delay: 420ms; } .spark.is-thinking circle:nth-child(5) { animation-delay: 560ms; }
+@keyframes dot { 30% { transform: scale(1.5); } 60% { transform: scale(1); } }
+.toast.is-running .timer { width: 100%; transform-origin: left; animation: countdown 6s linear infinite; }
+.toast.is-paused .timer { width: 100%; transform: scaleX(0.62); transform-origin: left; }
+@keyframes countdown { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+.toast { animation: toastRise 520ms var(--spring) both; }
+@keyframes toastRise { from { opacity: 0; transform: translateY(10px) scale(0.97); filter: blur(4px); } }
+.acrow .bar i { transition: width 500ms var(--ease); }
+.acrow:not(.is-done):not(.is-failed):not(.is-planned):not(.is-undone) .bar i { background: linear-gradient(90deg, var(--accent) 0 40%, color-mix(in srgb, var(--accent) 55%, var(--bg-page)) 50%, var(--accent) 60% 100%); background-size: 250% 100%; animation: flow 1.6s linear infinite; }
+@keyframes flow { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+.pl-item .num { transition: background 300ms var(--ease), color 300ms, box-shadow 300ms; }
+.pl-item.on .num { animation: pop 420ms var(--spring) both; }
+.askbox { transition: box-shadow 200ms var(--ease); }
+.askbox.is-error { animation: nudge 360ms var(--ease) both; }
+@keyframes nudge { 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
+.ask-send { transition: transform 260ms var(--spring), background 160ms; }
+.ask-send:active { transform: scale(0.92); transition-duration: 80ms; }
+@media (prefers-reduced-motion: reduce) {
+  .seg-ind, .cta, .pbtn, .alert, .echip, .link .g, .ask-send { transition-duration: 1ms !important; }
+  .echip .num, .conf-bar i, .alert.is-new::after, .toast, .pl-item.on .num, .askbox.is-error, .spark circle, .state.busy i, .acrow .bar i { animation: none !important; }
+  .alert:hover, .echip:hover { transform: none; }
+}
+
