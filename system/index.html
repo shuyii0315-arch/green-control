@@ -20,7 +20,7 @@
   --dot: rgba(255, 255, 255, 0.22); --pool: rgba(255, 255, 255, 0.07);
   --grid: rgba(255, 255, 255, 0.045);
   --font-sans: "Hanken Grotesk", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; --font-mono: "DM Mono", ui-monospace, "PingFang SC", "Noto Sans SC", monospace;
-  --ease: cubic-bezier(0.2, 0, 0, 1); --exit: cubic-bezier(0.4, 0, 1, 1); --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --exit: cubic-bezier(0.4, 0, 1, 1); --spring: cubic-bezier(0.34, 1.56, 0.64, 1); --wave: cubic-bezier(0.45, 0, 0.55, 1);
   color-scheme: dark;
 }
 [data-gc="day"] {
@@ -976,6 +976,47 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .dv-d { width: 120px; height: 75px; } .dv-d .art { inset: 0 34% 0 0; } .dv-d .pn { top: 0; right: 0; bottom: 0; width: 33%; }
 .dv-t { width: 66px; height: 88px; } .dv-t .art { inset: 0 0 45% 0; } .dv-t .pn { left: 0; right: 0; bottom: 0; height: 45%; }
 .dv-p { width: 42px; height: 88px; } .dv-p .art { inset: 0 0 76% 0; } .dv-p .pn { left: 0; right: 0; bottom: 0; height: 76%; }
+
+/* motion examples: one low-fi scene per kind of movement */
+.mx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.mx { display: grid; gap: 8px; align-content: start; padding: 12px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.mx-play { justify-self: start; margin-top: 2px; }
+.mx-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.mx-stage { position: relative; height: 150px; background: var(--bg-page); overflow: hidden; }
+.mx-c { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.mx-dots { position: absolute; inset: 0; background-image: radial-gradient(var(--muted) 0.6px, transparent 0.8px); background-size: 6px 6px; opacity: 0.35; }
+.mx-iso { width: 44px; height: 44px; border: 1px solid var(--muted); transform: rotate(45deg) scaleY(0.6); }
+.mx-btn { font: inherit; font-size: 13px; height: 34px; padding: 0 14px; border: 0; background: var(--cta-bg, var(--text)); color: var(--cta-fg, var(--bg-page)); transition: transform 120ms var(--ease), filter 120ms var(--ease); }
+.mx-fb.hov .mx-btn { filter: brightness(0.82); }
+.mx-fb.press .mx-btn { transform: scale(0.94); }
+.mx-chip { position: absolute; left: 55%; top: 26%; font: 11px/1 var(--font-mono, monospace); padding: 5px 7px; background: var(--bg-raised); color: var(--text); opacity: 0; transform: translateY(6px); transition: opacity 160ms var(--exit), transform 160ms var(--exit); }
+.mx-sm.go .mx-chip { opacity: 1; transform: none; transition: opacity 240ms var(--ease), transform 240ms var(--ease); }
+.mx-page { position: absolute; inset: 14px; display: grid; gap: 8px; align-content: start; }
+.mx-page i { height: 6px; width: 70%; background: var(--line); display: block; }
+.mx-panel { position: absolute; top: 0; right: 0; bottom: 0; width: 48%; padding: 12px; display: grid; gap: 7px; align-content: start; background: var(--bg-raised); box-shadow: -1px 0 0 var(--line); transform: translateX(102%); transition: transform 280ms var(--exit); }
+.mx-panel b { height: 7px; width: 60%; background: var(--text); display: block; margin-bottom: 4px; }
+.mx-panel i { height: 5px; background: var(--muted); opacity: 0.5; display: block; }
+.mx-panel u { position: absolute; left: 12px; right: 12px; bottom: 12px; height: 16px; box-shadow: inset 0 0 0 1px var(--muted); }
+.mx-pn.go .mx-panel { transform: none; transition: transform 420ms var(--ease); }
+.mx-lay { position: absolute; inset: 0; display: flex; }
+.mx-nav { width: 38%; padding: 12px 10px; display: grid; gap: 8px; align-content: start; background: var(--bg-surface); box-shadow: 1px 0 0 var(--line); transition: width 520ms var(--ease); overflow: hidden; }
+.mx-nav i { height: 6px; background: var(--muted); opacity: 0.5; display: block; }
+.mx-main { flex: 1; display: flex; align-items: center; justify-content: center; }
+.mx-ly.go .mx-nav { width: 12%; }
+.mx-toast { position: absolute; left: 50%; top: 12px; padding: 7px 12px; font-size: 12px; white-space: nowrap; background: var(--bg-raised); color: var(--text); box-shadow: var(--drop, 0 8px 20px rgba(0,0,0,.3)); opacity: 0; transform: translate(-50%, -140%); transition: opacity 160ms var(--exit), transform 160ms var(--exit); }
+.mx-ar.go .mx-toast { opacity: 1; transform: translate(-50%, 0); transition: opacity 240ms var(--ease), transform 520ms var(--spring); }
+.mx-cam { width: 64px; height: 64px; fill: none; stroke: var(--muted); stroke-width: 1; transition: transform 900ms var(--ease); }
+.mx-cm.go .mx-cam { transform: scale(1.9) translate(4px, 6px); }
+.mx-spin { width: 18px; height: 18px; border: 1.5px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: mxSpin 1200ms linear infinite; }
+.mx-think { display: inline-flex; gap: 5px; }
+.mx-think i { width: 6px; height: 6px; background: var(--text); display: block; animation: mxBeat 1200ms var(--wave, ease-in-out) infinite; }
+.mx-think i:nth-child(2) { animation-delay: 160ms; } .mx-think i:nth-child(3) { animation-delay: 320ms; }
+.mx-live { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.mx-live::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid var(--accent); animation: mxPulse 2400ms var(--wave, ease-in-out) infinite; }
+@keyframes mxSpin { to { transform: rotate(360deg); } }
+@keyframes mxBeat { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+@keyframes mxPulse { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .mx-spin, .mx-think i, .mx-live::after { animation: none; } }
 </style>
 </head>
 <body>
@@ -2736,16 +2777,8 @@ PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement
   <div class="tile"><span class="t-label">Curves</span><table class="table"><tbody><tr><td class="mono">motion.ease</td><td class="mono muted">cubic-bezier(.2, 0, 0, 1)</td><td class="t-small muted">Fast start, soft stop.</td></tr><tr><td class="mono">motion.exit</td><td class="mono muted">cubic-bezier(.4, 0, 1, 1)</td><td class="t-small muted">Slow start, fast finish, so nothing lingers on the way out.</td></tr><tr><td class="mono">motion.spring</td><td class="mono muted">cubic-bezier(.34, 1.56, .64, 1)</td><td class="t-small muted">A small overshoot says “this is new”.</td></tr><tr><td class="mono">motion.wave</td><td class="mono muted">cubic-bezier(.45, 0, .55, 1)</td><td class="t-small muted">Back and forth, for loops that mean “still going”.</td></tr><tr><td class="mono">motion.linear</td><td class="mono muted">linear</td><td class="t-small muted">Constant speed, only for things that spin or flow.</td></tr></tbody></table></div>
 </div>
 <h2 id="durations">Durations by what moves</h2>
-<p class="sub">Leaving is one step shorter than arriving: what arrives needs to be seen, what leaves does not.</p>
-<table class="table"><thead><tr><th>What moves</th><th>Token</th><th>Time</th><th>Why</th></tr></thead><tbody>
-<tr><td>Hover, press</td><td class="mono">feedback</td><td class="mono">120 ms</td><td class="t-small muted">Past about 0.1 s a hand feels the screen didn't answer.</td></tr>
-<tr><td>A label, chip or popover</td><td class="mono">small-in · small-out</td><td class="mono">240 · 160 ms</td><td class="t-small muted">Short distance, short time.</td></tr>
-<tr><td>A panel or sheet</td><td class="mono">in · out</td><td class="mono">420 · 280 ms</td><td class="t-small muted">It travels far; slower, so the eye sees where it came from.</td></tr>
-<tr><td>The layout (rail folds, overview to equipment)</td><td class="mono">move</td><td class="mono">520 ms</td><td class="t-small muted">The whole page changes; the eye needs time to follow each part.</td></tr>
-<tr><td>The drawing turns or zooms</td><td class="mono">camera</td><td class="mono">900 ms</td><td class="t-small muted">The biggest thing on screen, so the slowest.</td></tr>
-<tr><td>Something in progress (thinking, spinner, scan)</td><td class="mono">loop</td><td class="mono">1200 ms</td><td class="t-small muted">One cycle per beat; stops the moment the work stops.</td></tr>
-<tr><td>Something live (live dot, hot-spot pulse)</td><td class="mono">ambient</td><td class="mono">2400 ms</td><td class="t-small muted">Slow, so it never pulls the eye away from a fault.</td></tr>
-</tbody></table>
+<p class="sub">Leaving is one step shorter than arriving: what arrives needs to be seen, what leaves does not. Press Play on any card.</p>
+<div class="mx-grid"><div class="mx" id="mx-fb"><div class="mx-stage mx-fb"><div class="mx-c"><button class="mx-btn" tabindex="-1">Investigate</button></div></div><div class="mx-head"><span class="t-strong t-small">Hover, press</span><span class="mono t-small muted">120 ms</span></div><span class="t-small muted">Past about 0.1 s a hand feels the screen didn't answer.</span><span class="t-small">In Green Control: the Investigate button.</span><button class="pbtn mx-play" data-mx="fb">Play</button></div><div class="mx" id="mx-sm"><div class="mx-stage mx-sm"><div class="mx-dots"></div><div class="mx-c"><span class="mx-iso"></span><span class="mx-chip">CH-02 · +14%</span></div></div><div class="mx-head"><span class="t-strong t-small">A label appears, then leaves</span><span class="mono t-small muted">240 in · 160 out</span></div><span class="t-small muted">Short distance, short time. Leaving is one step shorter.</span><span class="t-small">In Green Control: a reading on the drawing.</span><button class="pbtn mx-play" data-mx="sm">Play</button></div><div class="mx" id="mx-pn"><div class="mx-stage mx-pn"><div class="mx-page"><i></i><i></i><i style="width:40%"></i></div><div class="mx-panel"><b></b><i></i><i></i><i style="width:50%"></i><u></u></div></div><div class="mx-head"><span class="t-strong t-small">A panel opens, then closes</span><span class="mono t-small muted">420 in · 280 out</span></div><span class="t-small muted">It travels far, so it is slower: you see where it came from.</span><span class="t-small">In Green Control: the AI panel.</span><button class="pbtn mx-play" data-mx="pn">Play</button></div><div class="mx" id="mx-ly"><div class="mx-stage mx-ly"><div class="mx-lay"><div class="mx-nav"><i></i><i></i><i></i></div><div class="mx-main"><span class="mx-iso"></span></div></div></div><div class="mx-head"><span class="t-strong t-small">The layout changes</span><span class="mono t-small muted">520 ms</span></div><span class="t-small muted">The whole page moves; the eye needs time to follow each part.</span><span class="t-small">In Green Control: the menu folds when an equipment page opens.</span><button class="pbtn mx-play" data-mx="ly">Play</button></div><div class="mx" id="mx-ar"><div class="mx-stage mx-ar"><div class="mx-page"><i></i><i></i><i style="width:40%"></i></div><div class="mx-toast">✓ Plan applied</div></div><div class="mx-head"><span class="t-strong t-small">Something new arrives</span><span class="mono t-small muted">520 ms · spring</span></div><span class="t-small muted">The small overshoot says “this is new”. Only arrivals get it.</span><span class="t-small">In Green Control: the “Plan applied” toast.</span><button class="pbtn mx-play" data-mx="ar">Play</button></div><div class="mx" id="mx-cm"><div class="mx-stage mx-cm"><div class="mx-dots"></div><div class="mx-c"><svg class="mx-cam" viewBox="0 0 60 60"><path d="M6 22 30 10l24 12v18L30 52 6 40Z M6 22l24 12 24-12 M30 34v18"/></svg></div></div><div class="mx-head"><span class="t-strong t-small">The drawing zooms</span><span class="mono t-small muted">900 ms</span></div><span class="t-small muted">The biggest thing on screen, so the slowest.</span><span class="t-small">In Green Control: zooming in on Chiller 2.</span><button class="pbtn mx-play" data-mx="cm">Play</button></div><div class="mx" id="mx-lp"><div class="mx-stage mx-lp"><div class="mx-c" style="gap:14px"><span class="mx-spin"></span><span class="mx-think"><i></i><i></i><i></i></span></div></div><div class="mx-head"><span class="t-strong t-small">Still working</span><span class="mono t-small muted">1200 ms loop</span></div><span class="t-small muted">One beat per cycle; stops the moment the work stops.</span><span class="t-small">In Green Control: the AI checking sources.</span></div><div class="mx" id="mx-am"><div class="mx-stage mx-am"><div class="mx-c"><span class="mx-live"></span><span class="t-label muted" style="margin-left:10px">Live</span></div></div><div class="mx-head"><span class="t-strong t-small">Live</span><span class="mono t-small muted">2400 ms loop</span></div><span class="t-small muted">Slow, so it never pulls the eye away from a fault.</span><span class="t-small">In Green Control: the live dot next to the time.</span></div></div>
 <p class="t-small muted" style="margin-top:12px">Exceptions: one-off sequences such as the figure assembling are written inside their component and marked as exceptions. Before 1.9 the prototype used 38 different durations; all now map to these.</p>
 <h2 id="sequences">Sequences that carry meaning</h2>
 <div class="grid3">
@@ -3173,6 +3206,8 @@ INIT.color = () => {
   $("#cols").innerHTML = N.map((n, i) => `<div><i class="n" style="height:${n}%"></i>${A[i] ? `<i class="a${A[i] > 84 ? " hot" : ""}" style="height:${A[i]}%"></i>` : ""}</div>`).join("") + `<span class="lim" style="bottom:84%"></span>`;
 };
 INIT.motion = () => {
+  const MX = { fb: [["hov", 0], ["press", 450], ["-press", 700], ["-hov", 1200]], sm: [["go", 0], ["-go", 1500]], pn: [["go", 0], ["-go", 1700]], ly: [["go", 0], ["-go", 1700]], ar: [["go", 0], ["-go", 1800]], cm: [["go", 0], ["-go", 2000]] };
+  $$(".mx-play").forEach((b) => { b.onclick = () => { const st = $(".mx-stage.mx-" + b.dataset.mx); (st._t || []).forEach(clearTimeout); st.className = "mx-stage mx-" + b.dataset.mx; st._t = MX[b.dataset.mx].map(([c, t]) => setTimeout(() => c[0] === "-" ? st.classList.remove(c.slice(1)) : st.classList.add(c), t)); }; });
   $("#playMotion").onclick = () => { const box = $("#motionTile"); box.style.setProperty("--w", $("#mt1").clientWidth + "px"); box.classList.toggle("motion-go"); };
   const rs = $("#riseStage"); const run = () => { rs.innerHTML = `<div style="display:grid;gap:8px;width:200px">${["Checked 3 sources", "Chiller 2 runs hot", "Confidence 86%"].map((t, i) => `<div class="block rise" style="padding:6px 10px;animation-delay:${i * 70}ms" ><span class="t-small">${t}</span></div>`).join("")}</div>`; };
   run(); rs.onclick = run; rs.style.cursor = "pointer";
@@ -3391,6 +3426,37 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Press Play on any card.": "每张卡片都可以点“播放”。",
+  "Leaving is one step shorter than arriving: what arrives needs to be seen, what leaves does not. Press Play on any card.": "离开比进来短一档：进来的东西要被看到，离开的不需要。每张卡片都可以点“播放”。",
+  "Hover, press": "悬停、按下",
+  "A label appears, then leaves": "标签出现，再消失",
+  "A panel opens, then closes": "面板打开，再关上",
+  "The layout changes": "布局变化",
+  "Something new arrives": "新东西到达",
+  "The drawing zooms": "图纸放大",
+  "Still working": "正在进行",
+  "Live": "实时",
+  "240 in · 160 out": "进 240 · 出 160",
+  "420 in · 280 out": "进 420 · 出 280",
+  "520 ms · spring": "520 ms · 弹簧",
+  "1200 ms loop": "1200 ms 循环",
+  "2400 ms loop": "2400 ms 循环",
+  "Short distance, short time. Leaving is one step shorter.": "距离短，时间也短。离开再短一档。",
+  "It travels far, so it is slower: you see where it came from.": "移动距离长，所以慢一点：看得清它从哪来。",
+  "The whole page moves; the eye needs time to follow each part.": "整个页面在变，眼睛要有时间跟上每一部分。",
+  "The small overshoot says “this is new”. Only arrivals get it.": "冲过头一点，表示“这是新的”。只有新到达的东西才用。",
+  "One beat per cycle; stops the moment the work stops.": "一拍一个循环；事情停了，动画马上停。",
+  "Slow, so it never pulls the eye away from a fault.": "放慢，不把眼睛从故障上拉走。",
+  "In Green Control: the Investigate button.": "在 Green Control 里：“调查”按钮。",
+  "In Green Control: a reading on the drawing.": "在 Green Control 里：图纸上的读数标签。",
+  "In Green Control: the AI panel.": "在 Green Control 里：AI 面板。",
+  "In Green Control: the menu folds when an equipment page opens.": "在 Green Control 里：打开设备页时，左侧导航收起。",
+  "In Green Control: the “Plan applied” toast.": "在 Green Control 里：“方案已执行”的提示。",
+  "In Green Control: zooming in on Chiller 2.": "在 Green Control 里：放大看 Chiller 2。",
+  "In Green Control: the AI checking sources.": "在 Green Control 里：AI 正在查来源。",
+  "In Green Control: the live dot next to the time.": "在 Green Control 里：时间旁边的实时点。",
+  "Play": "播放",
+  "✓ Plan applied": "✓ 方案已执行",
   "Pick the curve and duration by what moves, from one list. A recipe per component. Off under reduced motion.": "按“什么在动”从一张表里选曲线和时长；每个组件一份做法；开启“减少动态效果”时关闭。",
   "One rhythm for everything that moves": "所有动的东西用同一个节奏",
   "The docs said one curve, but the prototype used 38 durations and six curves; the site and the motion skill each listed different numbers again.": "文档写的是“一条曲线”，原型里却有 38 种时长、6 条曲线；网站和动效 skill 写的又是另外两套数字。",
