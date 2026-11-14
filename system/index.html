@@ -523,6 +523,13 @@ details.more summary::-webkit-details-marker { display: none; }
 details.more summary::before { content: "+"; width: 14px; text-align: center; }
 details.more[open] summary::before { content: "−"; }
 details.more summary:hover { color: var(--text); }
+.say { display: grid; box-shadow: inset 0 0 0 1px var(--line); }
+.say a { display: grid; grid-template-columns: minmax(0, 1.1fr) 24px minmax(0, 1fr); gap: 12px; align-items: center; padding: 14px 18px; color: inherit; text-decoration: none; transition: background 160ms; }
+.say a + a { box-shadow: inset 0 1px 0 var(--line); }
+.say a:hover { background: var(--bg-raised); }
+.say .q { font-size: 15px; } .say .arr { color: var(--accent); font-family: var(--font-mono); }
+.say .tgt { display: grid; gap: 2px; }
+@media (max-width: 720px) { .say a { grid-template-columns: 1fr; gap: 4px; } .say .arr { display: none; } }
 .csteps { display: grid; gap: 20px; }
 .cstep { display: grid; gap: 10px; min-width: 0; }
 .step-hd { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
@@ -2323,6 +2330,9 @@ const FILES = [
   ["reg", "r/green-control-theme.json", "shadcn registry item: both themes as CSS variables, one command."],
 ];
 PAGES.agents = () => `${head("Start", "Files for AI", "Plain files any AI coding tool can read.", `<button class="cta" id="copyAgent">Copy prompt for your agent</button>`)}
+<h2 id="say" style="margin-top:8px">You say, it uses</h2>
+<p class="sub">Ask in plain words. These are the files, rules and parts the AI reaches for.</p>
+<div class="say"><a href="#/agents"><span class="q">“Build me a screen for the elevator fault”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">SKILL.md</span><span class="t-small muted">Reads the rules, then builds with our parts</span></span></a><a href="#/causes-check"><span class="q">“The AI is only 41% sure. What button goes here?”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">Rule R4 · Causes & check</span><span class="t-small muted">Under 50%: only suggest a site check</span></span></a><a href="#/color"><span class="q">“Can I pick a nicer blue?”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">tokens.json</span><span class="t-small muted">Colours come from the tokens, never made up</span></span></a><a href="#/toast"><span class="q">“Show what the AI did and let me take it back”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">Toast with Undo</span><span class="t-small muted">Every action can be undone</span></span></a><a href="#/object-link"><span class="q">“Which machine is it talking about?”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">Object link</span><span class="t-small muted">Every machine name opens that machine</span></span></a><a href="#/evidence-card"><span class="q">“Show me why the AI thinks this”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">Evidence chip + card</span><span class="t-small muted">Evidence first, advice second</span></span></a><a href="#/color"><span class="q">“Make it work in day mode too”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">Color · themes</span><span class="t-small muted">Night and day swap tokens, not components</span></span></a><a href="#/illustration"><span class="q">“Draw the chiller with the broken part lit”</span><span class="arr">→</span><span class="tgt"><span class="t-strong">Illustration</span><span class="t-small muted">One part lit, one drawing style</span></span></a></div>
 <div class="install"><span class="t-data muted">$</span><code class="t-data" id="installCmd"></code><button class="pbtn" data-copy="#installCmd">Copy</button></div>
 <p class="t-small muted" style="margin-top:8px">Installs both themes as CSS variables into any shadcn project, then the components. Works once the site is on its public URL.</p>
 <h2 id="react">React components</h2>
@@ -3864,7 +3874,28 @@ go(); $("#page").dataset.cur = (location.hash.match(/^#\/([\w-]+)/) || [])[1] ||
  "What the install command puts in your project. Open it only to read or change how it works.": "就是上面那条命令装进项目的文件。想看或想改它怎么运作时再打开。",
  "No React? Plain HTML": "不用 React？纯 HTML",
  "Markup for every state, for a plain web page, a prototype, or pasting into an AI chat. Uses the classes in green-control-components.css.": "每个状态的 HTML 结构。适合普通网页、做原型，或直接贴给 AI。样式来自 green-control-components.css。",
- "Each line is one way to use it. States a person causes, like hover or press, happen by themselves and are not written.": "每一行是一种用法，上面一行注释说明它对应哪个状态。悬停、按下这类由用户操作触发的状态，组件会自己处理，不用写。"
+ "Each line is one way to use it. States a person causes, like hover or press, happen by themselves and are not written.": "每一行是一种用法，上面一行注释说明它对应哪个状态。悬停、按下这类由用户操作触发的状态，组件会自己处理，不用写。",
+ "You say, it uses": "你这样说，AI 会用到",
+ "Ask in plain words. These are the files, rules and parts the AI reaches for.": "用平常的话问就行。右边是 AI 会去找的文件、规则和组件。",
+ "“Build me a screen for the elevator fault”": "“帮我做一个电梯故障的页面”",
+ "Reads the rules, then builds with our parts": "先读规则，再用现成组件搭",
+ "“The AI is only 41% sure. What button goes here?”": "“AI 只有 41% 把握，这里放什么按钮？”",
+ "Rule R4 · Causes & check": "规则 R4 · 原因与建议检查",
+ "Under 50%: only suggest a site check": "低于 50%：只建议派人去现场看",
+ "“Can I pick a nicer blue?”": "“我能换个好看点的蓝吗？”",
+ "Colours come from the tokens, never made up": "颜色只从 token 里取，不自己编",
+ "“Show what the AI did and let me take it back”": "“告诉我 AI 做了什么，还要能撤回”",
+ "Every action can be undone": "每个操作都能撤销",
+ "“Which machine is it talking about?”": "“它说的是哪台设备？”",
+ "Every machine name opens that machine": "每个设备名都能点开那台设备",
+ "“Show me why the AI thinks this”": "“给我看 AI 为什么这么判断”",
+ "Evidence chip + card": "证据标签 + 证据卡片",
+ "Evidence first, advice second": "先摆证据，再给建议",
+ "“Make it work in day mode too”": "“日间模式也要能用”",
+ "Color · themes": "颜色 · 主题",
+ "Night and day swap tokens, not components": "夜间日间只换 token，不换组件",
+ "“Draw the chiller with the broken part lit”": "“画一台冷机，把坏的零件点亮”",
+ "One part lit, one drawing style": "只点亮一个零件，画风统一"
 };
   let LANG = "en";
   try { if (localStorage.getItem("gc-lang") === "zh") LANG = "zh"; } catch (e) {}
