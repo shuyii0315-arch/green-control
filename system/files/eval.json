@@ -1,0 +1,95 @@
+{
+ "component_classes": 32,
+ "rows": [
+  {
+   "run": "plain-battery",
+   "skill": "none",
+   "topic": "Battery 88%",
+   "raw-color": 47,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 5
+  },
+  {
+   "run": "plain-elevator",
+   "skill": "none",
+   "topic": "Elevator 41%",
+   "raw-color": 17,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 5
+  },
+  {
+   "run": "skill-battery",
+   "skill": "1.0",
+   "topic": "Battery 88%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 21
+  },
+  {
+   "run": "skill-elevator",
+   "skill": "1.0",
+   "topic": "Elevator 41%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 19
+  },
+  {
+   "run": "v11-battery",
+   "skill": "1.1",
+   "topic": "Battery 88%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 22
+  },
+  {
+   "run": "v11-elevator",
+   "skill": "1.1",
+   "topic": "Elevator 41%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 24
+  },
+  {
+   "run": "v12-battery",
+   "skill": "1.2",
+   "topic": "Battery 88%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 20
+  },
+  {
+   "run": "v12-elevator",
+   "skill": "1.2",
+   "topic": "Elevator 41%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 19
+  },
+  {
+   "run": "v13-tower",
+   "skill": "1.3",
+   "topic": "Cooling tower 58%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 21
+  },
+  {
+   "run": "v13-ev",
+   "skill": "1.3",
+   "topic": "EV charging 83%",
+   "raw-color": 0,
+   "focus": 0,
+   "icon-label": 0,
+   "components": 21
+  }
+ ]
+}

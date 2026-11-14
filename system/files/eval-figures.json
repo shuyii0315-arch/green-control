@@ -1,0 +1,69 @@
+{
+ "batch": "anatomy-figure · 5 machines · 2026-11-13",
+ "graded_by": "Shuyi (Review desk)",
+ "summary": {
+  "good": 4,
+  "okay": 1,
+  "bad": 0,
+  "new_rule": null
+ },
+ "rows": [
+  {
+   "id": "elevator",
+   "name": "Traction elevator",
+   "lit": "door operator",
+   "parts": 74,
+   "machine_check": "audit passed, 0 loose lines",
+   "human_grade": "okay",
+   "human_why": [],
+   "reference": false,
+   "gaps": "Shaft simplified to two back walls plus steel columns on the open side; no landing doors, governor or travelling cable; static plate with no motion."
+  },
+  {
+   "id": "battery",
+   "name": "Battery energy storage cabinet",
+   "lit": "battery module",
+   "parts": 99,
+   "machine_check": "audit passed, 0 loose lines",
+   "human_grade": "good",
+   "human_why": [],
+   "reference": true,
+   "gaps": "Count includes every module handle and connector (above the 40-80 Figure range); internal busbars, DC cabling and fire suppression not drawn."
+  },
+  {
+   "id": "tower",
+   "name": "Open-circuit cooling tower",
+   "lit": "fill media",
+   "parts": 73,
+   "machine_check": "audit passed, 0 loose lines",
+   "human_grade": "good",
+   "human_why": [],
+   "reference": true,
+   "gaps": "Front casing cut away above the louvers; spray laterals mostly hidden behind their support beam; ladder has no safety cage."
+  },
+  {
+   "id": "charger",
+   "name": "EV DC fast charger",
+   "lit": "charging cable and connector",
+   "parts": 41,
+   "machine_check": "audit passed, 0 loose lines",
+   "human_grade": "good",
+   "human_why": [
+    "Looks real"
+   ],
+   "reference": true,
+   "gaps": "Cable drawn as a short loop (a real one is about 4-5 m) with no cable-management arm; the bay asphalt is a large plain face."
+  },
+  {
+   "id": "chiller",
+   "name": "Water-cooled centrifugal chiller",
+   "lit": "condenser shell",
+   "parts": 50,
+   "machine_check": "audit passed, 0 loose lines",
+   "human_grade": "good",
+   "human_why": [],
+   "reference": true,
+   "gaps": "Liquid line, economizer and oil system left out; the machine is long and low, so the square card has empty space above and below; one audit crowding pair (discharge line onto condenser nozzle) excused as a real joint."
+  }
+ ]
+}

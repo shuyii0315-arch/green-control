@@ -1,0 +1,19 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-segmented",
+ "type": "registry:ui",
+ "title": "Green Control · Segmented control",
+ "description": "Two to four options of one thing. One is always on.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/segmented.tsx",
+   "type": "registry:ui",
+   "target": "components/ui/segmented.tsx",
+   "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Two to four options of the same thing (Night / Day, 7d / 30d). One is always on.\n * Square segments; the selected one takes the selection colour.\n */\nexport interface SegmentedOption<T extends string> {\n  value: T\n  label: string\n  disabled?: boolean\n}\n\nexport interface SegmentedControlProps<T extends string> {\n  options: SegmentedOption<T>[]\n  value: T\n  onChange: (value: T) => void\n  /** Read out by screen readers, e.g. \"Theme\". */\n  label?: string\n  className?: string\n}\n\nexport function SegmentedControl<T extends string>({ options, value, onChange, label, className }: SegmentedControlProps<T>) {\n  return (\n    <div data-slot=\"segmented\" role=\"group\" aria-label={label} className={cn(\"inline-flex shadow-[inset_0_0_0_1px_var(--border)]\", className)}>\n      {options.map((o) => (\n        <button\n          key={o.value}\n          type=\"button\"\n          aria-pressed={o.value === value}\n          disabled={o.disabled}\n          onClick={() => onChange(o.value)}\n          className={cn(\n            \"h-8 px-3 text-[13px] text-muted-foreground outline-none transition-[background-color,color] duration-200 ease-gc hover:text-foreground\",\n            \"focus-visible:outline-[1.5px] focus-visible:-outline-offset-2 focus-visible:outline-foreground\",\n            \"aria-pressed:bg-[var(--gc-sel-bg)] aria-pressed:text-[var(--gc-sel-fg)]\",\n            \"disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-muted-foreground\"\n          )}\n        >\n          {o.label}\n        </button>\n      ))}\n    </div>\n  )\n}\n"
+  }
+ ]
+}

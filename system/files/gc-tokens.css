@@ -1,0 +1,86 @@
+/* Green Control tokens as CSS variables, generated from tokens.json (colours, surfaces, radius, space, fonts, type, motion, AI thresholds). Put data-gc="night" or "day" on <html>. */
+:root, :root[data-gc="night"] {
+  --gc-bg-page: #111214;
+  --gc-bg-surface: #1b1c1f;
+  --gc-bg-raised: #2b2d30;
+  --gc-bg-chip: #292a2e;
+  --gc-line: #33363b;
+  --gc-text: #ededed;
+  --gc-muted: #8f949c;
+  --gc-accent: #ff6b1a;
+  --gc-on-accent: #111214;
+  --gc-link: #ededed;
+  --gc-cta-bg: #ededed;
+  --gc-cta-fg: #111214;
+  --gc-sel-bg: #2b2d30;
+  --gc-sel-fg: #ededed;
+  --gc-badge-bg: #ededed;
+  --gc-glass: rgba(27, 28, 31, 0.78);
+  --gc-glass-raised: rgba(43, 45, 48, 0.85);
+  --gc-drop: 0 16px 40px rgba(0, 0, 0, 0.35);
+  --gc-sheen: rgba(255, 255, 255, 0.02);
+  --gc-edge-hi: rgba(255, 255, 255, 0.035);
+  --gc-dot: rgba(255, 255, 255, 0.22);
+  --gc-pool: rgba(255, 255, 255, 0.07);
+
+  /* theme-independent */
+  --gc-ease: var(--gc-motion-ease);
+  --gc-spring: var(--gc-motion-spring);
+  --gc-type-ui: 400 14px/20px var(--gc-font-sans);
+  --gc-radius-none: 0px;
+  --gc-radius-dot: 99px;
+  --gc-space-1: 4px;
+  --gc-space-2: 8px;
+  --gc-space-3: 12px;
+  --gc-space-4: 16px;
+  --gc-space-5: 20px;
+  --gc-space-6: 24px;
+  --gc-space-8: 32px;
+  --gc-font-sans: "Hanken Grotesk", system-ui, sans-serif;
+  --gc-font-mono: "DM Mono", ui-monospace, monospace;
+  --gc-type-headline: 400 20px/26px var(--gc-font-sans);
+  --gc-type-headline-tracking: -0.01em;
+  --gc-type-body: 400 16px/25px var(--gc-font-sans);
+  --gc-type-body-tracking: -0.005em;
+  --gc-type-strong: 500 16px/25px var(--gc-font-sans);
+  --gc-type-strong-tracking: -0.005em;
+  --gc-type-small: 400 13px/19px var(--gc-font-sans);
+  --gc-type-number: 300 34px/38px var(--gc-font-sans);
+  --gc-type-number-tracking: -0.02em;
+  --gc-type-label: 400 11px/14px var(--gc-font-mono);
+  --gc-type-label-tracking: 0.05em;
+  --gc-type-data: 400 12px/16px var(--gc-font-mono);
+  --gc-motion-ease: cubic-bezier(0.2, 0, 0, 1);
+  --gc-motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --gc-motion-rise: 420ms;
+  --gc-motion-move: 520ms;
+  --gc-ai-confidence-act: 80;
+  --gc-ai-confidence-review: 50;
+  --gc-ai-undo-window: 24h;
+  color-scheme: dark;
+}
+:root[data-gc="day"] {
+  --gc-bg-page: #f1f1ef;
+  --gc-bg-surface: #fbfbfa;
+  --gc-bg-raised: #ececea;
+  --gc-bg-chip: #e4e4e1;
+  --gc-line: #dcdcd8;
+  --gc-text: #111111;
+  --gc-muted: #666662;
+  --gc-accent: #1f4fff;
+  --gc-on-accent: #ffffff;
+  --gc-link: #1f4fff;
+  --gc-cta-bg: #1f4fff;
+  --gc-cta-fg: #ffffff;
+  --gc-sel-bg: #1f4fff;
+  --gc-sel-fg: #ffffff;
+  --gc-badge-bg: #1f4fff;
+  --gc-glass: rgba(251, 251, 250, 0.82);
+  --gc-glass-raised: rgba(236, 236, 233, 0.92);
+  --gc-drop: 0 16px 40px rgba(17, 20, 30, 0.08);
+  --gc-sheen: rgba(255, 255, 255, 0.25);
+  --gc-edge-hi: rgba(255, 255, 255, 0.5);
+  --gc-dot: rgba(17, 24, 44, 0.32);
+  --gc-pool: rgba(26, 36, 64, 0.06);
+  color-scheme: light;
+}

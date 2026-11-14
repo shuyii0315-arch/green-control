@@ -1,0 +1,21 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-state-tag",
+ "type": "registry:ui",
+ "title": "Green Control · State tag",
+ "description": "Square dot + word: watching, issue, opportunity, investigating, resolved.",
+ "dependencies": [
+  "class-variance-authority"
+ ],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/state-tag.tsx",
+   "type": "registry:ui",
+   "content": "import { cva, type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/lib/utils\"\n\n/**\n * What state an object is in: a square dot and a word.\n * Only `issue` (filled triangle) and `opportunity` (outlined diamond) use the signal colour. Never the shape alone.\n */\nconst stateTagVariants = cva(\"inline-flex items-center gap-1.5 text-[13px] leading-[19px] before:size-[7px] before:shrink-0 before:content-['']\", {\n  variants: {\n    state: {\n      watching: \"text-muted-foreground before:bg-current\",\n      issue: \"text-signal before:bg-current before:[clip-path:polygon(50%_0,100%_100%,0_100%)] before:size-2\",\n      opportunity: \"text-foreground before:size-2 before:rotate-45 before:shadow-[inset_0_0_0_1.5px_var(--gc-accent)]\",\n      investigating: \"text-foreground before:bg-current before:animate-pulse\",\n      resolved: \"text-muted-foreground before:shadow-[inset_0_0_0_1.5px_currentColor]\",\n    },\n  },\n  defaultVariants: { state: \"watching\" },\n})\n\nconst LABEL = { watching: \"Watching\", issue: \"Issue\", opportunity: \"Opportunity\", investigating: \"Investigating\", resolved: \"Resolved\" } as const\n\nexport interface StateTagProps extends VariantProps<typeof stateTagVariants> {\n  /** Overrides the default word, e.g. \"+14% power\". */\n  children?: React.ReactNode\n  className?: string\n}\n\nexport function StateTag({ state = \"watching\", children, className }: StateTagProps) {\n  return (\n    <span data-slot=\"state-tag\" data-state={state} className={cn(stateTagVariants({ state }), className)}>\n      {children ?? LABEL[state ?? \"watching\"]}\n    </span>\n  )\n}\n",
+   "target": "components/ui/state-tag.tsx"
+  }
+ ]
+}

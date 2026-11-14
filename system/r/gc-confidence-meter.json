@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "gc-confidence-meter",
+  "type": "registry:ui",
+  "title": "Green Control · Confidence meter",
+  "description": "Twenty segments and a number; the band (plan, draft, check) is exported.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/green-control/ui/confidence-meter.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Twenty square segments and a number. The band decides what the AI may do:\n * 80+ plan · 50–79 draft · below 50 check only (segments turn to the signal colour).\n */\nexport const CONFIDENCE_ACT = 80\nexport const CONFIDENCE_REVIEW = 50\n\nexport function confidenceBand(value: number) {\n  return value >= CONFIDENCE_ACT ? \"plan\" : value >= CONFIDENCE_REVIEW ? \"draft\" : \"check\"\n}\n\nexport interface ConfidenceMeterProps {\n  value: number\n  /** A new reading is coming in. */\n  updating?: boolean\n  className?: string\n}\n\nexport function ConfidenceMeter({ value, updating = false, className }: ConfidenceMeterProps) {\n  const on = Math.round((value / 100) * 20)\n  const low = value < CONFIDENCE_REVIEW\n  return (\n    <div data-slot=\"confidence-meter\" data-band={confidenceBand(value)} className={cn(\"grid w-full min-w-[220px] gap-1.5\", className)}>\n      <div className=\"flex items-baseline justify-between\">\n        <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">Confidence</span>\n        <span className=\"font-mono text-xs\">{value}%</span>\n      </div>\n      <div className=\"flex h-2 gap-0.5\" role=\"meter\" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100} aria-label=\"AI confidence\">\n        {Array.from({ length: 20 }, (_, i) => (\n          <i\n            key={i}\n            className={cn(\"flex-1\", i < on ? (low ? \"bg-signal\" : \"bg-foreground\") : \"bg-border\", updating && \"animate-pulse motion-reduce:animate-none\")}\n            style={updating ? { animationDelay: `${(i % 4) * 120}ms` } : undefined}\n          />\n        ))}\n      </div>\n    </div>\n  )\n}\n",
+      "target": "components/ui/confidence-meter.tsx"
+    }
+  ]
+}

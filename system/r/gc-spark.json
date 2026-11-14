@@ -1,0 +1,19 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-spark",
+ "type": "registry:ui",
+ "title": "Green Control · AI spark",
+ "description": "Marks anything the AI wrote. Pulses while it reads sources.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/ai-spark.tsx",
+   "type": "registry:ui",
+   "target": "components/ui/ai-spark.tsx",
+   "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Marks anything the AI wrote. Five dots; the centre one is the signal colour.\n * `thinking`: the dots pulse in turn while the AI is reading sources.\n */\nexport interface AiSparkProps {\n  thinking?: boolean\n  className?: string\n}\n\nconst DOTS: [number, number][] = [[7, 2.3], [11.7, 7], [7, 11.7], [2.3, 7]]\n\nexport function AiSpark({ thinking = false, className }: AiSparkProps) {\n  return (\n    <svg data-slot=\"ai-spark\" viewBox=\"0 0 14 14\" aria-hidden=\"true\" className={cn(\"size-3.5 shrink-0\", className)}>\n      {DOTS.map(([cx, cy], i) => (\n        <circle\n          key={i}\n          cx={cx}\n          cy={cy}\n          r={1.5}\n          className={cn(\"fill-foreground\", thinking && \"animate-pulse motion-reduce:animate-none\")}\n          style={thinking ? { animationDelay: `${i * 150}ms` } : undefined}\n        />\n      ))}\n      <circle cx={7} cy={7} r={1.5} className=\"fill-signal\" />\n    </svg>\n  )\n}\n"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "gc-spinner",
+  "type": "registry:ui",
+  "title": "Green Control · Spinner",
+  "description": "A ring that inherits the text colour; used by loading states.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/green-control/ui/spinner.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\"\n\n/** Green Control spinner: a square-cornered ring that inherits the text colour. */\nexport function Spinner({ className }: { className?: string }) {\n  return (\n    <span\n      aria-hidden=\"true\"\n      className={cn(\n        \"inline-block size-3 shrink-0 animate-spin rounded-full border-[1.5px] border-current/30 border-t-current motion-reduce:animate-none\",\n        className\n      )}\n    />\n  )\n}\n",
+      "target": "components/ui/spinner.tsx"
+    }
+  ]
+}

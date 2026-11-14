@@ -1,0 +1,123 @@
+/* Green Control components. Needs the green-control-theme variables (gc-*) or the prototype's own names. */
+:root {
+  --bg-page: var(--gc-bg-page);
+  --bg-surface: var(--gc-bg-surface);
+  --bg-raised: var(--gc-bg-raised);
+  --bg-chip: var(--gc-bg-chip);
+  --line: var(--gc-line);
+  --text: var(--gc-text);
+  --muted: var(--gc-muted);
+  --accent: var(--gc-accent);
+  --on-accent: var(--gc-on-accent);
+  --glass: var(--gc-glass);
+  --glass-raised: var(--gc-glass-raised);
+  --sheen: var(--gc-sheen);
+  --edge-hi: var(--gc-edge-hi);
+  --drop: var(--gc-drop);
+  --link: var(--gc-link);
+  --cta-bg: var(--gc-cta-bg);
+  --cta-fg: var(--gc-cta-fg);
+  --sel-bg: var(--gc-sel-bg);
+  --sel-fg: var(--gc-sel-fg);
+  --dot: var(--gc-dot);
+  --pool: var(--gc-pool);
+  --badge-bg: var(--gc-badge-bg);
+  --font-mono: "DM Mono", ui-monospace, monospace;
+  --ease: var(--gc-ease, cubic-bezier(0.2, 0, 0, 1));
+  --spring: var(--gc-spring, cubic-bezier(0.34, 1.56, 0.64, 1));
+}
+.glass { background: linear-gradient(var(--sheen), transparent 60%), var(--glass); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: inset 0 1px 0 var(--edge-hi), var(--drop); }
+.block { background: linear-gradient(var(--sheen), transparent 60%), var(--glass-raised); box-shadow: inset 0 1px 0 var(--edge-hi); }
+.spark { width: 14px; height: 14px; flex: none; }
+.spark circle { fill: var(--text); }
+.spark circle.o { fill: var(--accent); }
+
+.state { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+.state i { width: 7px; height: 7px; background: currentColor; display: block; }
+.state.issue { color: var(--accent); }
+.link { display: inline-flex; align-items: center; gap: 6px; color: var(--link); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.link .g { width: 6px; height: 6px; border-radius: 99px; background: var(--link); flex: none; }
+
+.card { padding: 16px; display: grid; gap: 10px; }
+.card-head { display: flex; align-items: center; gap: 10px; }
+.card-foot { display: flex; justify-content: flex-end; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.echip { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px 0 5px; background: var(--bg-raised); font-size: 13px; }
+.echip .num { width: 16px; height: 16px; line-height: 1; display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; background: var(--badge-bg); color: var(--on-accent); }
+.ev { padding: 14px; display: grid; gap: 8px; }
+.ev-top { display: flex; align-items: baseline; gap: 8px; }
+.bar { position: relative; height: 8px; }
+.bar i { position: absolute; top: 2px; height: 4px; display: block; }
+.bar .tr { left: 0; right: 0; background: var(--line); }
+.bar .now { left: 0; background: var(--accent); }
+.bar .tk { top: 0; width: 2px; height: 8px; background: var(--muted); }
+
+.proc { display: flex; align-items: center; gap: 10px; font-size: 13px; line-height: 19px; }
+.ring { width: 10px; height: 10px; border-radius: 99px; border: 1.5px solid var(--line); border-top-color: var(--accent); animation: spin 700ms linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.tick { width: 12px; height: 12px; flex: none; color: var(--muted); }
+.tick path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.conf { display: grid; gap: 6px; }
+.conf-bar { display: flex; gap: 2px; height: 8px; }
+.conf-bar i { flex: 1; background: var(--line); }
+.conf-bar i.on { background: var(--text); }
+.conf-bar i.hot { background: var(--accent); }
+
+.pl { display: grid; }
+.pl-item { position: relative; display: grid; grid-template-columns: 18px 1fr; column-gap: 12px; padding-bottom: 16px; }
+.pl-item:last-child { padding-bottom: 0; }
+.pl-item:not(:last-child)::before { content: ""; position: absolute; left: 8.5px; top: 9px; bottom: -9px; width: 1px; background: var(--line); }
+.pl-dot { position: relative; z-index: 1; width: 18px; height: 18px; display: grid; place-items: center; background: var(--bg-page); }
+.pl-dot .num { width: 16px; height: 16px; line-height: 1; display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; box-shadow: inset 0 0 0 1px var(--muted); color: var(--muted); }
+.pl-item.on .num { background: var(--accent); color: var(--on-accent); box-shadow: none; }
+.pl-item.on .when { color: var(--accent); }
+.pl-body { display: grid; gap: 4px; justify-items: start; }
+.pl-act { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.draft { display: inline-flex; padding: 1px 6px; box-shadow: inset 0 0 0 1px var(--accent); color: var(--accent); }
+
+.toast { display: flex; align-items: center; gap: 12px; padding: 9px 14px 9px 12px; font-size: 13px; width: max-content; max-width: 100%; }
+.toast .div { width: 1px; height: 14px; background: var(--line); }
+.toast svg { width: 14px; height: 14px; stroke: var(--text); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.toast-float { position: absolute; left: 50%; top: 64px; transform: translateX(-50%); z-index: 2; animation: toastIn 520ms var(--spring) both; }
+@keyframes toastIn { from { opacity: 0; transform: translate(-50%, -12px); } }
+
+.acrow { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; box-shadow: inset 0 0 0 1px var(--line); }
+.acrow .track { grid-column: 1 / -1; position: relative; height: 8px; margin-top: 6px; }
+.acrow .track i { position: absolute; display: block; }
+.acrow .base { left: 0; right: 0; top: 4px; height: 1px; background: var(--line); }
+.acrow .run { top: 2px; height: 5px; left: 12%; width: 46%; background: var(--accent); }
+.acrow .plan { top: 1px; width: 6px; height: 6px; left: 78%; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.acrow .now { top: -4px; width: 1px; height: 16px; left: 52%; background: var(--accent); }
+
+
+/* ---------- v1.1: buttons, segmented control, logo (gaps found by the agent test) ---------- */
+/* Buttons are square. One primary (.cta) per view. Secondary is .pbtn. There is no pill button. */
+.cta { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; background: var(--cta-bg); color: var(--cta-fg); font-weight: 500; font-size: 14px; border: 0; border-radius: 0; cursor: pointer; transition: transform 140ms var(--ease), filter 200ms; }
+.cta:hover { filter: brightness(1.08); }
+.cta:active { transform: scale(0.96); }
+.pbtn { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; background: transparent; color: var(--text); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; cursor: pointer; }
+.pbtn.primary { background: var(--cta-bg); color: var(--cta-fg); box-shadow: none; }
+.pbtn:disabled { opacity: 0.45; cursor: not-allowed; }
+/* Segmented control: <div class="seg" role="group"><button aria-pressed="true">Night</button><button aria-pressed="false">Day</button></div> */
+.seg { display: inline-flex; padding: 2px; gap: 2px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.seg button { padding: 4px 10px; font-size: 13px; color: var(--muted); background: none; border: 0; border-radius: 0; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--sel-bg); color: var(--sel-fg); }
+/* Spark (the AI signal, only where the AI speaks or acts):
+   <svg class="spark" viewBox="0 0 14 14"><circle cx="7" cy="2.3" r="1.5"/><circle cx="2.3" cy="7" r="1.5"/><circle class="o" cx="7" cy="7" r="1.5"/><circle cx="11.7" cy="7" r="1.5"/><circle cx="7" cy="11.7" r="1.5"/></svg> */
+/* Logo (the product, top-left only; never use the spark as the logo): a 5x5 dot "G", one accent dot.
+   <svg class="logo" viewBox="0 0 28 28"> rows ".XXX." "X...." "X.OXX" "X...X" ".XXX." ; cx = 5.2 + col*4.4, cy = 5.2 + row*4.4, r = 1.7 ; X = text, O = accent </svg> */
+.logo { width: 24px; height: 24px; flex: none; }
+.logo circle { fill: var(--text); }
+.logo circle.o { fill: var(--accent); }
+
+/* ---------- v1.3: owner row (who acts on the plan) ---------- */
+/* <div class="owner"><span class="t-label muted">Owner</span><a class="link"><span class="g"></span>Energy desk</a><span class="muted">on shift</span><a class="link"><span class="g"></span>Chen Yu</a><button class="pbtn">Assign</button></div>
+   The AI suggests the owner; a person taps Assign. Assign is undoable like any applied step. */
+.owner { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; }
+.owner .pbtn { margin-left: auto; }
+
+/* ---------- v1.5: keyboard focus (found by gc-check) ---------- */
+/* Every clickable part shows where the keyboard is. Same ring everywhere: 1.5px in the text colour, 2px out. */
+:where(.cta, .pbtn, .seg button, .link, .echip, button, a[href], [role="button"]):focus-visible { outline: 1.5px solid var(--text); outline-offset: 2px; }
+

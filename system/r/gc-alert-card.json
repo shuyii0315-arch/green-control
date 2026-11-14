@@ -1,0 +1,22 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-alert-card",
+ "type": "registry:ui",
+ "title": "Green Control · Alert card",
+ "description": "Where, what, what it costs, one action. New, investigating, resolved.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-object-link.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-state-tag.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/alert-card.tsx",
+   "type": "registry:ui",
+   "target": "components/ui/alert-card.tsx",
+   "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { ObjectLink } from \"@/components/ui/object-link\"\nimport { StateTag } from \"@/components/ui/state-tag\"\n\n/**\n * The first thing a person sees about a problem: where, what, what it costs, one action.\n * `new` carries a signal-colour edge until it is opened.\n */\nexport interface AlertCardProps {\n  /** e.g. \"Cooling · issue\" */\n  area: string\n  /** Shown top right while open, e.g. \"+14% power\". */\n  delta?: string\n  object: string\n  objectHref: string\n  /** The rest of the headline after the object name. */\n  headline: string\n  /** One line in money or time, e.g. \"About ¥250 a day above normal\". */\n  cost: string\n  state?: \"new\" | \"open\" | \"investigating\" | \"resolved\"\n  onInvestigate?: () => void\n  className?: string\n}\n\nexport function AlertCard({ area, delta, object, objectHref, headline, cost, state = \"new\", onInvestigate, className }: AlertCardProps) {\n  const done = state === \"resolved\"\n  return (\n    <article\n      data-slot=\"alert-card\"\n      data-state={state}\n      className={cn(\n        \"grid gap-2.5 bg-[var(--gc-glass)] px-5 py-[18px] shadow-[inset_0_1px_0_var(--gc-edge-hi),var(--gc-drop)] backdrop-blur-[24px] transition-[box-shadow,opacity] duration-200 ease-gc\",\n        state === \"new\" && \"shadow-[inset_3px_0_0_var(--gc-accent),inset_0_1px_0_var(--gc-edge-hi),var(--gc-drop)]\",\n        done && \"opacity-70\",\n        className\n      )}\n    >\n      <div className=\"flex items-center gap-3\">\n        <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">{area}</span>\n        <span className=\"ml-auto\">\n          {state === \"investigating\" ? <StateTag state=\"investigating\" /> : done ? <StateTag state=\"resolved\" /> : delta ? <StateTag state=\"issue\">{delta}</StateTag> : null}\n        </span>\n      </div>\n      <h3 className=\"m-0 text-lg font-normal leading-[25px]\">\n        <ObjectLink href={objectHref}>{object}</ObjectLink> {headline}\n      </h3>\n      <span className=\"text-[13px] text-muted-foreground\">{cost}</span>\n      {(state === \"new\" || state === \"open\") && (\n        <div className=\"mt-1.5 border-t border-border pt-3.5\">\n          <Button onClick={onInvestigate}>Investigate</Button>\n        </div>\n      )}\n    </article>\n  )\n}\n"
+  }
+ ]
+}

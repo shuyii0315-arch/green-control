@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-gc="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Green Control · screen shell</title>
+<!-- Start every Green Control equipment screen from this file. Keep the frame (rail, stage, figure, evidence row, panel);
+     replace the figure, the labels, the evidence and the thread. Paths are relative to the package folder. -->
+<link rel="stylesheet" href="gc-tokens.css">
+<link rel="stylesheet" href="green-control-components.css">
+<link rel="stylesheet" href="gc-stage.css">
+<style>
+@font-face { font-family: "Hanken Grotesk"; font-weight: 300; src: url("fonts/hanken-grotesk-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 400; src: url("fonts/hanken-grotesk-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 500; src: url("fonts/hanken-grotesk-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "DM Mono"; font-weight: 400; src: url("fonts/dm-mono-latin-400-normal.woff2") format("woff2"); }
+html, body { margin: 0; height: 100%; background: var(--bg-page); overflow: hidden; }
+.t-label { font-family: "DM Mono", monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.05em; text-transform: uppercase; }
+.t-small { font-size: 13px; line-height: 19px; }
+.muted { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="gc-app" id="app">
+
+  <nav class="gc-rail" aria-label="Main">
+    <svg class="logo" viewBox="0 0 28 28" aria-label="Green Control" id="logo"></svg>
+    <button class="on" aria-label="Overview"><svg class="ic" viewBox="0 0 18 18"><rect x="2.5" y="2.5" width="5" height="5"/><rect x="10.5" y="2.5" width="5" height="5"/><rect x="2.5" y="10.5" width="5" height="5"/><rect x="10.5" y="10.5" width="5" height="5"/></svg></button>
+    <button aria-label="Actions"><svg class="ic" viewBox="0 0 18 18"><path d="M7 4.5h8.5M7 9h8.5M7 13.5h8.5M2.5 4.5h1.5M2.5 9h1.5M2.5 13.5h1.5"/></svg></button>
+    <button aria-label="Energy"><svg class="ic" viewBox="0 0 18 18"><path d="M3 15.5h12M5 13V8M9 13V4M13 13v-3"/></svg></button>
+    <div class="foot">
+      <button id="theme" aria-label="Night or day"><svg class="ic" viewBox="0 0 18 18"><path d="M14.5 10.8A6 6 0 0 1 7.2 3.5a6 6 0 1 0 7.3 7.3z"/></svg></button>
+      <span class="who">FM</span>
+    </div>
+  </nav>
+
+  <main class="gc-stage">
+    <header class="gc-head">
+      <h1>Chiller 2 <span class="state issue t-small"><i></i>Issue</span></h1>
+      <div class="gc-crumbs"><span>B1</span><span>/</span><span>Plant</span><span>/</span><span>CH-02</span></div>
+    </header>
+
+    <!-- The figure. Draw the equipment with the anatomy-figure skill: isometric line art, dark, transparent background,
+         only the problem part lit in the accent. Or reuse a figure in img/. Labels are placed in % of the figure box. -->
+    <div class="gc-figure assembling">
+      <div class="dots"></div><div class="pool"></div>
+      <div class="gc-artbox" style="--ar: 1520 / 1039; aspect-ratio: 1520 / 1039">
+      <img class="gc-art" src="img/plant-night.png" data-day="img/plant-day.png" data-night="img/plant-night.png" alt="Chiller plant, isometric">
+      <div class="gc-labels">
+        <span class="alab hot" style="left:22%;top:44%"><span class="k">CH-02</span><span class="v">+14% power</span></span>
+        <span class="alab" style="left:58%;top:16%"><span class="k">CH-01</span><span class="v">0.62 kW/t</span></span>
+        <span class="amark" data-n="1" style="left:46%;top:30%">1</span>
+        <span class="amark" data-n="2" style="left:60%;top:74%">2</span>
+        <span class="amark" data-n="3" style="left:37%;top:56%">3</span>
+      </div>
+      </div>
+      <span class="gc-cap">Fig. 02 — Chiller plant, iso 62°</span>
+    </div>
+
+    <!-- Evidence row: one card per check the AI made (1–4), same numbers as the marks and chips.
+         Tags are this topic's questions (see DESIGN.md): this example is a fault, so What's wrong → Where → Why. -->
+    <div class="gc-evrow">
+      <div class="block gc-ev" data-n="1"><span class="tag">What</span><span class="t-small"><span class="num">1</span> More power</span><span class="val">+14%<small>vs Chiller 1</small></span><span class="t-small muted">for the same cooling</span></div>
+      <div class="block gc-ev" data-n="2"><span class="tag">Where</span><span class="t-small"><span class="num">2</span> Running hot</span><span class="val">+2.8<small>°C above normal</small></span><span class="t-small muted">heat isn't getting out</span></div>
+      <div class="block gc-ev" data-n="3"><span class="tag">Why</span><span class="t-small"><span class="num">3</span> Overdue cleaning</span><span class="val">14<small>months</small></span><span class="t-small muted">last cleaned Aug 2025</span></div>
+    </div>
+  </main>
+
+  <aside class="gc-panel glass" aria-label="Green Control AI">
+    <div class="gc-panel-head"><svg class="spark" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="2.3" r="1.5"/><circle cx="2.3" cy="7" r="1.5"/><circle class="o" cx="7" cy="7" r="1.5"/><circle cx="11.7" cy="7" r="1.5"/><circle cx="7" cy="11.7" r="1.5"/></svg><span style="font-weight:500">Green Control</span></div>
+    <div class="gc-band"><b>Issue 01</b><span>CH-02 · ¥312 wasted today</span></div>
+    <div class="gc-thread">
+      <!-- the AI thread: checks → evidence chips → confidence → plan rail (by band) → toast with Undo -->
+    </div>
+    <div class="gc-ask">Ask about Chiller 2…</div>
+  </aside>
+</div>
+
+<script src="gc-assemble.js"></script>
+<script>
+/* fit the 1440×900 artboard to the window */
+const app = document.getElementById("app");
+const fit = () => { const s = Math.min(innerWidth / 1440, innerHeight / 900); app.style.transform = `translate(-50%, -50%) scale(${s})`; };
+addEventListener("resize", fit); fit();
+/* the logo: a 5×5 dot G, one accent dot */
+{ const G = [".XXX.", "X....", "X.OXX", "X...X", ".XXX."]; let s = "";
+  G.forEach((row, r) => [...row].forEach((c, k) => { if (c !== ".") s += `<circle cx="${5.2 + k * 4.4}" cy="${5.2 + r * 4.4}" r="1.7"${c === "O" ? ' class="o"' : ""}/>`; }));
+  document.getElementById("logo").innerHTML = s; }
+/* night / day: swap the token set and the figure */
+document.getElementById("theme").onclick = () => {
+  const t = document.documentElement.dataset.gc === "night" ? "day" : "night";
+  document.documentElement.dataset.gc = t;
+  document.querySelectorAll(".gc-art[data-day]").forEach((im) => (im.src = im.dataset[t]));
+};
+/* linked highlight: a mark and its evidence card light up together */
+document.querySelectorAll("[data-n]").forEach((el) => {
+  const all = () => document.querySelectorAll(`[data-n="${el.dataset.n}"]`);
+  el.addEventListener("mouseenter", () => all().forEach((x) => x.classList.add("hl")));
+  el.addEventListener("mouseleave", () => all().forEach((x) => x.classList.remove("hl")));
+});
+/* the figure builds itself from its points when the screen opens */
+gcAssemble(document.querySelector(".gc-art"));
+</script>
+</body>
+</html>

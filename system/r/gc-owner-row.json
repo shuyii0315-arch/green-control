@@ -1,0 +1,21 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-owner-row",
+ "type": "registry:ui",
+ "title": "Green Control · Owner row",
+ "description": "Suggested team and person on shift; a person confirms with Assign.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-object-link.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/owner-row.tsx",
+   "type": "registry:ui",
+   "target": "components/ui/owner-row.tsx",
+   "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { ObjectLink } from \"@/components/ui/object-link\"\n\n/**\n * Who should act. The AI suggests a team and the person on shift; a person confirms with Assign.\n */\nexport interface OwnerRowProps {\n  team: string\n  teamHref: string\n  person: string\n  personHref: string\n  state?: \"suggested\" | \"assigning\" | \"assigned\"\n  onAssign?: () => void\n  onUndo?: () => void\n  className?: string\n}\n\nexport function OwnerRow({ team, teamHref, person, personHref, state = \"suggested\", onAssign, onUndo, className }: OwnerRowProps) {\n  return (\n    <div data-slot=\"owner-row\" data-state={state} className={cn(\"flex flex-wrap items-center gap-x-2.5 gap-y-2 text-[13px]\", className)}>\n      <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">Owner</span>\n      <ObjectLink href={teamHref}>{team}</ObjectLink>\n      <span className=\"text-muted-foreground\">on shift</span>\n      <ObjectLink href={personHref}>{person}</ObjectLink>\n      <span className=\"ml-auto\">\n        {state === \"assigned\" ? (\n          <span className=\"inline-flex items-center gap-2 text-muted-foreground\">\n            Assigned\n            {onUndo && <button type=\"button\" onClick={onUndo} className=\"underline underline-offset-[3px] hover:text-foreground\">Undo</button>}\n          </span>\n        ) : (\n          <Button size=\"sm\" variant=\"secondary\" loading={state === \"assigning\"} onClick={onAssign}>{state === \"assigning\" ? \"Assigning…\" : \"Assign\"}</Button>\n        )}\n      </span>\n    </div>\n  )\n}\n"
+  }
+ ]
+}

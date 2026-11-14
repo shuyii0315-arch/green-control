@@ -1,0 +1,20 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-toast",
+ "type": "registry:ui",
+ "title": "Green Control · Toast with Undo",
+ "description": "Shown after anything the AI applied. 6 s, pauses on hover, always offers Undo.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-spinner.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/toast.tsx",
+   "type": "registry:ui",
+   "target": "components/ui/toast.tsx",
+   "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport { Spinner } from \"@/components/ui/spinner\"\n\n/**\n * Shown after anything the AI applied. Stays 6 s, pauses while hovered, and always offers Undo.\n */\nexport interface UndoToastProps {\n  message: string\n  onUndo: () => Promise<void> | void\n  onClose?: () => void\n  /** How long it stays, in ms. */\n  duration?: number\n  className?: string\n}\n\nexport function UndoToast({ message, onUndo, onClose, duration = 6000, className }: UndoToastProps) {\n  const [state, setState] = React.useState<\"running\" | \"paused\" | \"undoing\" | \"undone\">(\"running\")\n  const left = React.useRef(duration)\n  const started = React.useRef(Date.now())\n\n  React.useEffect(() => {\n    if (state !== \"running\") return\n    started.current = Date.now()\n    const t = setTimeout(() => onClose?.(), left.current)\n    return () => {\n      clearTimeout(t)\n      left.current -= Date.now() - started.current\n    }\n  }, [state, onClose])\n\n  React.useEffect(() => {\n    if (state !== \"undone\") return\n    const t = setTimeout(() => onClose?.(), 2000)\n    return () => clearTimeout(t)\n  }, [state, onClose])\n\n  async function undo() {\n    setState(\"undoing\")\n    await onUndo()\n    setState(\"undone\")\n  }\n\n  return (\n    <div\n      data-slot=\"toast\"\n      role=\"status\"\n      onMouseEnter={() => state === \"running\" && setState(\"paused\")}\n      onMouseLeave={() => state === \"paused\" && setState(\"running\")}\n      className={cn(\n        \"relative inline-flex h-10 items-center gap-2.5 overflow-hidden bg-[var(--gc-glass)] px-3.5 text-sm shadow-[inset_0_1px_0_var(--gc-edge-hi),var(--gc-drop)] backdrop-blur-[24px]\",\n        className\n      )}\n    >\n      {state === \"undoing\" ? <Spinner /> : (\n        <svg viewBox=\"0 0 14 14\" className=\"size-3.5 fill-none stroke-current stroke-[1.5]\" aria-hidden=\"true\"><path d={state === \"undone\" ? \"M4 4h6v6M10 4 4 10\" : \"M2.5 7.3 5.5 10 11.5 4\"} /></svg>\n      )}\n      <span>{state === \"undoing\" ? \"Undoing…\" : state === \"undone\" ? \"Undone\" : message}</span>\n      {(state === \"running\" || state === \"paused\") && (\n        <>\n          <span className=\"h-4 w-px bg-border\" />\n          <button type=\"button\" onClick={undo} className=\"text-muted-foreground underline underline-offset-[3px] hover:text-foreground\">Undo</button>\n          <i\n            className=\"absolute bottom-0 left-0 h-px w-full origin-left bg-foreground/40\"\n            style={{ animation: `gc-toast ${duration}ms linear forwards`, animationPlayState: state === \"paused\" ? \"paused\" : \"running\" }}\n          />\n          <style>{\"@keyframes gc-toast{from{transform:scaleX(1)}to{transform:scaleX(0)}}\"}</style>\n        </>\n      )}\n    </div>\n  )\n}\n"
+  }
+ ]
+}

@@ -1,0 +1,424 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry.json",
+ "name": "green-control",
+ "homepage": "https://shuyii0315-arch.github.io/green-control/",
+ "items": [
+  {
+   "name": "green-control-theme",
+   "type": "registry:theme",
+   "title": "Green Control theme",
+   "description": "Green Control tokens as CSS variables. light = Day, dark = Night. Square corners, one accent.",
+   "cssVars": {
+    "theme": {
+     "font-sans": "\"Hanken Grotesk\", system-ui, sans-serif",
+     "font-mono": "\"DM Mono\", ui-monospace, monospace",
+     "radius": "0px",
+     "gc-ease": "cubic-bezier(0.2, 0, 0, 1)",
+     "gc-spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+     "gc-confidence-act": "80",
+     "gc-confidence-review": "50"
+    },
+    "light": {
+     "gc-bg-page": "#f1f1ef",
+     "gc-bg-surface": "#fbfbfa",
+     "gc-bg-raised": "#ececea",
+     "gc-bg-chip": "#e4e4e1",
+     "gc-line": "#dcdcd8",
+     "gc-text": "#111111",
+     "gc-muted": "#666662",
+     "gc-accent": "#1f4fff",
+     "gc-on-accent": "#ffffff",
+     "gc-glass": "rgba(251, 251, 250, 0.82)",
+     "gc-glass-raised": "rgba(236, 236, 233, 0.92)",
+     "background": "#f1f1ef",
+     "foreground": "#111111",
+     "card": "#fbfbfa",
+     "card-foreground": "#111111",
+     "popover": "#fbfbfa",
+     "popover-foreground": "#111111",
+     "primary": "#1f4fff",
+     "primary-foreground": "#ffffff",
+     "secondary": "#ececea",
+     "secondary-foreground": "#111111",
+     "muted": "#ececea",
+     "muted-foreground": "#666662",
+     "accent": "#ececea",
+     "accent-foreground": "#111111",
+     "border": "#dcdcd8",
+     "input": "#dcdcd8",
+     "ring": "#111111",
+     "gc-sheen": "rgba(255, 255, 255, 0.25)",
+     "gc-edge-hi": "rgba(255, 255, 255, 0.5)",
+     "gc-drop": "0 16px 40px rgba(17, 20, 30, 0.08)",
+     "gc-link": "#1f4fff",
+     "gc-cta-bg": "#1f4fff",
+     "gc-cta-fg": "#ffffff",
+     "gc-sel-bg": "#1f4fff",
+     "gc-sel-fg": "#ffffff",
+     "gc-badge-bg": "#1f4fff"
+    },
+    "dark": {
+     "gc-bg-page": "#111214",
+     "gc-bg-surface": "#1b1c1f",
+     "gc-bg-raised": "#2b2d30",
+     "gc-bg-chip": "#292a2e",
+     "gc-line": "#33363b",
+     "gc-text": "#ededed",
+     "gc-muted": "#8f949c",
+     "gc-accent": "#ff6b1a",
+     "gc-on-accent": "#111214",
+     "gc-glass": "rgba(27, 28, 31, 0.78)",
+     "gc-glass-raised": "rgba(43, 45, 48, 0.85)",
+     "background": "#111214",
+     "foreground": "#ededed",
+     "card": "#1b1c1f",
+     "card-foreground": "#ededed",
+     "popover": "#1b1c1f",
+     "popover-foreground": "#ededed",
+     "primary": "#ededed",
+     "primary-foreground": "#111214",
+     "secondary": "#2b2d30",
+     "secondary-foreground": "#ededed",
+     "muted": "#2b2d30",
+     "muted-foreground": "#8f949c",
+     "accent": "#2b2d30",
+     "accent-foreground": "#ededed",
+     "border": "#33363b",
+     "input": "#33363b",
+     "ring": "#ededed",
+     "gc-sheen": "rgba(255, 255, 255, 0.02)",
+     "gc-edge-hi": "rgba(255, 255, 255, 0.035)",
+     "gc-drop": "0 16px 40px rgba(0, 0, 0, 0.35)",
+     "gc-link": "#ededed",
+     "gc-cta-bg": "#ededed",
+     "gc-cta-fg": "#111214",
+     "gc-sel-bg": "#2b2d30",
+     "gc-sel-fg": "#ededed",
+     "gc-badge-bg": "#ededed"
+    }
+   }
+  },
+  {
+   "name": "green-control-components",
+   "type": "registry:file",
+   "title": "Green Control components",
+   "description": "CSS for the AI components: alert card, evidence chip and card, confidence meter, plan rail, toast with Undo, action row, object link, spark. Install the theme first.",
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "r/green-control-components.css",
+     "type": "registry:file",
+     "target": "styles/green-control-components.css",
+     "content": "/* Green Control components. Needs the green-control-theme variables (gc-*) or the prototype's own names. */\n:root {\n  --bg-page: var(--gc-bg-page);\n  --bg-surface: var(--gc-bg-surface);\n  --bg-raised: var(--gc-bg-raised);\n  --bg-chip: var(--gc-bg-chip);\n  --line: var(--gc-line);\n  --text: var(--gc-text);\n  --muted: var(--gc-muted);\n  --accent: var(--gc-accent);\n  --on-accent: var(--gc-on-accent);\n  --glass: var(--gc-glass);\n  --glass-raised: var(--gc-glass-raised);\n  --sheen: var(--gc-sheen);\n  --edge-hi: var(--gc-edge-hi);\n  --drop: var(--gc-drop);\n  --link: var(--gc-link);\n  --cta-bg: var(--gc-cta-bg);\n  --cta-fg: var(--gc-cta-fg);\n  --sel-bg: var(--gc-sel-bg);\n  --sel-fg: var(--gc-sel-fg);\n  --dot: var(--gc-dot);\n  --pool: var(--gc-pool);\n  --badge-bg: var(--gc-badge-bg);\n  --font-mono: \"DM Mono\", ui-monospace, monospace;\n  --ease: var(--gc-ease, cubic-bezier(0.2, 0, 0, 1));\n  --spring: var(--gc-spring, cubic-bezier(0.34, 1.56, 0.64, 1));\n}\n.glass { background: linear-gradient(var(--sheen), transparent 60%), var(--glass); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: inset 0 1px 0 var(--edge-hi), var(--drop); }\n.block { background: linear-gradient(var(--sheen), transparent 60%), var(--glass-raised); box-shadow: inset 0 1px 0 var(--edge-hi); }\n.spark { width: 14px; height: 14px; flex: none; }\n.spark circle { fill: var(--text); }\n.spark circle.o { fill: var(--accent); }\n\n.state { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }\n.state i { width: 7px; height: 7px; background: currentColor; display: block; }\n.state.issue { color: var(--accent); }\n.link { display: inline-flex; align-items: center; gap: 6px; color: var(--link); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }\n.link .g { width: 6px; height: 6px; border-radius: 99px; background: var(--link); flex: none; }\n\n.card { padding: 16px; display: grid; gap: 10px; }\n.card-head { display: flex; align-items: center; gap: 10px; }\n.card-foot { display: flex; justify-content: flex-end; }\n.chips { display: flex; flex-wrap: wrap; gap: 6px; }\n.echip { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px 0 5px; background: var(--bg-raised); font-size: 13px; }\n.echip .num { width: 16px; height: 16px; line-height: 1; display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; background: var(--badge-bg); color: var(--on-accent); }\n.ev { padding: 14px; display: grid; gap: 8px; }\n.ev-top { display: flex; align-items: baseline; gap: 8px; }\n.bar { position: relative; height: 8px; }\n.bar i { position: absolute; top: 2px; height: 4px; display: block; }\n.bar .tr { left: 0; right: 0; background: var(--line); }\n.bar .now { left: 0; background: var(--accent); }\n.bar .tk { top: 0; width: 2px; height: 8px; background: var(--muted); }\n\n.proc { display: flex; align-items: center; gap: 10px; font-size: 13px; line-height: 19px; }\n.ring { width: 10px; height: 10px; border-radius: 99px; border: 1.5px solid var(--line); border-top-color: var(--accent); animation: spin 700ms linear infinite; flex: none; }\n@keyframes spin { to { transform: rotate(360deg); } }\n.tick { width: 12px; height: 12px; flex: none; color: var(--muted); }\n.tick path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }\n\n.conf { display: grid; gap: 6px; }\n.conf-bar { display: flex; gap: 2px; height: 8px; }\n.conf-bar i { flex: 1; background: var(--line); }\n.conf-bar i.on { background: var(--text); }\n.conf-bar i.hot { background: var(--accent); }\n\n.pl { display: grid; }\n.pl-item { position: relative; display: grid; grid-template-columns: 18px 1fr; column-gap: 12px; padding-bottom: 16px; }\n.pl-item:last-child { padding-bottom: 0; }\n.pl-item:not(:last-child)::before { content: \"\"; position: absolute; left: 8.5px; top: 9px; bottom: -9px; width: 1px; background: var(--line); }\n.pl-dot { position: relative; z-index: 1; width: 18px; height: 18px; display: grid; place-items: center; background: var(--bg-page); }\n.pl-dot .num { width: 16px; height: 16px; line-height: 1; display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; box-shadow: inset 0 0 0 1px var(--muted); color: var(--muted); }\n.pl-item.on .num { background: var(--accent); color: var(--on-accent); box-shadow: none; }\n.pl-item.on .when { color: var(--accent); }\n.pl-body { display: grid; gap: 4px; justify-items: start; }\n.pl-act { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }\n.draft { display: inline-flex; padding: 1px 6px; box-shadow: inset 0 0 0 1px var(--accent); color: var(--accent); }\n\n.toast { display: flex; align-items: center; gap: 12px; padding: 9px 14px 9px 12px; font-size: 13px; width: max-content; max-width: 100%; }\n.toast .div { width: 1px; height: 14px; background: var(--line); }\n.toast svg { width: 14px; height: 14px; stroke: var(--text); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }\n.toast-float { position: absolute; left: 50%; top: 64px; transform: translateX(-50%); z-index: 2; animation: toastIn 520ms var(--spring) both; }\n@keyframes toastIn { from { opacity: 0; transform: translate(-50%, -12px); } }\n\n.acrow { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; box-shadow: inset 0 0 0 1px var(--line); }\n.acrow .track { grid-column: 1 / -1; position: relative; height: 8px; margin-top: 6px; }\n.acrow .track i { position: absolute; display: block; }\n.acrow .base { left: 0; right: 0; top: 4px; height: 1px; background: var(--line); }\n.acrow .run { top: 2px; height: 5px; left: 12%; width: 46%; background: var(--accent); }\n.acrow .plan { top: 1px; width: 6px; height: 6px; left: 78%; box-shadow: inset 0 0 0 1.5px var(--accent); }\n.acrow .now { top: -4px; width: 1px; height: 16px; left: 52%; background: var(--accent); }\n\n\n/* ---------- v1.1: buttons, segmented control, logo (gaps found by the agent test) ---------- */\n/* Buttons are square. One primary (.cta) per view. Secondary is .pbtn. There is no pill button. */\n.cta { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; background: var(--cta-bg); color: var(--cta-fg); font-weight: 500; font-size: 14px; border: 0; border-radius: 0; cursor: pointer; transition: transform 140ms var(--ease), filter 200ms; }\n.cta:hover { filter: brightness(1.08); }\n.cta:active { transform: scale(0.96); }\n.pbtn { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; background: transparent; color: var(--text); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; cursor: pointer; }\n.pbtn.primary { background: var(--cta-bg); color: var(--cta-fg); box-shadow: none; }\n.pbtn:disabled { opacity: 0.45; cursor: not-allowed; }\n/* Segmented control: <div class=\"seg\" role=\"group\"><button aria-pressed=\"true\">Night</button><button aria-pressed=\"false\">Day</button></div> */\n.seg { display: inline-flex; padding: 2px; gap: 2px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }\n.seg button { padding: 4px 10px; font-size: 13px; color: var(--muted); background: none; border: 0; border-radius: 0; cursor: pointer; }\n.seg button[aria-pressed=\"true\"] { background: var(--sel-bg); color: var(--sel-fg); }\n/* Spark (the AI signal, only where the AI speaks or acts):\n   <svg class=\"spark\" viewBox=\"0 0 14 14\"><circle cx=\"7\" cy=\"2.3\" r=\"1.5\"/><circle cx=\"2.3\" cy=\"7\" r=\"1.5\"/><circle class=\"o\" cx=\"7\" cy=\"7\" r=\"1.5\"/><circle cx=\"11.7\" cy=\"7\" r=\"1.5\"/><circle cx=\"7\" cy=\"11.7\" r=\"1.5\"/></svg> */\n/* Logo (the product, top-left only; never use the spark as the logo): a 5x5 dot \"G\", one accent dot.\n   <svg class=\"logo\" viewBox=\"0 0 28 28\"> rows \".XXX.\" \"X....\" \"X.OXX\" \"X...X\" \".XXX.\" ; cx = 5.2 + col*4.4, cy = 5.2 + row*4.4, r = 1.7 ; X = text, O = accent </svg> */\n.logo { width: 24px; height: 24px; flex: none; }\n.logo circle { fill: var(--text); }\n.logo circle.o { fill: var(--accent); }\n\n/* ---------- v1.3: owner row (who acts on the plan) ---------- */\n/* <div class=\"owner\"><span class=\"t-label muted\">Owner</span><a class=\"link\"><span class=\"g\"></span>Energy desk</a><span class=\"muted\">on shift</span><a class=\"link\"><span class=\"g\"></span>Chen Yu</a><button class=\"pbtn\">Assign</button></div>\n   The AI suggests the owner; a person taps Assign. Assign is undoable like any applied step. */\n.owner { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; }\n.owner .pbtn { margin-left: auto; }\n\n/* ---------- v1.5: keyboard focus (found by gc-check) ---------- */\n/* Every clickable part shows where the keyboard is. Same ring everywhere: 1.5px in the text colour, 2px out. */\n:where(.cta, .pbtn, .seg button, .link, .echip, button, a[href], [role=\"button\"]):focus-visible { outline: 1.5px solid var(--text); outline-offset: 2px; }\n\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-spinner",
+   "type": "registry:ui",
+   "title": "Green Control · Spinner",
+   "description": "A ring that inherits the text colour; used by loading states.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/spinner.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/spinner.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\n\n/** Green Control spinner: a square-cornered ring that inherits the text colour. */\nexport function Spinner({ className }: { className?: string }) {\n  return (\n    <span\n      aria-hidden=\"true\"\n      className={cn(\n        \"inline-block size-3 shrink-0 animate-spin rounded-full border-[1.5px] border-current/30 border-t-current motion-reduce:animate-none\",\n        className\n      )}\n    />\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-button",
+   "type": "registry:ui",
+   "title": "Green Control · Button",
+   "description": "Square button. One primary per view. States: hover, focus, pressed, disabled, loading.",
+   "dependencies": [
+    "class-variance-authority"
+   ],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-spinner.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/button.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/button.tsx",
+     "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/lib/utils\"\nimport { Spinner } from \"@/components/ui/spinner\"\n\n/**\n * Green Control button.\n * Square. One `primary` per view: the person's next decision (Investigate, Apply, Assign).\n * States: hover, focus-visible, active (press), disabled, loading.\n * When `loading`, the label should say what is happening (\"Applying…\").\n */\nconst buttonVariants = cva(\n  \"inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-none font-medium outline-none transition-[background-color,transform,opacity] duration-150 ease-gc focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-foreground active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100 motion-reduce:transition-none\",\n  {\n    variants: {\n      variant: {\n        primary: \"bg-primary text-primary-foreground hover:bg-primary/80 active:bg-primary/65\",\n        secondary: \"bg-transparent text-foreground shadow-[inset_0_0_0_1px_var(--border)] hover:bg-secondary active:bg-secondary\",\n        ghost: \"bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground\",\n      },\n      size: {\n        default: \"h-9 px-3.5 text-sm\",\n        sm: \"h-8 px-3 text-[13px]\",\n      },\n    },\n    defaultVariants: { variant: \"primary\", size: \"default\" },\n  }\n)\n\nexport interface ButtonProps\n  extends React.ButtonHTMLAttributes<HTMLButtonElement>,\n    VariantProps<typeof buttonVariants> {\n  /** Sent and waiting. Locks the button and shows a spinner. */\n  loading?: boolean\n}\n\nexport function Button({ className, variant, size, loading = false, disabled, children, ...props }: ButtonProps) {\n  return (\n    <button\n      data-slot=\"button\"\n      aria-busy={loading || undefined}\n      disabled={disabled || loading}\n      className={cn(buttonVariants({ variant, size }), loading && \"cursor-progress disabled:opacity-100\", className)}\n      {...props}\n    >\n      {loading && <Spinner />}\n      {children}\n    </button>\n  )\n}\n\nexport { buttonVariants }\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-state-tag",
+   "type": "registry:ui",
+   "title": "Green Control · State tag",
+   "description": "Square dot + word: watching, issue, opportunity, investigating, resolved.",
+   "dependencies": [
+    "class-variance-authority"
+   ],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/state-tag.tsx",
+     "type": "registry:ui",
+     "content": "import { cva, type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/lib/utils\"\n\n/**\n * What state an object is in: a square dot and a word.\n * Only `issue` (filled triangle) and `opportunity` (outlined diamond) use the signal colour. Never the shape alone.\n */\nconst stateTagVariants = cva(\"inline-flex items-center gap-1.5 text-[13px] leading-[19px] before:size-[7px] before:shrink-0 before:content-['']\", {\n  variants: {\n    state: {\n      watching: \"text-muted-foreground before:bg-current\",\n      issue: \"text-signal before:bg-current before:[clip-path:polygon(50%_0,100%_100%,0_100%)] before:size-2\",\n      opportunity: \"text-foreground before:size-2 before:rotate-45 before:shadow-[inset_0_0_0_1.5px_var(--gc-accent)]\",\n      investigating: \"text-foreground before:bg-current before:animate-pulse\",\n      resolved: \"text-muted-foreground before:shadow-[inset_0_0_0_1.5px_currentColor]\",\n    },\n  },\n  defaultVariants: { state: \"watching\" },\n})\n\nconst LABEL = { watching: \"Watching\", issue: \"Issue\", opportunity: \"Opportunity\", investigating: \"Investigating\", resolved: \"Resolved\" } as const\n\nexport interface StateTagProps extends VariantProps<typeof stateTagVariants> {\n  /** Overrides the default word, e.g. \"+14% power\". */\n  children?: React.ReactNode\n  className?: string\n}\n\nexport function StateTag({ state = \"watching\", children, className }: StateTagProps) {\n  return (\n    <span data-slot=\"state-tag\" data-state={state} className={cn(stateTagVariants({ state }), className)}>\n      {children ?? LABEL[state ?? \"watching\"]}\n    </span>\n  )\n}\n",
+     "target": "components/ui/state-tag.tsx"
+    }
+   ]
+  },
+  {
+   "name": "gc-object-link",
+   "type": "registry:ui",
+   "title": "Green Control · Object link",
+   "description": "A dot and an underlined name that opens a machine, team or work order. Missing state.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/object-link.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/object-link.tsx",
+     "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\n/**\n * Whenever the AI names a machine, a team or a work order, it is an object link:\n * a dot and an underlined name that opens exactly that thing.\n * `missing`: the object was removed; the name stays readable, struck through.\n */\nexport interface ObjectLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {\n  missing?: boolean\n}\n\nexport function ObjectLink({ missing = false, className, children, ...props }: ObjectLinkProps) {\n  return (\n    <a\n      data-slot=\"object-link\"\n      aria-disabled={missing || undefined}\n      className={cn(\n        \"inline-flex cursor-pointer items-center gap-1.5 text-link underline decoration-1 underline-offset-[3px] outline-none transition-[text-decoration-thickness,background-color] duration-150 hover:bg-link/8 hover:decoration-2 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-foreground\",\n        \"before:size-1.5 before:shrink-0 before:rounded-full before:bg-current before:content-['']\",\n        missing && \"pointer-events-none cursor-default text-muted-foreground line-through before:bg-transparent before:shadow-[inset_0_0_0_1px_currentColor]\",\n        className\n      )}\n      {...props}\n    >\n      {children}\n    </a>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-evidence-chip",
+   "type": "registry:ui",
+   "title": "Green Control · Evidence chip",
+   "description": "Numbered source the AI checked. States: checking, landed, linked, selected, stale.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-spinner.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/evidence-chip.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/evidence-chip.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\nimport { Spinner } from \"@/components/ui/spinner\"\n\n/**\n * One chip per source the AI checked, numbered in the order it checked them.\n * The same number marks the spot on the drawing and heads the evidence card.\n */\nexport interface EvidenceChipProps {\n  n: number\n  label: string\n  /** checking: being read · landed: done · stale: older than 15 min */\n  status?: \"checking\" | \"landed\" | \"stale\"\n  /** Its card is open below. */\n  selected?: boolean\n  /** Its card or drawing mark is hovered elsewhere. */\n  linked?: boolean\n  age?: string\n  className?: string\n}\n\nexport function EvidenceChip({ n, label, status = \"landed\", selected = false, linked = false, age = \"15 min\", className }: EvidenceChipProps) {\n  return (\n    <span\n      data-slot=\"evidence-chip\"\n      data-status={status}\n      aria-busy={status === \"checking\" || undefined}\n      className={cn(\n        \"inline-flex h-7 items-center gap-1.5 bg-raised pr-2 pl-[5px] text-[13px] transition-[box-shadow,background-color] duration-200 hover:shadow-[0_0_0_1.5px_var(--gc-accent)]\",\n        linked && \"shadow-[0_0_0_1.5px_var(--gc-accent)]\",\n        selected && \"bg-foreground text-background\",\n        status === \"checking\" && \"text-muted-foreground\",\n        status === \"stale\" && \"opacity-60\",\n        className\n      )}\n    >\n      {status === \"checking\" ? (\n        <Spinner className=\"mx-0.5\" />\n      ) : (\n        <span className={cn(\"grid size-4 place-items-center font-mono text-[10px]\", selected ? \"bg-background text-foreground\" : \"bg-[var(--gc-badge-bg)] text-on-signal\")}>{n}</span>\n      )}\n      {label}\n      {status === \"stale\" && <span className=\"ml-1 font-mono text-xs text-muted-foreground\">{age}</span>}\n    </span>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-confidence-meter",
+   "type": "registry:ui",
+   "title": "Green Control · Confidence meter",
+   "description": "Twenty segments and a number; the band (plan, draft, check) is exported.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/confidence-meter.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/confidence-meter.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Twenty square segments and a number. The band decides what the AI may do:\n * 80+ plan · 50–79 draft · below 50 check only (segments turn to the signal colour).\n */\nexport const CONFIDENCE_ACT = 80\nexport const CONFIDENCE_REVIEW = 50\n\nexport function confidenceBand(value: number) {\n  return value >= CONFIDENCE_ACT ? \"plan\" : value >= CONFIDENCE_REVIEW ? \"draft\" : \"check\"\n}\n\nexport interface ConfidenceMeterProps {\n  value: number\n  /** A new reading is coming in. */\n  updating?: boolean\n  className?: string\n}\n\nexport function ConfidenceMeter({ value, updating = false, className }: ConfidenceMeterProps) {\n  const on = Math.round((value / 100) * 20)\n  const low = value < CONFIDENCE_REVIEW\n  return (\n    <div data-slot=\"confidence-meter\" data-band={confidenceBand(value)} className={cn(\"grid w-full min-w-[220px] gap-1.5\", className)}>\n      <div className=\"flex items-baseline justify-between\">\n        <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">Confidence</span>\n        <span className=\"font-mono text-xs\">{value}%</span>\n      </div>\n      <div className=\"flex h-2 gap-0.5\" role=\"meter\" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100} aria-label=\"AI confidence\">\n        {Array.from({ length: 20 }, (_, i) => (\n          <i\n            key={i}\n            className={cn(\"flex-1\", i < on ? (low ? \"bg-signal\" : \"bg-foreground\") : \"bg-border\", updating && \"animate-pulse motion-reduce:animate-none\")}\n            style={updating ? { animationDelay: `${(i % 4) * 120}ms` } : undefined}\n          />\n        ))}\n      </div>\n    </div>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-ask-input",
+   "type": "registry:ui",
+   "title": "Green Control · Ask input",
+   "description": "Ask the AI about the object on screen. States: empty, hover, focus, filled, sending, error.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-spinner.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/ask-input.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/ask-input.tsx",
+     "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport { Spinner } from \"@/components/ui/spinner\"\n\n/**\n * Where a person asks the AI about the object on screen.\n * The placeholder names that object, so the question has a context.\n * States: empty · hover · focus · filled (send on) · sending · error (keeps the text).\n */\nexport interface AskInputProps {\n  object: string\n  sending?: boolean\n  error?: string\n  defaultValue?: string\n  onSend?: (text: string) => void\n  className?: string\n}\n\nexport function AskInput({ object, sending = false, error, defaultValue = \"\", onSend, className }: AskInputProps) {\n  const [value, setValue] = React.useState(defaultValue)\n  const canSend = value.trim().length > 0 && !sending\n  return (\n    <div className={cn(\"grid w-full max-w-[340px] gap-1.5\", className)}>\n      <form\n        data-slot=\"ask-input\"\n        onSubmit={(e) => { e.preventDefault(); if (canSend) onSend?.(value) }}\n        className={cn(\n          \"flex h-11 items-center gap-2 bg-background pr-[5px] pl-3.5 shadow-[inset_0_0_0_1px_var(--border)] transition-shadow duration-200 hover:shadow-[inset_0_0_0_1px_var(--muted-foreground)] focus-within:shadow-[inset_0_0_0_1.5px_var(--foreground)]\",\n          error && \"shadow-[inset_0_0_0_1.5px_var(--gc-accent)] hover:shadow-[inset_0_0_0_1.5px_var(--gc-accent)]\",\n          sending && \"opacity-70\"\n        )}\n      >\n        <input\n          value={value}\n          onChange={(e) => setValue(e.target.value)}\n          disabled={sending}\n          placeholder={`Ask about ${object}…`}\n          aria-label={`Ask Green Control about ${object}`}\n          aria-invalid={!!error || undefined}\n          className=\"h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground\"\n        />\n        <button\n          type=\"submit\"\n          disabled={!canSend}\n          aria-label=\"Send\"\n          className=\"grid size-[34px] cursor-pointer place-items-center bg-primary text-primary-foreground outline-none transition-colors focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-foreground disabled:cursor-not-allowed disabled:bg-secondary disabled:text-muted-foreground\"\n        >\n          {sending ? <Spinner /> : <svg viewBox=\"0 0 14 14\" className=\"size-3.5 fill-none stroke-current stroke-[1.6]\"><path d=\"M2.5 7h9M7.5 3l4 4-4 4\" /></svg>}\n        </button>\n      </form>\n      {error && <span role=\"alert\" className=\"text-[13px] text-signal\">{error}</span>}\n    </div>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-segmented",
+   "type": "registry:ui",
+   "title": "Green Control · Segmented control",
+   "description": "Two to four options of one thing. One is always on.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/segmented.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/segmented.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Two to four options of the same thing (Night / Day, 7d / 30d). One is always on.\n * Square segments; the selected one takes the selection colour.\n */\nexport interface SegmentedOption<T extends string> {\n  value: T\n  label: string\n  disabled?: boolean\n}\n\nexport interface SegmentedControlProps<T extends string> {\n  options: SegmentedOption<T>[]\n  value: T\n  onChange: (value: T) => void\n  /** Read out by screen readers, e.g. \"Theme\". */\n  label?: string\n  className?: string\n}\n\nexport function SegmentedControl<T extends string>({ options, value, onChange, label, className }: SegmentedControlProps<T>) {\n  return (\n    <div data-slot=\"segmented\" role=\"group\" aria-label={label} className={cn(\"inline-flex shadow-[inset_0_0_0_1px_var(--border)]\", className)}>\n      {options.map((o) => (\n        <button\n          key={o.value}\n          type=\"button\"\n          aria-pressed={o.value === value}\n          disabled={o.disabled}\n          onClick={() => onChange(o.value)}\n          className={cn(\n            \"h-8 px-3 text-[13px] text-muted-foreground outline-none transition-[background-color,color] duration-200 ease-gc hover:text-foreground\",\n            \"focus-visible:outline-[1.5px] focus-visible:-outline-offset-2 focus-visible:outline-foreground\",\n            \"aria-pressed:bg-[var(--gc-sel-bg)] aria-pressed:text-[var(--gc-sel-fg)]\",\n            \"disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-muted-foreground\"\n          )}\n        >\n          {o.label}\n        </button>\n      ))}\n    </div>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-spark",
+   "type": "registry:ui",
+   "title": "Green Control · AI spark",
+   "description": "Marks anything the AI wrote. Pulses while it reads sources.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/ai-spark.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/ai-spark.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Marks anything the AI wrote. Five dots; the centre one is the signal colour.\n * `thinking`: the dots pulse in turn while the AI is reading sources.\n */\nexport interface AiSparkProps {\n  thinking?: boolean\n  className?: string\n}\n\nconst DOTS: [number, number][] = [[7, 2.3], [11.7, 7], [7, 11.7], [2.3, 7]]\n\nexport function AiSpark({ thinking = false, className }: AiSparkProps) {\n  return (\n    <svg data-slot=\"ai-spark\" viewBox=\"0 0 14 14\" aria-hidden=\"true\" className={cn(\"size-3.5 shrink-0\", className)}>\n      {DOTS.map(([cx, cy], i) => (\n        <circle\n          key={i}\n          cx={cx}\n          cy={cy}\n          r={1.5}\n          className={cn(\"fill-foreground\", thinking && \"animate-pulse motion-reduce:animate-none\")}\n          style={thinking ? { animationDelay: `${i * 150}ms` } : undefined}\n        />\n      ))}\n      <circle cx={7} cy={7} r={1.5} className=\"fill-signal\" />\n    </svg>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-evidence-card",
+   "type": "registry:ui",
+   "title": "Green Control · Evidence card",
+   "description": "One source the AI read: value, bar against normal, caption. Linked and stale states.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/evidence-card.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/evidence-card.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * One source the AI read, opened from its evidence chip.\n * The bar shows today's reading against the normal range; the tick is the 30-day baseline.\n */\nexport interface EvidenceCardProps {\n  n: number\n  source: string\n  value: string\n  unit?: string\n  /** Today's reading, 0–1 of the bar. */\n  now: number\n  /** The normal range, 0–1 of the bar. */\n  normal?: [number, number]\n  /** The 30-day baseline, 0–1 of the bar. */\n  baseline?: number\n  caption: string\n  /** Its chip or drawing mark is hovered elsewhere. */\n  linked?: boolean\n  /** Reading is older than 15 minutes. */\n  stale?: boolean\n  age?: string\n  className?: string\n}\n\nexport function EvidenceCard({ n, source, value, unit, now, normal = [0, 0.62], baseline = 0.62, caption, linked = false, stale = false, age = \"15 min\", className }: EvidenceCardProps) {\n  return (\n    <div\n      data-slot=\"evidence-card\"\n      className={cn(\n        \"grid gap-2 bg-[var(--gc-glass-raised)] p-4 shadow-[inset_0_1px_0_var(--gc-edge-hi)] transition-shadow duration-200 ease-gc\",\n        linked && \"shadow-[inset_0_0_0_1.5px_var(--gc-accent)]\",\n        stale && \"opacity-60\",\n        className\n      )}\n    >\n      <div className=\"flex items-baseline justify-between gap-3\">\n        <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">{n} · {source}</span>\n        {stale && <span className=\"font-mono text-xs text-muted-foreground\">{age} ago</span>}\n      </div>\n      <div className=\"flex items-baseline gap-2\">\n        <span className=\"text-xl font-medium\">{value}</span>\n        {unit && <span className=\"text-[13px] text-muted-foreground\">{unit}</span>}\n      </div>\n      <div className=\"relative h-1.5 bg-border\">\n        <i className=\"absolute inset-y-0 bg-muted-foreground/30\" style={{ left: `${normal[0] * 100}%`, width: `${(normal[1] - normal[0]) * 100}%` }} />\n        <i className=\"absolute inset-y-0 left-0 bg-signal\" style={{ width: `${now * 100}%` }} />\n        <i className=\"absolute -inset-y-1 w-px bg-foreground\" style={{ left: `${baseline * 100}%` }} />\n      </div>\n      <span className=\"text-[13px] text-muted-foreground\">{caption}</span>\n    </div>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-toast",
+   "type": "registry:ui",
+   "title": "Green Control · Toast with Undo",
+   "description": "Shown after anything the AI applied. 6 s, pauses on hover, always offers Undo.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-spinner.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/toast.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/toast.tsx",
+     "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport { Spinner } from \"@/components/ui/spinner\"\n\n/**\n * Shown after anything the AI applied. Stays 6 s, pauses while hovered, and always offers Undo.\n */\nexport interface UndoToastProps {\n  message: string\n  onUndo: () => Promise<void> | void\n  onClose?: () => void\n  /** How long it stays, in ms. */\n  duration?: number\n  className?: string\n}\n\nexport function UndoToast({ message, onUndo, onClose, duration = 6000, className }: UndoToastProps) {\n  const [state, setState] = React.useState<\"running\" | \"paused\" | \"undoing\" | \"undone\">(\"running\")\n  const left = React.useRef(duration)\n  const started = React.useRef(Date.now())\n\n  React.useEffect(() => {\n    if (state !== \"running\") return\n    started.current = Date.now()\n    const t = setTimeout(() => onClose?.(), left.current)\n    return () => {\n      clearTimeout(t)\n      left.current -= Date.now() - started.current\n    }\n  }, [state, onClose])\n\n  React.useEffect(() => {\n    if (state !== \"undone\") return\n    const t = setTimeout(() => onClose?.(), 2000)\n    return () => clearTimeout(t)\n  }, [state, onClose])\n\n  async function undo() {\n    setState(\"undoing\")\n    await onUndo()\n    setState(\"undone\")\n  }\n\n  return (\n    <div\n      data-slot=\"toast\"\n      role=\"status\"\n      onMouseEnter={() => state === \"running\" && setState(\"paused\")}\n      onMouseLeave={() => state === \"paused\" && setState(\"running\")}\n      className={cn(\n        \"relative inline-flex h-10 items-center gap-2.5 overflow-hidden bg-[var(--gc-glass)] px-3.5 text-sm shadow-[inset_0_1px_0_var(--gc-edge-hi),var(--gc-drop)] backdrop-blur-[24px]\",\n        className\n      )}\n    >\n      {state === \"undoing\" ? <Spinner /> : (\n        <svg viewBox=\"0 0 14 14\" className=\"size-3.5 fill-none stroke-current stroke-[1.5]\" aria-hidden=\"true\"><path d={state === \"undone\" ? \"M4 4h6v6M10 4 4 10\" : \"M2.5 7.3 5.5 10 11.5 4\"} /></svg>\n      )}\n      <span>{state === \"undoing\" ? \"Undoing…\" : state === \"undone\" ? \"Undone\" : message}</span>\n      {(state === \"running\" || state === \"paused\") && (\n        <>\n          <span className=\"h-4 w-px bg-border\" />\n          <button type=\"button\" onClick={undo} className=\"text-muted-foreground underline underline-offset-[3px] hover:text-foreground\">Undo</button>\n          <i\n            className=\"absolute bottom-0 left-0 h-px w-full origin-left bg-foreground/40\"\n            style={{ animation: `gc-toast ${duration}ms linear forwards`, animationPlayState: state === \"paused\" ? \"paused\" : \"running\" }}\n          />\n          <style>{\"@keyframes gc-toast{from{transform:scaleX(1)}to{transform:scaleX(0)}}\"}</style>\n        </>\n      )}\n    </div>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-action-row",
+   "type": "registry:ui",
+   "title": "Green Control · Action row",
+   "description": "One plan action with live status: planned, running, done, undone, failed.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/action-row.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/action-row.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * One action in a plan, with its live status and a thin progress bar.\n * `failed` always says why, in the signal colour.\n */\nexport type ActionStatus = \"planned\" | \"running\" | \"done\" | \"undone\" | \"failed\"\n\nexport interface ActionRowProps {\n  label: string\n  status: ActionStatus\n  /** 0–100, used while running. */\n  progress?: number\n  /** Time shown for planned, done and undone, e.g. \"Sat 08:00\". */\n  time?: string\n  /** Required when failed. */\n  reason?: string\n  className?: string\n}\n\nexport function ActionRow({ label, status, progress = 0, time, reason, className }: ActionRowProps) {\n  const p = status === \"done\" ? 100 : status === \"running\" ? progress : status === \"failed\" ? Math.max(progress, 25) : 0\n  const right = status === \"running\" ? `${progress}%` : status === \"failed\" ? \"Needs you\" : status === \"done\" ? `Done ${time ?? \"\"}` : status === \"undone\" ? \"Undone\" : time\n  return (\n    <div data-slot=\"action-row\" data-status={status} className={cn(\"grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 p-3 shadow-[inset_0_0_0_1px_var(--border)]\", className)}>\n      <span className={cn(\"truncate text-[13px]\", status === \"undone\" && \"text-muted-foreground line-through\")}>{label}</span>\n      <span className={cn(\"whitespace-nowrap font-mono text-xs text-muted-foreground\", status === \"failed\" && \"text-signal\")}>{right}</span>\n      {status !== \"planned\" && status !== \"undone\" && (\n        <span className=\"col-span-2 h-1 bg-border\">\n          <i className={cn(\"block h-full transition-[width] duration-300 ease-gc\", status === \"running\" ? \"bg-signal\" : \"bg-muted-foreground\")} style={{ width: `${p}%` }} />\n        </span>\n      )}\n      {status === \"failed\" && reason && <span className=\"col-span-2 text-[13px] text-signal\">{reason}</span>}\n    </div>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-owner-row",
+   "type": "registry:ui",
+   "title": "Green Control · Owner row",
+   "description": "Suggested team and person on shift; a person confirms with Assign.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-object-link.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/owner-row.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/owner-row.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { ObjectLink } from \"@/components/ui/object-link\"\n\n/**\n * Who should act. The AI suggests a team and the person on shift; a person confirms with Assign.\n */\nexport interface OwnerRowProps {\n  team: string\n  teamHref: string\n  person: string\n  personHref: string\n  state?: \"suggested\" | \"assigning\" | \"assigned\"\n  onAssign?: () => void\n  onUndo?: () => void\n  className?: string\n}\n\nexport function OwnerRow({ team, teamHref, person, personHref, state = \"suggested\", onAssign, onUndo, className }: OwnerRowProps) {\n  return (\n    <div data-slot=\"owner-row\" data-state={state} className={cn(\"flex flex-wrap items-center gap-x-2.5 gap-y-2 text-[13px]\", className)}>\n      <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">Owner</span>\n      <ObjectLink href={teamHref}>{team}</ObjectLink>\n      <span className=\"text-muted-foreground\">on shift</span>\n      <ObjectLink href={personHref}>{person}</ObjectLink>\n      <span className=\"ml-auto\">\n        {state === \"assigned\" ? (\n          <span className=\"inline-flex items-center gap-2 text-muted-foreground\">\n            Assigned\n            {onUndo && <button type=\"button\" onClick={onUndo} className=\"underline underline-offset-[3px] hover:text-foreground\">Undo</button>}\n          </span>\n        ) : (\n          <Button size=\"sm\" variant=\"secondary\" loading={state === \"assigning\"} onClick={onAssign}>{state === \"assigning\" ? \"Assigning…\" : \"Assign\"}</Button>\n        )}\n      </span>\n    </div>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-alert-card",
+   "type": "registry:ui",
+   "title": "Green Control · Alert card",
+   "description": "Where, what, what it costs, one action. New, investigating, resolved.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-object-link.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-state-tag.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/alert-card.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/alert-card.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { ObjectLink } from \"@/components/ui/object-link\"\nimport { StateTag } from \"@/components/ui/state-tag\"\n\n/**\n * The first thing a person sees about a problem: where, what, what it costs, one action.\n * `new` carries a signal-colour edge until it is opened.\n */\nexport interface AlertCardProps {\n  /** e.g. \"Cooling · issue\" */\n  area: string\n  /** Shown top right while open, e.g. \"+14% power\". */\n  delta?: string\n  object: string\n  objectHref: string\n  /** The rest of the headline after the object name. */\n  headline: string\n  /** One line in money or time, e.g. \"About ¥250 a day above normal\". */\n  cost: string\n  state?: \"new\" | \"open\" | \"investigating\" | \"resolved\"\n  onInvestigate?: () => void\n  className?: string\n}\n\nexport function AlertCard({ area, delta, object, objectHref, headline, cost, state = \"new\", onInvestigate, className }: AlertCardProps) {\n  const done = state === \"resolved\"\n  return (\n    <article\n      data-slot=\"alert-card\"\n      data-state={state}\n      className={cn(\n        \"grid gap-2.5 bg-[var(--gc-glass)] px-5 py-[18px] shadow-[inset_0_1px_0_var(--gc-edge-hi),var(--gc-drop)] backdrop-blur-[24px] transition-[box-shadow,opacity] duration-200 ease-gc\",\n        state === \"new\" && \"shadow-[inset_3px_0_0_var(--gc-accent),inset_0_1px_0_var(--gc-edge-hi),var(--gc-drop)]\",\n        done && \"opacity-70\",\n        className\n      )}\n    >\n      <div className=\"flex items-center gap-3\">\n        <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">{area}</span>\n        <span className=\"ml-auto\">\n          {state === \"investigating\" ? <StateTag state=\"investigating\" /> : done ? <StateTag state=\"resolved\" /> : delta ? <StateTag state=\"issue\">{delta}</StateTag> : null}\n        </span>\n      </div>\n      <h3 className=\"m-0 text-lg font-normal leading-[25px]\">\n        <ObjectLink href={objectHref}>{object}</ObjectLink> {headline}\n      </h3>\n      <span className=\"text-[13px] text-muted-foreground\">{cost}</span>\n      {(state === \"new\" || state === \"open\") && (\n        <div className=\"mt-1.5 border-t border-border pt-3.5\">\n          <Button onClick={onInvestigate}>Investigate</Button>\n        </div>\n      )}\n    </article>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-plan-rail",
+   "type": "registry:ui",
+   "title": "Green Control · Plan rail",
+   "description": "The AI's plan as numbered steps. Only the current step can be applied; draft asks for review.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-spinner.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/plan-rail.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/plan-rail.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { Spinner } from \"@/components/ui/spinner\"\n\n/**\n * The AI's plan as numbered steps on one rail. Only the current step can be applied.\n * `draft` (confidence 50–79) asks for a review before Apply.\n */\nexport type StepState = \"upcoming\" | \"current\" | \"draft\" | \"applying\" | \"done\" | \"failed\"\n\nexport interface PlanStep {\n  when: string\n  title: React.ReactNode\n  state: StepState\n  /** Required when failed. */\n  reason?: string\n}\n\nexport interface PlanRailProps {\n  steps: PlanStep[]\n  onApply?: (index: number) => void\n  onReview?: (index: number) => void\n  className?: string\n}\n\nexport function PlanRail({ steps, onApply, onReview, className }: PlanRailProps) {\n  return (\n    <ol data-slot=\"plan-rail\" className={cn(\"m-0 grid list-none p-0\", className)}>\n      {steps.map((s, i) => {\n        const live = s.state === \"current\" || s.state === \"draft\" || s.state === \"applying\"\n        return (\n          <li key={i} data-state={s.state} className=\"relative grid grid-cols-[22px_1fr] gap-3 pb-5 last:pb-0\">\n            {i < steps.length - 1 && <span className=\"absolute top-[26px] bottom-1 left-[10.5px] w-px bg-border\" />}\n            <span\n              className={cn(\n                \"grid size-[22px] place-items-center font-mono text-[11px] shadow-[inset_0_0_0_1px_var(--border)]\",\n                live && \"bg-signal text-on-signal shadow-none\",\n                s.state === \"done\" && \"bg-foreground text-background shadow-none\",\n                s.state === \"failed\" && \"text-signal shadow-[inset_0_0_0_1.5px_var(--gc-accent)]\"\n              )}\n            >\n              {s.state === \"done\" ? \"✓\" : i + 1}\n            </span>\n            <div className=\"grid gap-1\">\n              <span className={cn(\"text-[13px]\", live ? \"text-signal\" : \"text-muted-foreground\")}>{s.state === \"draft\" ? `${s.when} · Draft` : s.when}</span>\n              <span className={cn(s.state === \"done\" && \"text-muted-foreground\")}>{s.title}</span>\n              {s.state === \"failed\" && s.reason && <span className=\"text-[13px] text-signal\">{s.reason}</span>}\n              {live && (\n                <div className=\"mt-1.5 flex items-center gap-3\">\n                  {s.state === \"draft\" ? (\n                    <Button variant=\"secondary\" size=\"sm\" onClick={() => onReview?.(i)}>Review first</Button>\n                  ) : (\n                    <Button size=\"sm\" loading={s.state === \"applying\"} onClick={() => onApply?.(i)}>{s.state === \"applying\" ? \"Applying…\" : \"Apply\"}</Button>\n                  )}\n                  {s.state === \"applying\" ? <Spinner className=\"hidden\" /> : <span className=\"text-[13px] text-muted-foreground\">You can undo anytime</span>}\n                </div>\n              )}\n            </div>\n          </li>\n        )\n      })}\n    </ol>\n  )\n}\n"
+    }
+   ]
+  },
+  {
+   "name": "gc-causes-check",
+   "type": "registry:ui",
+   "title": "Green Control · Causes & suggested check",
+   "description": "When the AI is not sure: possible causes and one check that tells them apart.",
+   "dependencies": [],
+   "registryDependencies": [
+    "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+    "https://shuyii0315-arch.github.io/green-control/system/r/gc-confidence-meter.json"
+   ],
+   "files": [
+    {
+     "path": "registry/green-control/ui/causes-check.tsx",
+     "type": "registry:ui",
+     "target": "components/ui/causes-check.tsx",
+     "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { CONFIDENCE_REVIEW } from \"@/components/ui/confidence-meter\"\n\n/**\n * When the AI is not sure: the possible causes and one check that tells them apart.\n * Below 50% every cause reads \"possible\" and no fix is offered.\n * In the draft band (50–79) the leading cause reads \"likely\"; the others \"maybe\".\n */\nexport interface CausesCheckProps {\n  confidence: number\n  /** Ordered most to least likely. */\n  causes: string[]\n  check: string\n  onAssign?: () => void\n  onKeepWatching?: () => void\n  className?: string\n}\n\nexport function CausesCheck({ confidence, causes, check, onAssign, onKeepWatching, className }: CausesCheckProps) {\n  const low = confidence < CONFIDENCE_REVIEW\n  const label = (i: number) => (low ? \"possible\" : i === 0 ? \"likely\" : \"maybe\")\n  return (\n    <div data-slot=\"causes-check\" className={cn(\"grid gap-3.5 bg-[var(--gc-glass-raised)] p-4 shadow-[inset_0_1px_0_var(--gc-edge-hi)]\", className)}>\n      <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">What it could be · {confidence}%</span>\n      <ul className=\"m-0 grid list-none gap-0 p-0\">\n        {causes.map((c, i) => (\n          <li key={c} className=\"flex items-baseline justify-between gap-3 border-b border-border py-2 text-[13px] last:border-0\">\n            <span className=\"min-w-0 truncate\">{c}</span>\n            <span className={cn(\"shrink-0 font-mono text-[11px] uppercase tracking-[0.05em]\", !low && i === 0 ? \"text-signal\" : \"text-muted-foreground\")}>{label(i)}</span>\n          </li>\n        ))}\n      </ul>\n      <div className=\"grid gap-1\">\n        <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">Suggested check</span>\n        <span className=\"text-[13px]\">{check}</span>\n        {low && <span className=\"text-[13px] text-muted-foreground\">Not sure enough to suggest a fix yet.</span>}\n      </div>\n      <div className=\"flex flex-wrap gap-2\">\n        <Button size=\"sm\" onClick={onAssign}>Assign a check</Button>\n        <Button size=\"sm\" variant=\"secondary\" onClick={onKeepWatching}>Keep watching</Button>\n      </div>\n    </div>\n  )\n}\n"
+    }
+   ]
+  }
+ ]
+}

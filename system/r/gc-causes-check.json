@@ -1,0 +1,21 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-causes-check",
+ "type": "registry:ui",
+ "title": "Green Control · Causes & suggested check",
+ "description": "When the AI is not sure: possible causes and one check that tells them apart.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-confidence-meter.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/causes-check.tsx",
+   "type": "registry:ui",
+   "target": "components/ui/causes-check.tsx",
+   "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { CONFIDENCE_REVIEW } from \"@/components/ui/confidence-meter\"\n\n/**\n * When the AI is not sure: the possible causes and one check that tells them apart.\n * Below 50% every cause reads \"possible\" and no fix is offered.\n * In the draft band (50–79) the leading cause reads \"likely\"; the others \"maybe\".\n */\nexport interface CausesCheckProps {\n  confidence: number\n  /** Ordered most to least likely. */\n  causes: string[]\n  check: string\n  onAssign?: () => void\n  onKeepWatching?: () => void\n  className?: string\n}\n\nexport function CausesCheck({ confidence, causes, check, onAssign, onKeepWatching, className }: CausesCheckProps) {\n  const low = confidence < CONFIDENCE_REVIEW\n  const label = (i: number) => (low ? \"possible\" : i === 0 ? \"likely\" : \"maybe\")\n  return (\n    <div data-slot=\"causes-check\" className={cn(\"grid gap-3.5 bg-[var(--gc-glass-raised)] p-4 shadow-[inset_0_1px_0_var(--gc-edge-hi)]\", className)}>\n      <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">What it could be · {confidence}%</span>\n      <ul className=\"m-0 grid list-none gap-0 p-0\">\n        {causes.map((c, i) => (\n          <li key={c} className=\"flex items-baseline justify-between gap-3 border-b border-border py-2 text-[13px] last:border-0\">\n            <span className=\"min-w-0 truncate\">{c}</span>\n            <span className={cn(\"shrink-0 font-mono text-[11px] uppercase tracking-[0.05em]\", !low && i === 0 ? \"text-signal\" : \"text-muted-foreground\")}>{label(i)}</span>\n          </li>\n        ))}\n      </ul>\n      <div className=\"grid gap-1\">\n        <span className=\"font-mono text-[11px] uppercase tracking-[0.05em] text-muted-foreground\">Suggested check</span>\n        <span className=\"text-[13px]\">{check}</span>\n        {low && <span className=\"text-[13px] text-muted-foreground\">Not sure enough to suggest a fix yet.</span>}\n      </div>\n      <div className=\"flex flex-wrap gap-2\">\n        <Button size=\"sm\" onClick={onAssign}>Assign a check</Button>\n        <Button size=\"sm\" variant=\"secondary\" onClick={onKeepWatching}>Keep watching</Button>\n      </div>\n    </div>\n  )\n}\n"
+  }
+ ]
+}

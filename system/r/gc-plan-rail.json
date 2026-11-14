@@ -1,0 +1,21 @@
+{
+ "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+ "name": "gc-plan-rail",
+ "type": "registry:ui",
+ "title": "Green Control · Plan rail",
+ "description": "The AI's plan as numbered steps. Only the current step can be applied; draft asks for review.",
+ "dependencies": [],
+ "registryDependencies": [
+  "https://shuyii0315-arch.github.io/green-control/system/r/green-control-theme.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-button.json",
+  "https://shuyii0315-arch.github.io/green-control/system/r/gc-spinner.json"
+ ],
+ "files": [
+  {
+   "path": "registry/green-control/ui/plan-rail.tsx",
+   "type": "registry:ui",
+   "target": "components/ui/plan-rail.tsx",
+   "content": "import { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { Spinner } from \"@/components/ui/spinner\"\n\n/**\n * The AI's plan as numbered steps on one rail. Only the current step can be applied.\n * `draft` (confidence 50–79) asks for a review before Apply.\n */\nexport type StepState = \"upcoming\" | \"current\" | \"draft\" | \"applying\" | \"done\" | \"failed\"\n\nexport interface PlanStep {\n  when: string\n  title: React.ReactNode\n  state: StepState\n  /** Required when failed. */\n  reason?: string\n}\n\nexport interface PlanRailProps {\n  steps: PlanStep[]\n  onApply?: (index: number) => void\n  onReview?: (index: number) => void\n  className?: string\n}\n\nexport function PlanRail({ steps, onApply, onReview, className }: PlanRailProps) {\n  return (\n    <ol data-slot=\"plan-rail\" className={cn(\"m-0 grid list-none p-0\", className)}>\n      {steps.map((s, i) => {\n        const live = s.state === \"current\" || s.state === \"draft\" || s.state === \"applying\"\n        return (\n          <li key={i} data-state={s.state} className=\"relative grid grid-cols-[22px_1fr] gap-3 pb-5 last:pb-0\">\n            {i < steps.length - 1 && <span className=\"absolute top-[26px] bottom-1 left-[10.5px] w-px bg-border\" />}\n            <span\n              className={cn(\n                \"grid size-[22px] place-items-center font-mono text-[11px] shadow-[inset_0_0_0_1px_var(--border)]\",\n                live && \"bg-signal text-on-signal shadow-none\",\n                s.state === \"done\" && \"bg-foreground text-background shadow-none\",\n                s.state === \"failed\" && \"text-signal shadow-[inset_0_0_0_1.5px_var(--gc-accent)]\"\n              )}\n            >\n              {s.state === \"done\" ? \"✓\" : i + 1}\n            </span>\n            <div className=\"grid gap-1\">\n              <span className={cn(\"text-[13px]\", live ? \"text-signal\" : \"text-muted-foreground\")}>{s.state === \"draft\" ? `${s.when} · Draft` : s.when}</span>\n              <span className={cn(s.state === \"done\" && \"text-muted-foreground\")}>{s.title}</span>\n              {s.state === \"failed\" && s.reason && <span className=\"text-[13px] text-signal\">{s.reason}</span>}\n              {live && (\n                <div className=\"mt-1.5 flex items-center gap-3\">\n                  {s.state === \"draft\" ? (\n                    <Button variant=\"secondary\" size=\"sm\" onClick={() => onReview?.(i)}>Review first</Button>\n                  ) : (\n                    <Button size=\"sm\" loading={s.state === \"applying\"} onClick={() => onApply?.(i)}>{s.state === \"applying\" ? \"Applying…\" : \"Apply\"}</Button>\n                  )}\n                  {s.state === \"applying\" ? <Spinner className=\"hidden\" /> : <span className=\"text-[13px] text-muted-foreground\">You can undo anytime</span>}\n                </div>\n              )}\n            </div>\n          </li>\n        )\n      })}\n    </ol>\n  )\n}\n"
+  }
+ ]
+}

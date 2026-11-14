@@ -1,0 +1,107 @@
+/* Green Control stage: the drawing area every equipment screen is built around.
+   Needs the gc tokens (tokens.json) and green-control-components.css.
+   Pieces: dot field, pool glow, isometric figure, labels on the drawing, numbered marks, evidence row with dashed connectors. */
+
+.gc-app { position: absolute; left: 50%; top: 50%; width: 1440px; height: 900px; transform-origin: 50% 50%; background: var(--bg-page); color: var(--text); overflow: hidden; font-family: "Hanken Grotesk", system-ui, sans-serif; }
+
+/* left rail: logo, icon nav, theme + avatar at the foot */
+.gc-rail { position: absolute; left: 0; top: 0; bottom: 0; width: 64px; border-right: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 4px; }
+.gc-rail .logo { margin-bottom: 120px; }
+.gc-rail button { width: 40px; height: 40px; display: grid; place-items: center; color: var(--muted); background: none; border: 0; cursor: pointer; }
+.gc-rail button.on { background: var(--sel-bg); color: var(--sel-fg); }
+.gc-rail svg.ic { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.gc-rail .foot { margin-top: auto; display: grid; gap: 8px; justify-items: center; }
+.gc-rail .who { width: 28px; height: 28px; display: grid; place-items: center; background: var(--bg-raised); font: 10px/1 "DM Mono", monospace; }
+
+/* stage: title, crumbs, figure, evidence row */
+.gc-stage { position: absolute; left: 64px; top: 0; width: 976px; height: 900px; }
+.gc-head { position: absolute; left: 44px; top: 28px; }
+.gc-head h1 { margin: 0; display: flex; align-items: center; gap: 12px; font-size: 24px; line-height: 30px; font-weight: 500; letter-spacing: -0.015em; }
+.gc-crumbs { margin-top: 10px; display: flex; gap: 8px; font: 11px/14px "DM Mono", monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+
+/* the art box: wrap the image and its labels in one box with the image's aspect ratio,
+   so labels placed in % land on the same spot of the drawing at any size:
+   <div class="gc-artbox" style="aspect-ratio: 1520 / 1039"><img class="gc-art" …><div class="gc-labels">…</div></div> */
+.gc-artbox { position: absolute; left: 50%; top: 50%; width: min(92cqw, calc(92cqh * var(--ar, 1.46))); transform: translate(-50%, -50%); }
+/* set --ar to the image's width / height, e.g. style="--ar: 1520 / 1039; aspect-ratio: 1520 / 1039" */
+.gc-artbox .gc-art { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; transform: none; left: 0; top: 0; }
+
+/* the figure: dots behind, pool under the object in focus, drawing on top, labels above */
+.gc-figure { position: absolute; left: 0; right: 0; top: 96px; height: 560px; container-type: size; }
+.dots { position: absolute; inset: 0; background-image: radial-gradient(var(--dot) 0.55px, transparent 0.75px); background-size: 4.2px 4.2px; -webkit-mask-image: radial-gradient(ellipse 58% 60% at 50% 50%, #000 40%, transparent 100%); mask-image: radial-gradient(ellipse 58% 60% at 50% 50%, #000 40%, transparent 100%); pointer-events: none; }
+.pool { position: absolute; left: 18%; top: 28%; width: 64%; height: 56%; background: radial-gradient(closest-side, var(--pool), transparent); pointer-events: none; }
+.gc-art { position: absolute; left: 50%; top: 50%; max-width: 86%; max-height: 96%; transform: translate(-50%, -50%); display: block; -webkit-user-drag: none; transition: opacity 600ms var(--ease); }
+.gc-figure.assembling .gc-art { opacity: 0; transition: none; }
+.gc-assemble { position: absolute; pointer-events: none; transition: opacity 600ms var(--ease); }
+.gc-figure.built .gc-assemble { opacity: 0; }
+.gc-labels { position: absolute; inset: 0; pointer-events: none; }
+.gc-figure.assembling .gc-labels { opacity: 0; }
+.gc-figure.built .gc-labels > * { animation: gcPop 420ms var(--spring) both; }
+.gc-figure.built .gc-labels > :nth-child(n+2) { animation-delay: 120ms; }
+.gc-figure.built .gc-labels > :nth-child(n+4) { animation-delay: 240ms; }
+@keyframes gcPop { from { opacity: 0; transform: translateY(4px); } }
+.gc-cap { position: absolute; right: 44px; bottom: 6px; font: 10px/12px "DM Mono", monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+
+/* labels on the drawing: a small glass chip with a key and a value; .hot only on the problem */
+.alab { position: absolute; display: flex; gap: 8px; align-items: center; height: 24px; padding: 0 8px; font: 12px/1 "DM Mono", monospace; white-space: nowrap; pointer-events: auto; background: var(--glass); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px var(--line); }
+.alab.hot { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent); }
+.alab .k { text-transform: uppercase; letter-spacing: 0.04em; }
+.alab .v { color: var(--muted); }
+.alab.hot .v { color: var(--accent); }
+/* floor / zone labels on the left edge of a building, with a short hairline */
+.afloor { position: absolute; display: flex; align-items: center; gap: 8px; transform: translateX(-100%); font: 11px/1 "DM Mono", monospace; letter-spacing: 0.05em; color: var(--muted); }
+.afloor::after { content: ""; width: 14px; height: 1px; background: var(--muted); opacity: 0.6; }
+.afloor.on { color: var(--text); }
+
+/* numbered marks: where each piece of evidence was read on the machine; same number as the chip */
+.amark { position: absolute; width: 18px; height: 18px; display: grid; place-items: center; background: var(--badge-bg); color: var(--on-accent); font: 11px/1 "DM Mono", monospace; transform: translate(-50%, -50%); }
+.amark.scan::after { content: ""; position: absolute; inset: -6px; border: 1px solid var(--accent); animation: gcScan 900ms var(--ease) infinite; }
+@keyframes gcScan { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
+
+/* linked highlight: hovering a chip, a card or a mark draws a border around all three */
+.hl { outline: 1.5px solid var(--accent); outline-offset: 3px; transition: outline-color 200ms; }
+
+/* evidence row under the drawing: one card per check (1–4), tagged with this topic's questions, joined by dashed lines */
+.gc-evrow { --evgap: 100px; position: absolute; left: 40px; right: 40px; bottom: 40px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--evgap); }
+.gc-evrow:has(> :nth-child(3)) { --evgap: 72px; }
+.gc-evrow:has(> :nth-child(4)) { --evgap: 28px; }
+.gc-evrow:has(> :only-child) { right: auto; width: 320px; }
+.gc-ev { position: relative; padding: 14px 16px; display: grid; gap: 8px; }
+.gc-ev .tag { position: absolute; left: 0; top: -22px; padding: 2px 6px; background: var(--bg-raised); font: 10px/14px "DM Mono", monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.gc-ev + .gc-ev::before { content: ""; position: absolute; left: calc(var(--evgap) * -1 + 4px); width: calc(var(--evgap) - 8px); top: 50%; border-top: 1px dashed var(--muted); }
+.gc-ev .val { display: flex; align-items: baseline; gap: 6px; font-size: 34px; line-height: 38px; font-weight: 300; letter-spacing: -0.02em; }
+.gc-ev .val small { font-size: 15px; color: var(--muted); letter-spacing: 0; }
+
+/* right panel: the AI thread, frosted, full height */
+.gc-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; border-left: 1px solid var(--line); display: flex; flex-direction: column; }
+.gc-panel-head { height: 56px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 20px; }
+.gc-band { margin: 0 20px 14px; display: flex; gap: 12px; padding: 6px 16px; background: var(--accent); color: var(--on-accent); font: 11px/14px "DM Mono", monospace; letter-spacing: 0.04em; text-transform: uppercase; }
+.gc-thread { flex: 1; min-height: 0; overflow: auto; padding: 4px 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+.gc-ask { margin: 0 16px 16px; height: 44px; display: flex; align-items: center; padding: 0 6px 0 14px; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); font-size: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-figure.built .gc-labels > *, .amark.scan::after { animation: none; }
+}
+
+/* numbered badge in evidence cards and chips. Scoped, so the plan rail keeps its hollow 'not yet' steps. */
+.gc-ev .num, .echip .num { width: 18px; height: 18px; display: inline-grid; place-items: center; background: var(--badge-bg); color: var(--on-accent); font: 11px/1 "DM Mono", monospace; vertical-align: -3px; margin-right: 6px; }
+
+/* below 50%: competing causes and a suggested check, never a fix */
+.gc-causes { display: grid; }
+.gc-causes > div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.gc-causes > div .t-label { color: var(--muted); }
+.gc-check { padding: 16px; display: grid; gap: 10px; }
+.gc-check ol { margin: 0; padding-left: 18px; font-size: 14px; line-height: 22px; }
+
+/* the action a person must take stays reachable: the bar sticks to the bottom of the thread while it scrolls */
+.gc-sticky { position: sticky; bottom: -24px; margin: 0 -20px -24px; padding: 12px 20px 16px; display: flex; gap: 8px; align-items: center; background: var(--glass-raised); box-shadow: 0 -1px 0 var(--line); }
+/* opportunity: same signal as an issue, different word */
+.state.opportunity { color: var(--accent); }
+/* plan step done */
+.pl-item.done .num { background: none; box-shadow: inset 0 0 0 1px var(--muted); color: var(--muted); }
+.pl-item.done .pl-body { color: var(--muted); }
+/* action row positions as variables: style="--start: 12%; --len: 46%; --now: 52%; --plan: 78%" */
+.acrow .run { left: var(--start, 12%); width: var(--len, 46%); }
+.acrow .now { left: var(--now, 52%); }
+.acrow .plan { left: var(--plan, 78%); }
+.acrow.no-track .track { display: none; }
