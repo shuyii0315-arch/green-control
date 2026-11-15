@@ -670,7 +670,9 @@ a.link { cursor: pointer; transition: text-decoration-thickness 160ms var(--ease
 .alert.is-new { box-shadow: inset 2px 0 0 var(--accent), inset 0 1px 0 var(--edge-hi); }
 
 .alert.is-resolved { opacity: 0.7; }
-.spark.is-thinking circle.o { animation: pulse 1200ms var(--wave) infinite; transform-origin: 7px 7px; }
+.spark.is-thinking circle.o { animation: core 1200ms var(--wave) infinite; }
+@keyframes think { 0%, 100% { transform: scale(1); opacity: 1; } 35% { transform: scale(0.35); opacity: 0.35; } }
+@keyframes core { 50% { transform: scale(1.5); } }
 @keyframes pulse { 50% { transform: scale(1.6); opacity: 0.6; } }
 .gc-check { padding: 16px; display: grid; gap: 10px; width: 100%; max-width: 360px; }
 .gc-causes { display: grid; }
@@ -922,7 +924,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 @keyframes edgeIn { from { transform: scaleY(0); } }
 .state.busy i { animation: breathe 1.2s var(--wave) infinite; }
 @keyframes breathe { 50% { opacity: 0.25; transform: scale(0.7); } }
-.spark.is-thinking circle { animation: dot 1200ms var(--wave) infinite; transform-box: fill-box; transform-origin: center; }
+.spark.is-thinking circle { animation: think 1200ms var(--wave) infinite; transform-box: fill-box; transform-origin: center; }
 .spark.is-thinking circle:nth-child(2) { animation-delay: 140ms; } .spark.is-thinking circle:nth-child(3) { animation-delay: 280ms; }
 .spark.is-thinking circle:nth-child(4) { animation-delay: 420ms; } .spark.is-thinking circle:nth-child(5) { animation-delay: 560ms; }
 @keyframes dot { 30% { transform: scale(1.5); } 60% { transform: scale(1); } }
@@ -1058,15 +1060,22 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .nest-back { margin-bottom: 4px; }
 .nest-p { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .nest-av { width: 28px; height: 28px; display: grid; place-items: center; background: var(--bg-raised); font: 11px var(--font-mono); flex: none; }
-.tb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 14px; }
+.tb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 16px; }
 .tb-cell { display: grid; gap: 6px; align-content: start; }
 .tb { position: absolute; inset: 0; background: var(--bg-page); }
-.tb-head { position: absolute; left: 32px; top: 28px; display: flex; align-items: center; gap: 14px; }
-.tb-art { position: absolute; left: 40px; top: 96px; width: 754px; height: auto; }
+.tb-head { position: absolute; left: 20px; top: 52px; display: flex; align-items: center; gap: 12px; }
+.tb-art { position: absolute; left: 0; top: 110px; width: 390px; height: auto; }
 .tb-scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.55); }
-.tb-sheet { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 16px; padding: 22px 28px 28px; }
+.tb-sheet { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 14px; padding: 22px 16px 28px; }
+.tb-sheet.fit { max-height: 50%; }
+.tb-x { display: grid; place-items: center; width: 28px; height: 28px; color: var(--muted); }
+.tb-rules { align-content: start; gap: 14px; padding: 16px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.tb-h { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: end; }
+.tb-h > div { display: grid; gap: 2px; }
+.tb-hbar { display: block; width: 34px; background: var(--accent); align-self: end; box-shadow: 0 0 0 1px var(--line); }
+.tb-h { height: 92px; }
 .tb-grab { position: absolute; left: 50%; top: 9px; width: 44px; height: 5px; margin-left: -22px; background: var(--muted); }
-.tb-title { display: flex; justify-content: space-between; align-items: center; font-size: 18px; }
+.tb-title { display: flex; justify-content: space-between; align-items: center; font-size: 16px; min-height: 28px; }
 .tb-body { display: grid; gap: 12px; align-content: start; overflow: hidden; }
 .tb-body .aip { max-width: none; box-shadow: none; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .tb-foot { margin-top: auto; }
@@ -1112,6 +1121,65 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .mt-livehead { position: absolute; left: 28px; top: 22px; display: grid; gap: 6px; z-index: 1; }
 .mt-liveline { display: inline-flex; align-items: center; gap: 10px; }
 @media (max-width: 900px) { .mt-grid { grid-template-columns: 1fr; } }
+
+.mt-lp .mt-center > div { grid-area: 1 / 1; transition: opacity 240ms var(--ease); }
+.mt-lp .mt-lp2 { opacity: 0; }
+.mt-lp.done .mt-lp1 { opacity: 0; transition: opacity 160ms var(--exit); }
+.mt-lp.done .mt-lp2 { opacity: 1; }
+.mt-off { display: none; }
+.mt-am.stale .mx-live { background: var(--muted); }
+.mt-am.stale .mx-live::after { animation: none; opacity: 0; }
+.mt-am.stale .mt-on { display: none; } .mt-am.stale .mt-off { display: inline; }
+.pbtn:disabled { opacity: 0.45; cursor: default; }
+
+/* icons */
+.ic { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; flex: none; }
+.ic * { vector-effect: non-scaling-stroke; }
+.ic-old { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.ic-old > div { display: grid; gap: 10px; justify-items: start; padding: 16px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.ic-oldsvg svg { width: 18px; height: 18px; fill: none; stroke: currentColor; }
+.ic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.ic-cell { display: grid; gap: 6px; align-content: start; padding: 16px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.ic-pair { display: flex; align-items: center; gap: 16px; height: 28px; margin-bottom: 4px; }
+@media (max-width: 900px) { .ic-grid { grid-template-columns: repeat(2, 1fr); } .ic-old { grid-template-columns: repeat(2, 1fr); } }
+
+/* page shell, used to draw all four pages the same way */
+.sh { position: absolute; inset: 0; background: var(--bg-page); color: var(--text); }
+.sh-nav { position: absolute; left: 0; top: 0; bottom: 0; width: 232px; padding: 22px 16px; display: flex; flex-direction: column; gap: 22px; box-shadow: 1px 0 0 var(--line); }
+.sh-nav.folded { width: 64px; padding: 22px 12px; align-items: center; }
+.sh-brand { display: flex; align-items: center; gap: 10px; height: 28px; } .sh-brand .logo { width: 24px; height: 24px; }
+.sh-bldg { display: grid; gap: 2px; padding: 12px; box-shadow: inset 0 0 0 1px var(--line); }
+.sh-items { display: grid; gap: 2px; }
+.sh-ni { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 10px; font-size: 14px; color: var(--muted); }
+.sh-nav.folded .sh-ni { width: 40px; justify-content: center; padding: 0; }
+.sh-ni.on { background: var(--bg-raised); color: var(--text); }
+.sh-foot { margin-top: auto; display: flex; align-items: center; gap: 10px; }
+.sh-main { position: absolute; top: 0; bottom: 0; }
+.sh-head { height: 104px; padding: 26px 32px 0; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0 1px 0 var(--line); }
+.sh-head > div:first-child { display: grid; gap: 8px; }
+.sh-title { display: inline-flex; align-items: center; gap: 12px; font-size: 28px; line-height: 34px; font-weight: 400; }
+.sh-tools { display: flex; gap: 10px; align-items: center; }
+.sh-tools .pbtn { display: inline-flex; align-items: center; gap: 8px; }
+.sh-art { position: absolute; left: 0; right: 0; top: 120px; width: 100%; height: 760px; object-fit: contain; }
+.sh-cards { position: absolute; right: 32px; top: 136px; width: 340px; display: grid; gap: 12px; }
+.sh-ev { position: absolute; left: 32px; right: 32px; bottom: 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.sh-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: var(--bg-surface); box-shadow: -1px 0 0 var(--line); }
+.sh-panel .aip { max-width: none; }
+.sh-list { padding: 24px 32px; display: grid; gap: 10px; }
+.sh-row.on { box-shadow: 0 0 0 1.5px var(--text); }
+.sh-rep { padding: 32px; display: grid; gap: 10px; }
+.sh-big { font-size: 56px; line-height: 60px; font-weight: 300; }
+.sh-bars { display: flex; align-items: flex-end; gap: 14px; height: 420px; margin-top: 24px; box-shadow: 0 1px 0 var(--line); }
+.sh-bars span { flex: 1; background: var(--bg-raised); } .sh-bars span.hot { background: var(--accent); }
+.rg { position: absolute; pointer-events: none; opacity: 0; transition: opacity 160ms var(--exit); }
+.rg-on .rg { opacity: 1; transition: opacity 240ms var(--ease); box-shadow: inset 0 0 0 3px var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.rg b { position: absolute; left: 10px; top: 10px; width: 40px; height: 40px; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font: 500 24px/1 var(--font-mono); }
+.rg-key { display: inline-grid; place-items: center; width: 18px; height: 18px; background: var(--accent); color: var(--on-accent); font: 500 11px/1 var(--font-mono); margin: 0 2px; }
+.rg-toggle { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 12px; }
+.fr-four { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
+
+.tk { display: grid; grid-template-columns: auto auto auto 1fr; gap: 4px 10px; align-items: baseline; }
+.tk code { background: none; padding: 0; }
 </style>
 </head>
 <body>
@@ -1120,7 +1188,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
   <button class="menu-btn" id="menuBtn" aria-label="Open navigation">Menu</button>
   <a class="brand" href="#/overview" aria-label="Green Control Design System, home">
     <svg class="logo" viewBox="0 0 28 28" aria-hidden="true" data-logo></svg>
-    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.10</span>
+    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.11</span>
   </a>
   <div class="right">
     <a class="btn-ghost proto" href="https://shuyii0315-arch.github.io/green-control/" target="_blank" rel="noopener">Prototype ↗</a>
@@ -1622,12 +1690,30 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
       "$value": "24h",
       "$description": "Every action the AI applies can be undone from the toast or the Actions timeline."
     }
+  },
+  "icon": {
+    "$description": "Outline icons on an 18 px grid.",
+    "size-md": {
+      "$type": "dimension",
+      "$value": "18px",
+      "$description": "Menu and page tools."
+    },
+    "size-sm": {
+      "$type": "dimension",
+      "$value": "14px",
+      "$description": "Inside buttons and fields."
+    },
+    "stroke": {
+      "$type": "dimension",
+      "$value": "1.5px",
+      "$description": "Same at both sizes (non-scaling stroke)."
+    }
   }
 }</script>
 <script type="text/plain" id="f-design"># Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.10.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.11.
 
 ## The one idea
 
@@ -1818,6 +1904,17 @@ The rules have been tested with AI agents (see Changelog): can an agent that has
 - **Night as the default.** It differs from ISA-101's light-grey background (see Look). Needs operators on night shifts to confirm.
 
 
+## Icons
+
+One set of 16 outline icons on an 18 px grid (`overview`, `equipment`, `actions`, `reports`, `menu`, `theme`, `expand`, `close`, `back`, `next`, `send`, `check`, `undo`, `person`, `filter`, `export`). [Product]
+
+- **Two sizes: 18 px in the menu and page tools, 14 px inside buttons and fields.** 14 px sits level with 13–14 px text; 18 px is for icons that stand alone as targets.
+- **One stroke, 1.5 px, at both sizes** (`vector-effect: non-scaling-stroke`). The same weight as focus rings and outlines; 14 px icons are not fainter.
+- **Square corners, square line ends.** Every surface, button and chip is square; a rounded icon would be the only round thing.
+- **Outline in the text colour, never the accent.** The accent means abnormal (ISA-101); an orange icon reads as an alarm. The AI mark's centre dot and the state glyphs are not icons.
+- **An icon always has a word next to it**, except Close and Send, which carry an aria-label.
+- Before 1.11 the prototype had icons at 12, 14 and 18 px, strokes from 1.3 to 1.6, and rounded corners.
+
 ## Containers
 
 Four kinds. A feature puts its content into one of them; it never invents a fifth. [Product]
@@ -1831,8 +1928,9 @@ Four kinds. A feature puts its content into one of them; it never invents a fift
 
 - **One panel at a time.** Opening something from inside a panel opens it one level down in the same panel, with Back at the top left.
   - Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.
-- **The panel's height, dimming and bottom bar follow the task.** AI investigation and shift handover: half height, no dimming, ask box at the bottom, because the drawing must stay visible. Assign to someone: short and dimmed, a button at the bottom. Filters and alerts: full height, dimmed, because nobody reads the drawing while changing settings.
-- **Only a panel whose height can change gets a grabber.** A fixed-height one gets a close button only.
+- **On tablet and phone the panel is a bottom sheet with three heights.** *Fit*: as tall as its content, up to half (assign someone, filters). *Medium*, 50%: read while looking at the drawing (AI investigation, shift handover, equipment details). *Large*, 90%: dragged up from medium to read everything; the page stays visible above.
+  - Why: the height follows what the person does next. Pick-and-go tasks need no more room than their content; reading tasks need the drawing in view.
+- **Grabber or close, never both.** A sheet that can be resized has a grabber, closes by dragging down, and dims nothing behind it, so the drawing stays usable. A fit sheet dims what is behind it and has a close button: finish this first.
 - **The alerts floating on the overview are cards, not a panel**, so there is one panel at one width.
 
 ## Page frame
@@ -1862,6 +1960,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.11** New: Icons (one set, two sizes, one stroke, square). Bottom sheets get three heights (fit, medium, large) and one rule: grabber or close, never both. Page frame shows all four pages on one shell. Every motion example names its tokens and can be replayed; the AI mark's thinking animation matches the prototype.
 - **1.10** New: Containers (panel, popover, toast, card; one panel at a time; the panel in five situations) and Page frame (four regions; which are open on the overview, equipment, actions and reports pages). Fixed the motion examples: a press returns to rest, the toast and the meter replay, loops use `wave` and the `loop` duration.
 - **1.9** Motion is picked by what moves, from one list of curves and durations (`tokens.json` › motion). New: an `exit` curve for anything leaving, `wave` for loops, `linear` for spinners. Every transition in the prototype, the site and the component code now uses these values; `gc-motion` skill rewritten to match.
 - **1.8** Each component is shown in the situations it meets, with one line on what changes, instead of do/don't lists. New: AI panel, one frame for every AI answer (fault, saving, draft, low confidence), on desktop, tablet and phone.
@@ -2766,46 +2865,68 @@ const MOTIONS = {
   button: [{ l: "Press", tok: "feedback 120 ms · ease; springs back in 240 ms", html: '<button class="pbtn primary">Apply</button>', sel: "button", ...MO_PRESS }],
   segmented: [{ l: "The selection slides", tok: "small-in 240 ms · ease", html: '<div class="moseg"><i></i><span>Night</span><span>Day</span></div>', sel: ".moseg i", a: "", b: "transform:translateX(100%)", tin: "transform 240ms var(--ease)", tout: "transform 240ms var(--ease)", hold: 900, rest: "a" }],
   "ask-input": [{ l: "Focus", tok: "feedback 120 ms · ease", html: askBox(), sel: ".askbox", cls: "is-focus", hold: 1200 }],
-  "state-tag": [{ l: "Investigating", tok: "loop 1200 ms · wave", loop: true, html: stateTag("busy", "Investigating") }],
+  "state-tag": [{ l: "Issue → Investigating → Resolved", tok: "", html: stateTag("busy", "Investigating"), frames: [[stateTag("issue", "Issue"), 700], [stateTag("busy", "Investigating"), 2600], [stateTag("resolved", "Resolved"), 1500]] }],
   "object-link": [{ l: "Hover: the dot grows", tok: "feedback 120 ms; the dot uses the spring", html: link("Chiller 2"), sel: ".link", cls: "is-hover", hold: 1200 }],
-  spark: [{ l: "Thinking", tok: "loop 1200 ms · wave", loop: true, html: stN("spark", "Thinking") }],
+  spark: [{ l: "Idle → Thinking → Idle", tok: "", html: stN("spark", "Thinking"), frames: [[stN("spark", "Idle"), 700], [stN("spark", "Thinking"), 2600], [stN("spark", "Idle"), 1200]] }],
   "evidence-chip": [{ l: "A check lands", tok: "in 420 ms · spring", html: chip(1, "More power"), sel: ".echip", a: "opacity:0;transform:scale(0.6)", b: "opacity:1;transform:none", tin: "opacity 240ms var(--ease), transform 420ms var(--spring)", tout: "opacity 160ms var(--exit), transform 160ms var(--exit)", hold: 1400 }, { l: "Linked hover", tok: "feedback 120 ms · ease", html: chip(1, "More power"), sel: ".echip", cls: "is-hover", hold: 1200 }],
   "evidence-card": [{ l: "Opens under its chip", tok: "small-in 240 ms · ease; closes in 160 ms", html: stN("evidence-card", "Default"), ...MO_IN(240), tout: "opacity 160ms var(--exit), transform 160ms var(--exit)" }],
   "confidence-meter": [{ l: "Segments fill", tok: "small-in 240 ms each, 16 ms apart", html: confBlock(86), stag: ".conf-bar > *", a: "opacity:0.15", b: "", tin: "opacity 240ms var(--ease)", step: 16, hold: 1600 }],
-  toast: [{ l: "Arrives, then leaves", tok: "in: move 520 ms · spring · out: small-out 160 ms · exit", html: toastS(), a: "opacity:0;transform:translateY(-14px)", b: "opacity:1;transform:none", tin: "opacity 240ms var(--ease), transform 520ms var(--spring)", tout: "opacity 160ms var(--exit), transform 160ms var(--exit)", hold: 1500 }],
-  "action-row": [{ l: "Running", tok: "loop 1200 ms · linear", loop: true, html: stN("action-row", "Running") }],
+  toast: [{ l: "Leaves, then arrives", tok: "out: small-out 160 ms · exit · in: move 520 ms · spring", html: toastS(), a: "opacity:0;transform:translateY(-14px)", b: "opacity:1;transform:none", tin: "opacity 240ms var(--ease), transform 520ms var(--spring)", tout: "opacity 160ms var(--exit), transform 160ms var(--exit)", hold: 1500 }],
+  "action-row": [{ l: "Planned → Running → Done", tok: "", html: stN("action-row", "Running"), frames: [[stN("action-row", "Planned"), 900], [stN("action-row", "Running"), 2600], [stN("action-row", "Done"), 1500]] }],
   "owner-row": [{ l: "Press Assign", tok: "feedback 120 ms · ease", html: ownerS(), sel: ".pbtn", ...MO_PRESS }],
   "alert-card": [{ l: "A new alert arrives", tok: "in 420 ms · ease; leaves in 280 ms · exit", html: alertS("is-new"), ...MO_IN(420) }],
   "plan-rail": [{ l: "A step lands", tok: "in 420 ms · ease", html: stN("plan-rail", "Current"), ...MO_IN(420) }],
   "causes-check": [{ l: "Appears in the panel", tok: "in 420 ms · ease", html: causesS, ...MO_IN(420) }],
-  "ai-panel": [{ l: "Opens, then closes", tok: "in 420 ms · ease · out 280 ms · exit", html: AIP_PLAN, a: "transform:translateX(110%)", b: "transform:none", tin: "transform 420ms var(--ease)", tout: "transform 280ms var(--exit)", hold: 1700, tall: true }],
+  "ai-panel": [{ l: "Closes, then opens", tok: "out 280 ms · exit · in 420 ms · ease", html: AIP_PLAN, a: "transform:translateX(110%)", b: "transform:none", tin: "transform 420ms var(--ease)", tout: "transform 280ms var(--exit)", hold: 1700, tall: true }],
 };
+const msOf = (t) => Math.max(0, ...[...String(t).matchAll(/(\d+)ms/g)].map((x) => +x[1]));
+const MO_TK = {"button": [[["Press", "feedback", 120, "ease"], ["Release", "small-in", 240, "spring"]]], "segmented": [[["Slide", "small-in", 240, "ease"]]], "ask-input": [[["Focus", "feedback", 120, "ease"]]], "state-tag": [[["Loop", "loop", 1200, "wave"]]], "object-link": [[["Hover", "feedback", 120, "ease"], ["Dot", "small-in", 240, "spring"]]], "spark": [[["Loop", "loop", 1200, "wave"]]], "evidence-chip": [[["Out", "small-out", 160, "exit"], ["In", "in", 420, "spring"]], [["Hover", "feedback", 120, "ease"]]], "evidence-card": [[["Out", "small-out", 160, "exit"], ["In", "small-in", 240, "ease"]]], "confidence-meter": [[["Each segment", "small-in", 240, "ease"]]], "toast": [[["Out", "small-out", 160, "exit"], ["In", "move", 520, "spring"]]], "action-row": [[["Loop", "loop", 1200, "linear"]]], "owner-row": [[["Press", "feedback", 120, "ease"], ["Release", "small-in", 240, "spring"]]], "alert-card": [[["Out", "out", 280, "exit"], ["In", "in", 420, "ease"]]], "plan-rail": [[["Out", "out", 280, "exit"], ["In", "in", 420, "ease"]]], "causes-check": [[["Out", "out", 280, "exit"], ["In", "in", 420, "ease"]]], "ai-panel": [[["Out", "out", 280, "exit"], ["In", "in", 420, "ease"]]]};
+const CURVE = { ease: "cubic-bezier(0.2, 0, 0, 1)", exit: "cubic-bezier(0.4, 0, 1, 1)", spring: "cubic-bezier(0.34, 1.56, 0.64, 1)", wave: "cubic-bezier(0.45, 0, 0.55, 1)", linear: "linear" };
+const tkRows = (rows) => `<div class="tk">${rows.map(([r, t, ms, c]) => `<span class="t-label muted">${r}</span><code class="mono t-small" title="${ms} ms">motion.${t}</code><span class="mono t-small">${ms}ms</span><code class="mono t-small muted" title="${CURVE[c]}">motion.${c}</code>`).join("")}</div>`;
 function moPlay(card) {
-  const m = MOTIONS[card.dataset.c][+card.dataset.i], st = card.querySelector(".mo-stage");
+  const m = MOTIONS[card.dataset.c][+card.dataset.i], st = card.querySelector(".mo-stage"), btn = card.querySelector(".mo-play");
+  if (btn && btn.disabled) return;
   (st._t || []).forEach(clearTimeout); st._t = [];
+  if (m.frames) {
+    const inner = st.querySelector(".mo-inner"), total = m.frames.reduce((a, f) => a + f[1], 0);
+    if (btn) lockFor(btn, total + 400);
+    let t = 0;
+    const show = (h) => { inner.style.transition = "opacity 160ms var(--exit)"; inner.style.opacity = "0"; st._t.push(setTimeout(() => { inner.innerHTML = h; inner.style.transition = "opacity 240ms var(--ease)"; inner.style.opacity = "1"; }, 170)); };
+    m.frames.forEach(([h, ms]) => { st._t.push(setTimeout(() => show(h), t)); t += ms; });
+    st._t.push(setTimeout(() => show(m.html), t));
+    return;
+  }
   if (m.stag) {
     confBars(st);
+    const n = st.querySelectorAll(m.stag).length;
     st.querySelectorAll(m.stag).forEach((e, i) => { e.style.animation = `segIn 240ms var(--ease) ${i * m.step}ms both`; });
+    if (btn) lockFor(btn, 240 + n * m.step + 200);
     return;
   }
   const el = st.querySelector(m.sel || ".mo-inner > *");
-  if (m.cls) { el.classList.add(m.cls); st._t.push(setTimeout(() => el.classList.remove(m.cls), m.hold)); return; }
-  const set = (css) => { if (m.a) m.a.split(";").forEach((d) => { const k = d.split(":")[0]; if (k) el.style.removeProperty(k); }); if (m.b) m.b.split(";").forEach((d) => { const k = d.split(":")[0]; if (k) el.style.removeProperty(k); }); el.style.cssText += ";" + css; };
-  el.style.animation = "none"; el.style.transition = "none"; set(m.a);
-  requestAnimationFrame(() => requestAnimationFrame(() => {
+  if (m.cls) { if (btn) lockFor(btn, m.hold + 300); el.classList.add(m.cls); st._t.push(setTimeout(() => el.classList.remove(m.cls), m.hold)); return; }
+  const set = (css) => { [m.a, m.b].forEach((x) => x && x.split(";").forEach((d) => { const k = d.split(":")[0]; if (k) el.style.removeProperty(k); })); el.style.cssText += ";" + css; };
+  el.style.animation = "none";
+  const tin = msOf(m.tin), tout = msOf(m.tout);
+  if (m.rest === "a") {
+    if (btn) lockFor(btn, m.hold + tout + 200);
     el.style.transition = m.tin; set(m.b);
     st._t.push(setTimeout(() => { el.style.transition = m.tout; set(m.a); }, m.hold));
-    if (m.rest !== "a") st._t.push(setTimeout(() => { el.style.transition = "none"; set(m.b); }, m.hold + 700));
-  }));
+  } else {
+    /* resting state is "shown": leave first, then arrive, so nothing ever jumps */
+    if (btn) lockFor(btn, tout + 350 + tin + 200);
+    el.style.transition = m.tout; set(m.a);
+    st._t.push(setTimeout(() => { el.style.transition = m.tin; set(m.b); }, tout + 350));
+  }
 }
 const moSection = (c) => MOTIONS[c.id] ? `<h2 id="motion">Motion</h2><p class="sub">Uses the tokens from <a href="#/motion">Motion</a>; no numbers of its own.</p>
-<div class="mo-grid">${MOTIONS[c.id].map((m, i) => `<div class="mo" data-c="${c.id}" data-i="${i}"><div class="mo-stage${m.tall ? " tall" : ""}"><div class="mo-inner">${m.html}</div></div><div class="mo-cap"><span class="t-strong t-small">${m.l}</span><span class="mono t-small muted">${m.tok}</span></div>${m.loop ? '<span class="t-small muted">Runs while the work runs.</span>' : '<button class="pbtn mo-play">Play</button>'}</div>`).join("")}</div>` : "";
+<div class="mo-grid">${MOTIONS[c.id].map((m, i) => `<div class="mo" data-c="${c.id}" data-i="${i}"><div class="mo-stage${m.tall ? " tall" : ""}"><div class="mo-inner">${m.html}</div></div><div class="mo-cap"><span class="t-strong t-small">${m.l}</span></div>${tkRows(MO_TK[c.id][i])}${m.frames ? '<span class="t-small muted">The loop runs only while the work runs; Play shows it start and stop.</span>' : ""}<button class="pbtn mo-play">Play</button></div>`).join("")}</div>` : "";
 
 
 /* ---------- pages ---------- */
 const NAV = [
   ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
-  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials"], ["motion", "Motion"], ["containers", "Containers"], ["frame", "Page frame"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
+  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials"], ["motion", "Motion"], ["icons", "Icons"], ["containers", "Containers"], ["frame", "Page frame"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
   ["AI behaviour", [["rules", "Rules, states, voice"], ["states", "States & confidence", 1], ["voice", "How the AI speaks", 1]]],
   ["Components", COMPONENTS.map((c) => [c.id, c.name])],
   ["Behind the scenes", [["eval", "Eval"], ["changelog", "Changelog"]]],
@@ -2817,7 +2938,7 @@ const head = (crumb, title, lede, acts = "") => `<header class="ph"><span class=
 const PAGES = {};
 
 /* OVERVIEW */
-PAGES.overview = () => `${head("Green Control · Design System 1.10", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
+PAGES.overview = () => `${head("Green Control · Design System 1.11", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
 <div class="hero-fig"><div class="dots"></div><img src="img/proto-investigate.webp" alt="The Green Control prototype: the chiller plant with three numbered evidence marks, and the AI panel"><span class="cap">Prototype · Investigate Chiller 2</span></div>
 <div class="ostats">${[["15", "components", "6 atoms · 6 molecules · 3 organisms"], ["6", "AI states", "watching to undone"], ["3", "confidence bands", "plan · draft · check"], ["2", "themes", "night and day, one set of names"], ["16", "Figma components", "matched to code"]].map(([n, k, d]) => `<div><span class="t-num">${n}</span><span class="t-small muted">${k}</span></div>`).join("")}</div>
 
@@ -2947,6 +3068,8 @@ PAGES.typography = () => `${head("Foundations", "Typography", "Two families with
 </div>`;
 
 /* ---------- CONTAINERS and PAGE FRAME ---------- */
+const seqEnd = (seq) => Math.max(...seq.map((x) => x[1]));
+function lockFor(b, ms) { b.disabled = true; clearTimeout(b._lk); b._lk = setTimeout(() => (b.disabled = false), ms); }
 function playSeq(st, seq) { (st._t || []).forEach(clearTimeout); st._t = seq.map(([c, t]) => setTimeout(() => (c[0] === "-" ? st.classList.remove(c.slice(1)) : st.classList.add(c)), t)); }
 const CT_SEQ = { nest: [["tap", 0], ["go", 300], ["-tap", 700], ["-go", 2600]] };
 function fitCanvases() { $$(".cv").forEach((c) => c.style.setProperty("--k", c.clientWidth / +c.dataset.w)); }
@@ -2959,31 +3082,36 @@ const SCREEN_CT = cv(1440, 900, `<img src="img/proto-investigate.webp" alt="Gree
 <div style="position:absolute;left:418px;top:392px">${POP}</div>
 ${box(1040, 0, 400, 900, "1 · Panel", "tr")}${box(410, 384, 252, 80, "2 · Popover", "tr")}${box(462, 14, 300, 56, "3 · Toast", "br")}${box(100, 700, 900, 176, "4 · Card", "tl")}`);
 const CT_ROWS = [
-  ["1", "Panel", "A task with several steps: read, decide, act.", "Desktop: the right edge, 400px. Tablet and phone: the bottom.", "Close button or Esc. A grabber only if its height can change.", "Depends on the task (see below).", "in 420 · out 280"],
-  ["2", "Popover", "One or two lines about one point on the drawing.", "Next to that point.", "Click anywhere else.", "Never.", "small-in 240 · small-out 160"],
-  ["3", "Toast", "A receipt for something just done.", "The top of the work area.", "Leaves after 6 s; waits while the pointer is on it.", "Never.", "arrives 520 spring · leaves 160"],
-  ["4", "Card", "Things listed on the page. It does not float.", "In place, in the list.", "Not closed; it changes state.", "—", "a new card: in 420"],
+  ["1", "Panel", "A task with several steps: read, decide, act.", "Desktop: the right edge, 400px. Tablet and phone: the bottom.", "Close button or Esc. A grabber only if its height can change.", "Depends on the task (see below).", "motion.in 420ms · motion.out 280ms"],
+  ["2", "Popover", "One or two lines about one point on the drawing.", "Next to that point.", "Click anywhere else.", "Never.", "motion.small-in 240ms · motion.small-out 160ms"],
+  ["3", "Toast", "A receipt for something just done.", "The top of the work area.", "Leaves after 6 s; waits while the pointer is on it.", "Never.", "motion.move 520ms + motion.spring · motion.small-out 160ms"],
+  ["4", "Card", "Things listed on the page. It does not float.", "In place, in the list.", "Not closed; it changes state.", "—", "motion.in 420ms"],
 ];
 /* one panel at a time: level 1 is the AI panel, level 2 the team it names */
 const NEST = cv(400, 470, `<div class="nest-l1">${aip("Proposed", "Issue · CH-02 · ¥312 today", `<span class="t-small">Clean the condenser tubes on Chiller 2. Maintenance B has the tools.</span>${ownerS()}`, "")}</div>
 <div class="nest-l2"><span class="t-small muted nest-back">‹ Back</span><span class="t-strong">Maintenance B</span><span class="t-label muted">On shift now</span>${["Ana Ruiz", "Wei Chen", "Omar Haddad"].map((n, i) => `<div class="nest-p"><span class="nest-av">${n.split(" ").map((w) => w[0]).join("")}</span><span class="t-small">${n}</span><span class="t-small muted" style="margin-left:auto">${["Plant room", "Roof", "B2"][i]}</span></div>`).join("")}<button class="cta" style="margin-top:auto;justify-content:center">Assign to Ana</button></div>`, "nest");
-/* the panel on a tablet, in five situations */
-const TAB_W = 834, TAB_H = 1112;
+/* the panel on a phone, in five situations; height and handle follow one rule */
+const PH_W = 390, PH_H = 844, DET = { fit: 0, medium: 0.5, large: 0.9 };
 const note = (who, t) => `<div class="block tb-note"><span class="t-label muted">${who}</span><span class="t-small">${t}</span></div>`;
 const person = (n, w, on) => `<div class="tb-row"><span class="nest-av">${n.split(" ").map((x) => x[0]).join("")}</span><span class="t-small">${n}</span><span class="t-small muted">${w}</span><span class="tb-radio${on ? " on" : ""}"></span></div>`;
 const optRow = (l, opts, on = 0) => `<div class="tb-row"><span class="t-small">${l}</span><div class="seg" style="margin-left:auto">${opts.map((o, i) => `<button class="${i === on ? "on" : ""}" aria-pressed="${i === on}">${o}</button>`).join("")}</div></div>`;
-const TAB_SCENES = [
-  { t: "AI investigation", h: 0.5, grab: true, scrim: false, title: "", body: AIP_PLAN, foot: "", c: "Half height, no dimming: the drawing must stay visible to check the evidence. Ask box at the bottom." },
-  { t: "Shift handover", h: 0.5, grab: true, scrim: false, title: "Shift handover", body: note("Night · Ana Ruiz · 06:40", "Chiller 2 ran hot after 05:00. Moved 20% of the load to Chiller 1.") + note("Evening · Wei Chen · 22:10", "Condenser cleaning booked for Saturday 08:00."), foot: askBox().replace("Ask about Chiller 2…", "Write a note for the next shift…"), c: "Like a comments sheet: notes listed, a text field at the bottom." },
-  { t: "Assign to someone", h: 0.36, grab: false, scrim: true, title: "Assign to", body: person("Ana Ruiz", "Maintenance B", true) + person("Wei Chen", "Maintenance B") + person("Omar Haddad", "Controls"), foot: '<button class="cta tb-wide">Assign</button>', c: "Short and dimmed: pick a person and it closes. No need to see the drawing." },
-  { t: "Equipment details", h: 0.5, grab: true, scrim: false, title: "Chiller 2 · readings", body: stOf("evidence-card", 0), foot: "", c: "Opens at half height; drag up for more readings." },
-  { t: "Filters and alerts", h: 0.92, grab: false, scrim: true, title: "Filters and alerts", body: optRow("Time", ["Today", "7 days", "30 days"]) + optRow("Systems", ["All", "Cooling", "Power"]) + optRow("Alert me about", ["Issues", "Everything"]) + optRow("Quiet hours", ["On", "Off"], 1), foot: '<button class="cta tb-wide">Apply</button>', c: "Full height, covers the drawing: nobody reads the drawing while changing settings." },
+const PH_SCENES = [
+  { t: "AI investigation", det: "medium", c: "Medium, not dimmed: the drawing stays visible to check the evidence. Grabber; drag down to lower it.", title: "", body: AIP_PLAN.replace('<div class="glass aip">', '<div class="aip">') },
+  { t: "Shift handover", det: "medium", c: "Medium, not dimmed, like a comments sheet: notes scroll, the text field stays at the bottom.", title: "Shift handover · 3 notes", body: note("Night · Ana Ruiz · 06:40", "Chiller 2 ran hot after 05:00. Moved 20% of the load to Chiller 1.") + note("Evening · Wei Chen · 22:10", "Condenser cleaning booked for Saturday 08:00.") + note("Day · Omar Haddad · 14:05", "Battery BT-01 charged for tomorrow's peak."), foot: askBox().replace("Ask about Chiller 2…", "Write a note for the next shift…") },
+  { t: "Equipment details", det: "large", c: "Opens at medium; dragged up to large to read every reading. The page shows above it, so it's clear where you are.", title: "Chiller 2 · readings", body: stOf("evidence-card", 0) + stOf("evidence-card", 0).replace("+2.8", "+14%").replace("°C above normal", "vs Chiller 1") + stOf("evidence-card", 0).replace("+2.8", "14").replace("°C above normal", "months since cleaning") },
+  { t: "Assign to someone", det: "fit", c: "As tall as its content, dimmed, with a close button: pick a person and it's done.", title: "Assign to", body: person("Ana Ruiz", "Maintenance B", true) + person("Wei Chen", "Maintenance B") + person("Omar Haddad", "Controls"), foot: '<button class="cta tb-wide">Assign</button>' },
+  { t: "Filters and alerts", det: "fit", c: "As tall as its content, dimmed, with a close button. Four settings don't need a full screen.", title: "Filters and alerts", body: optRow("Time", ["Today", "7 days", "30 days"]) + optRow("Systems", ["All", "Cooling", "Power"]) + optRow("Alert me about", ["Issues", "Everything"]) + optRow("Quiet hours", ["On", "Off"], 1), foot: '<button class="cta tb-wide">Apply</button>' },
 ];
-const tabletCV = (sc) => cv(TAB_W, TAB_H, `<div class="tb">
+const phoneCV = (sc) => { const fixed = sc.det === "fit"; const h = fixed ? "" : `height:${Math.round(PH_H * DET[sc.det])}px`;
+  return cv(PH_W, PH_H, `<div class="tb">
 <div class="tb-head"><span class="t-headline">Chiller 2</span>${stateTag("issue", "Issue")}</div>
 <img src="img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt="" class="tb-art">
-${sc.scrim ? '<div class="tb-scrim"></div>' : ""}
-<div class="glass tb-sheet" style="height:${Math.round(TAB_H * sc.h)}px">${sc.grab ? '<span class="tb-grab"></span>' : ""}${sc.title ? `<div class="tb-title"><span class="t-strong">${sc.title}</span><span class="muted">✕</span></div>` : ""}<div class="tb-body">${sc.body}</div>${sc.foot ? `<div class="tb-foot">${sc.foot}</div>` : ""}</div></div>`, "tab");
+${fixed ? '<div class="tb-scrim"></div>' : ""}
+<div class="glass tb-sheet${fixed ? " fit" : ""}" style="${h}">${fixed ? "" : '<span class="tb-grab"></span>'}${sc.title || fixed ? `<div class="tb-title"><span class="t-strong">${sc.title}</span>${fixed ? `<span class="tb-x">${icon("close", 18)}</span>` : ""}</div>` : ""}<div class="tb-body">${sc.body}</div>${sc.foot ? `<div class="tb-foot">${sc.foot}</div>` : ""}</div></div>`, "tab"); };
+const HEIGHTS = `<div class="tb-cell tb-rules"><span class="t-strong t-small">Three heights, one rule</span>
+<div class="tb-h"><span class="tb-hbar" style="height:18%"></span><div><span class="t-strong t-small">Fit</span><span class="t-small muted">As tall as the content, up to half. Pick and go: dimmed, close button, no grabber.</span></div></div>
+<div class="tb-h"><span class="tb-hbar" style="height:50%"></span><div><span class="t-strong t-small">Medium · 50%</span><span class="t-small muted">Read while looking at the drawing: not dimmed, grabber, drag down to lower.</span></div></div>
+<div class="tb-h"><span class="tb-hbar" style="height:90%"></span><div><span class="t-strong t-small">Large · 90%</span><span class="t-small muted">Dragged up from medium to read everything. The page stays visible above.</span></div></div></div>`;
 PAGES.containers = () => `${head("Foundations", "Containers", "Four kinds of container. Every feature puts its content into one of them, the way a phone app's one bottom sheet carries comments, sharing and settings.")}
 <h2 id="kinds">Four kinds, on one screen</h2>
 <p class="sub">The equipment page, with all four in place.</p>
@@ -2993,10 +3121,21 @@ ${SCREEN_CT}
 <div class="nest-wrap"><div class="ct">${NEST}<button class="pbtn ct-play" data-ct="nest">Play</button></div>
 <div class="nest-notes"><div><span class="t-strong">Open something from inside a panel, and it opens one level down in the same panel, with Back at the top left.</span><span class="t-small muted">Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.</span></div><div><span class="t-strong">The alerts floating on the overview are cards, not a panel.</span><span class="t-small muted">Why: they are a list, not a conversation. This keeps one panel, at one width: 400px.</span></div></div></div>
 <h2 id="panel-scenes">The panel in five situations</h2>
-<p class="sub">Shown on a tablet. Same container, different content, like comments, sharing and settings in one sheet.</p>
-<div class="tb-grid">${TAB_SCENES.map((sc) => `<div class="tb-cell">${tabletCV(sc)}<span class="t-strong t-small">${sc.t}</span><span class="t-small muted">${sc.c}</span></div>`).join("")}</div>
-<div class="ct-same"><div><span class="t-label">Stays the same</span><span class="t-small">Header with title and close · frosted glass · rises from the bottom · a fixed bar at the bottom · its motion.</span></div><div><span class="t-label">Changes with the situation</span><span class="t-small">Height · grabber or not · dimming or not · ask box or button at the bottom.</span></div><div><span class="t-label">Grabber rule</span><span class="t-small">Only a panel whose height can change gets a grabber. A fixed-height one gets a close button only.</span></div></div>`;
-const regions = (nav, panel, cardsPanel) => `${box(0, 0, nav, 900, "1 · Menu", "tl")}${box(nav, 0, (panel ? 1440 - 400 : 1440) - nav, 112, "2 · Header", "tl")}${box(nav, 112, (panel ? 1440 - 400 : 1440) - nav, 788, "3 · Main", "bl")}${panel ? box(1040, 0, 400, 900, "4 · Panel", "tr") : box(1052, 130, 352, 640, "Cards, not a panel", "tr", true)}`;
+<p class="sub">On a phone, where the panel is a bottom sheet. Same container, different content, like comments, sharing and settings in one sheet.</p>
+<div class="tb-grid">${PH_SCENES.map((sc) => `<div class="tb-cell">${phoneCV(sc)}<span class="t-strong t-small">${sc.t}</span><span class="t-small muted">${sc.c}</span></div>`).join("")}${HEIGHTS}</div>
+<div class="ct-same"><div><span class="t-label">Stays the same</span><span class="t-small">Frosted glass · rises from the bottom · title at the top · the action or text field pinned at the bottom · its motion.</span></div><div><span class="t-label">Changes with the task</span><span class="t-small">Height (fit, medium, large) · grabber or close · dimmed or not · text field or button at the bottom.</span></div><div><span class="t-label">Grabber or close, never both</span><span class="t-small">A sheet you can resize has a grabber and closes by dragging down; nothing behind it is dimmed, so the drawing stays usable. A fixed sheet is dimmed behind and has a close button: finish this first.</span></div></div>`;
+const NAVI = [["overview", "Overview"], ["equipment", "Equipment"], ["actions", "Actions"], ["reports", "Reports"]];
+const shellNav = (open, on) => `<div class="sh-nav${open ? "" : " folded"}"><div class="sh-brand">${LOGO()}${open ? '<span class="t-strong">Green Control</span>' : ""}</div>${open ? '<div class="sh-bldg"><span class="t-label muted">Building</span><span class="t-strong t-small">B1 · Shanghai HQ</span></div>' : ""}<div class="sh-items">${NAVI.map(([ic, n]) => `<div class="sh-ni${ic === on ? " on" : ""}">${icon(ic, 18)}${open ? `<span>${n}</span>` : ""}</div>`).join("")}</div><div class="sh-foot"><span class="nest-av">SY</span>${open ? '<span class="t-small">Shuyi</span>' : ""}</div></div>`;
+const shellHead = (title, sub, tools) => `<div class="sh-head"><div><span class="sh-title">${title}</span><span class="t-label muted">${sub}</span></div><div class="sh-tools">${tools}</div></div>`;
+const bars = (vals, hot) => `<div class="sh-bars">${vals.map((v, i) => `<span style="height:${v}%"${i === hot ? ' class="hot"' : ""}></span>`).join("")}</div>`;
+const PAGE_SHELL = {
+  overview: { nav: 232, panel: false, html: () => `${shellNav(true, "overview")}<div class="sh-main" style="left:232px;right:0">${shellHead("Overview", "B1 / Live 15:40", `<div class="seg"><button class="on" aria-pressed="true">Today</button><button>7 days</button><button>30 days</button></div><button class="pbtn">${SPARK}Ask AI</button>`)}<img class="sh-art" src="img/building-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt=""><div class="sh-cards">${alertS("is-new")}${alertOpp}</div></div>` },
+  equipment: { nav: 64, panel: true, html: () => `${shellNav(false, "equipment")}<div class="sh-main" style="left:64px;right:400px">${shellHead(`Chiller 2 ${stateTag("issue", "Issue")}`, "B1 / Plant / CH-02", "")}<img class="sh-art" src="img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt="" style="top:130px;height:480px"><div class="sh-ev">${[0, 1, 2].map(() => stOf("evidence-card", 0)).join("")}</div></div><div class="sh-panel">${AIP_PLAN.replace('<div class="glass aip">', '<div class="aip">')}</div>` },
+  actions: { nav: 232, panel: true, html: () => `${shellNav(true, "actions")}<div class="sh-main" style="left:232px;right:400px">${shellHead("Actions", "B1 / This week · 6 actions", `<div class="seg"><button class="on" aria-pressed="true">All</button><button>Open</button><button>Done</button></div><button class="pbtn">${icon("filter", 14)}Filters</button>`)}<div class="sh-list">${[acrowS("Move 20% to Chiller 1", "60%"), acrowS("Clean CH-02 tubes", "Sat 08:00", "is-planned"), acrowS("Charge BT-01 tonight", "Done 02:10", "is-done"), acrowS("Check EL-04 door track", "Needs you", "is-failed", "No one assigned yet."), acrowS("Lower AHU-3 fan speed", "Done Tue", "is-done")].map((r, i) => `<div class="sh-row${i === 0 ? " on" : ""}">${r}</div>`).join("")}</div></div><div class="sh-panel"><span class="t-label muted">Action</span><span class="t-strong">Move 20% to Chiller 1</span>${stepS(1, "Now", "Move 20% to Chiller 1", "on")}${ownerS()}</div>` },
+  reports: { nav: 232, panel: false, html: () => `${shellNav(true, "reports")}<div class="sh-main" style="left:232px;right:0">${shellHead("Reports", "B1 / November", `<div class="seg"><button>7 days</button><button class="on" aria-pressed="true">30 days</button><button>Year</button></div><button class="pbtn">${icon("export", 14)}Export</button>`)}<div class="sh-rep"><span class="t-label muted">Saved this month</span><span class="sh-big">¥18,400</span><span class="t-small muted">12 actions · 9 by the AI's plan, 3 by hand</span>${bars([30, 42, 38, 55, 48, 62, 58, 70, 66, 74, 80, 92], 11)}</div></div>` },
+};
+const REG = (p) => { const nav = PAGE_SHELL[p].nav, pn = PAGE_SHELL[p].panel ? 400 : 0, mw = 1440 - nav - pn;
+  return `<div class="rg" style="left:0;top:0;width:${nav}px;height:900px"><b>1</b></div><div class="rg" style="left:${nav}px;top:0;width:${mw}px;height:104px"><b>2</b></div><div class="rg" style="left:${nav}px;top:104px;width:${mw}px;height:796px"><b>3</b></div>${pn ? `<div class="rg" style="left:${1440 - pn}px;top:0;width:${pn}px;height:900px"><b>4</b></div>` : ""}`; };
 const FRAMES = [
   { t: "Overview", task: "Detect: what is wrong", nav: "Open", tools: "Time range, Ask AI", m: "The building cutaway; alert cards float on it", p: "Closed" },
   { t: "Equipment", task: "Diagnose and respond", nav: "Folded", tools: "State, path", m: "The machine and its evidence row", p: "AI panel open" },
@@ -3004,10 +3143,10 @@ const FRAMES = [
   { t: "Reports", task: "Review: what was saved", nav: "Open", tools: "Time range, Export", m: "Charts", p: "Closed" },
 ];
 PAGES.frame = () => `${head("Foundations", "Page frame", "Every page is built from the same four regions. A page only decides which are open.")}
-<h2 id="regions">Four regions</h2>
-<p class="sub">The same four regions on the overview and on an equipment page. Only the menu width and the panel change.</p>
-<div class="fr-two"><div class="tb-cell">${cv(1440, 900, `<img src="img/proto-overview.webp" alt="Overview" class="cv-img">${regions(232, false)}`)}<span class="t-strong t-small">Overview</span><span class="t-small muted">Menu open (232px). No panel: the alert cards float on the drawing.</span></div>
-<div class="tb-cell">${cv(1440, 900, `<img src="img/proto-investigate.webp" alt="Equipment page" class="cv-img">${regions(64, true)}`)}<span class="t-strong t-small">Equipment</span><span class="t-small muted">Menu folded (64px). The AI panel is open (400px).</span></div></div>
+<h2 id="regions">Four regions, four pages</h2>
+<p class="sub">Every page is the same shell. <b class="rg-key">1</b> Menu · <b class="rg-key">2</b> Header · <b class="rg-key">3</b> Main · <b class="rg-key">4</b> Panel. Turn the outline off to see the pages plainly.</p>
+<label class="rg-toggle t-small"><input type="checkbox" id="rgOn" checked> Show the regions</label>
+<div class="fr-four rg-on">${FRAMES.map((f, i) => { const k = ["overview", "equipment", "actions", "reports"][i]; return `<div class="tb-cell">${cv(1440, 900, `<div class="sh">${PAGE_SHELL[k].html()}</div>${REG(k)}`)}<span class="t-strong t-small">${f.t}</span><span class="t-small muted">${f.task}</span></div>`; }).join("")}</div>
 <table class="table" style="margin-top:20px"><thead><tr><th>Page</th><th>The person is…</th><th>Menu</th><th>Header tools</th><th>Main</th><th>Panel</th></tr></thead><tbody>${FRAMES.map((f) => `<tr><td class="t-strong">${f.t}</td><td>${f.task}</td><td>${f.nav}</td><td>${f.tools}</td><td>${f.m}</td><td>${f.p}</td></tr>`).join("")}</tbody></table>
 <div class="nest-notes" style="margin-top:20px"><div><span class="t-strong">The menu folds only on the equipment page.</span><span class="t-small muted">Why: only that page keeps a panel open, so it needs the width for the drawing and the panel. Elsewhere an open menu tells people where they are.</span></div><div><span class="t-strong">The header has a fixed height; the title is always in the same place.</span><span class="t-small muted">Why: when the page changes, the eye doesn't hunt for the title. The right side holds only that page's tools.</span></div><div><span class="t-strong">Main takes the width that is left. No fixed pixel positions.</span><span class="t-small muted">Why: control-room monitors, tablets and phones are all different widths.</span></div></div>
 <h2 id="switch">From the overview to an equipment page</h2>
@@ -3024,17 +3163,47 @@ const MT = [
   { k: "pn", t: "A panel opens, then closes", tm: "420 in · 280 out", why: "It travels far, so it is slower: you see where it came from.", eg: "In Green Control: the AI panel.",
     html: () => `<img class="mt-plant" src="${PLANT()}" alt="" style="right:180px"><div class="mt-panel">${AIP_PLAN}</div>`, seq: [["go", 0], ["-go", 1800]] },
   { k: "ly", t: "The layout changes", tm: "520 ms", why: "The whole page moves; the eye needs time to follow each part.", eg: "In Green Control: the menu folds when an equipment page opens.",
-    html: () => `<div class="mt-nav">${["Overview", "Equipment", "Actions", "Reports"].map((n, i) => `<div class="mt-ni${i === 0 ? " on" : ""}"><i></i><span>${n}</span></div>`).join("")}</div><img class="mt-plant mt-lyimg" src="${PLANT()}" alt="">`, seq: [["go", 0], ["-go", 1800]] },
+    html: () => `<div class="mt-nav">${[["overview", "Overview"], ["equipment", "Equipment"], ["actions", "Actions"], ["reports", "Reports"]].map(([ic, n], i) => `<div class="mt-ni${i === 0 ? " on" : ""}">${icon(ic, 18)}<span>${n}</span></div>`).join("")}</div><img class="mt-plant mt-lyimg" src="${PLANT()}" alt="">`, seq: [["go", 0], ["-go", 1800]] },
   { k: "ar", t: "Something new arrives", tm: "520 ms · spring", why: "The small overshoot says “this is new”. Only arrivals get it.", eg: "In Green Control: the “Plan applied” toast.",
     html: () => `<img class="mt-plant" src="${PLANT()}" alt=""><div class="mt-toast">${toastS()}</div>`, seq: [["go", 0], ["-go", 1900]] },
   { k: "cm", t: "The drawing zooms", tm: "900 ms", why: "The biggest thing on screen, so the slowest.", eg: "In Green Control: zooming in on Chiller 2.",
     html: () => `<img class="mt-plant mt-zoom" src="${PLANT()}" alt="">`, seq: [["go", 0], ["-go", 2000]] },
-  { k: "lp", t: "Still working", tm: "1200 ms loop", why: "One beat per cycle; stops the moment the work stops.", eg: "In Green Control: the AI checking sources.", loop: true,
-    html: () => `<div class="mt-center"><div style="width:340px">${stN("ai-panel", "Checking")}</div></div>` },
-  { k: "am", t: "Live", tm: "2400 ms loop", why: "Slow, so it never pulls the eye away from a fault.", eg: "In Green Control: the live dot next to the time.", loop: true,
-    html: () => `<div class="mt-livehead"><span class="t-headline">Overview</span><span class="t-label muted mt-liveline"><span class="mx-live"></span>B1 / Live 15:40</span></div><img class="mt-plant" src="img/building-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt="" style="top:90px">` },
+  { k: "lp", t: "Still working", tm: "1200 ms loop", why: "One beat per cycle; stops the moment the work stops.", eg: "In Green Control: the AI checking its third source, then landing.",
+    html: () => `<div class="mt-center"><div class="mt-lp1" style="width:340px">${stN("ai-panel", "Checking")}</div><div class="mt-lp2" style="width:340px">${stN("ai-panel", "Proposed")}</div></div>`, seq: [["done", 1500], ["-done", 3600]] },
+  { k: "am", t: "Live", tm: "2400 ms loop", why: "Slow, so it never pulls the eye away from a fault. When data stops, the pulse stops.", eg: "In Green Control: the live dot next to the time.",
+    seq: [["stale", 0], ["-stale", 2600]],
+    html: () => `<div class="mt-livehead"><span class="t-headline">Overview</span><span class="t-label muted mt-liveline"><span class="mx-live"></span><span class="mt-on">B1 / Live 15:40</span><span class="mt-off">B1 / No data · 2 min ago</span></span></div><img class="mt-plant" src="img/building-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt="" style="top:90px">` },
 ];
-const MOTION_TILES = () => `<div class="mt-grid">${MT.map((m) => `<div class="mx mt-tile">${cv(640, 400, m.html(), "mt-st mt-" + m.k)}<div class="mx-head"><span class="t-strong t-small">${m.t}</span><span class="mono t-small muted">${m.tm}</span></div><span class="t-small muted">${m.why}</span><span class="t-small">${m.eg}</span>${m.loop ? '<span class="t-small muted">Runs while the work runs.</span>' : `<button class="pbtn mx-play" data-mt="${m.k}">Play</button>`}</div>`).join("")}</div>`;
+const MT_TK = {"fb": [["Hover, press", "feedback", 120, "ease"]], "sm": [["In", "small-in", 240, "ease"], ["Out", "small-out", 160, "exit"]], "pn": [["In", "in", 420, "ease"], ["Out", "out", 280, "exit"]], "ly": [["Move", "move", 520, "ease"]], "ar": [["In", "move", 520, "spring"], ["Out", "small-out", 160, "exit"]], "cm": [["Zoom", "camera", 900, "ease"]], "lp": [["Loop", "loop", 1200, "wave"]], "am": [["Loop", "ambient", 2400, "wave"]]};
+const MOTION_TILES = () => `<div class="mt-grid">${MT.map((m) => `<div class="mx mt-tile">${cv(640, 400, m.html(), "mt-st mt-" + m.k)}<div class="mx-head"><span class="t-strong t-small">${m.t}</span></div>${tkRows(MT_TK[m.k])}<span class="t-small muted">${m.why}</span><span class="t-small">${m.eg}</span><button class="pbtn mx-play" data-mt="${m.k}">Play</button></div>`).join("")}</div>`;
+
+/* ---------- ICONS ---------- */
+const ICONS = {"overview": "<rect x=\"2.5\" y=\"2.5\" width=\"5.5\" height=\"5.5\"/><rect x=\"10\" y=\"2.5\" width=\"5.5\" height=\"5.5\"/><rect x=\"2.5\" y=\"10\" width=\"5.5\" height=\"5.5\"/><rect x=\"10\" y=\"10\" width=\"5.5\" height=\"5.5\"/>", "equipment": "<rect x=\"2\" y=\"5.5\" width=\"14\" height=\"7\"/><path d=\"M6.5 5.5v7M11.5 5.5v7M5 12.5v2M13 12.5v2\"/>", "actions": "<path d=\"M2.8 5l1.4 1.4 2.6-2.8M9 5h6.5M9 9.5h6.5M9 14h6.5\"/><rect x=\"3.5\" y=\"8.5\" width=\"2\" height=\"2\"/><rect x=\"3.5\" y=\"13\" width=\"2\" height=\"2\"/>", "reports": "<path d=\"M2.5 15.5h13M5 12.5V9M9 12.5V4.5M13 12.5V7.5\"/>", "menu": "<rect x=\"2.5\" y=\"3\" width=\"13\" height=\"12\"/><path d=\"M7 3v12M10.5 7.5 12 9l-1.5 1.5\"/>", "theme": "<path d=\"M14.5 10.6A6 6 0 1 1 7.4 3.5a4.7 4.7 0 0 0 7.1 7.1Z\"/>", "expand": "<path d=\"M2.5 6.5v-4h4M11.5 2.5h4v4M15.5 11.5v4h-4M6.5 15.5h-4v-4\"/>", "close": "<path d=\"M4.5 4.5l9 9M13.5 4.5l-9 9\"/>", "back": "<path d=\"M11 4 6 9l5 5\"/>", "next": "<path d=\"M7 4l5 5-5 5\"/>", "send": "<path d=\"M9 14.5v-11M4.5 8 9 3.5 13.5 8\"/>", "check": "<path d=\"M3.5 9.5l3.5 3.5 7.5-8\"/>", "undo": "<path d=\"M6.5 4 3 7.5 6.5 11\"/><path d=\"M3 7.5h8a4 4 0 0 1 0 8H8\"/>", "person": "<rect x=\"6\" y=\"2.5\" width=\"6\" height=\"6\"/><path d=\"M3 15.5c0-3 2.7-5 6-5s6 2 6 5\"/>", "filter": "<path d=\"M2.5 4.5h13M5 9h8M7.5 13.5h3\"/>", "export": "<path d=\"M9 2.5v8.5M5.5 7.5 9 11l3.5-3.5M3 12.5v3h12v-3\"/>"};
+const ICON_USE = {"overview": "Menu: Overview", "equipment": "Menu: Equipment", "actions": "Menu: Actions", "reports": "Menu: Reports", "menu": "Fold or open the menu", "theme": "Night / day", "expand": "Full view of the drawing", "close": "Close a panel", "back": "Back, one level up in a panel", "next": "Open a row", "send": "Send a question", "check": "A step or check done", "undo": "Undo", "person": "Assign to someone", "filter": "Filters", "export": "Export a report"};
+const icon = (n, size = 18) => `<svg class="ic" viewBox="0 0 18 18" width="${size}" height="${size}" aria-hidden="true">${ICONS[n]}</svg>`;
+const OLD_ICONS = [
+  ['<svg viewBox="0 0 18 18" style="stroke-width:1.4;stroke-linecap:round"><rect x="2.5" y="2.5" width="5.5" height="5.5" rx="1"/><rect x="10" y="2.5" width="5.5" height="5.5" rx="1"/><rect x="2.5" y="10" width="5.5" height="5.5" rx="1"/><rect x="10" y="10" width="5.5" height="5.5" rx="1"/></svg>', "18 px · 1.4 · rounded"],
+  ['<svg viewBox="0 0 18 18" style="stroke-width:1.4;stroke-linecap:round"><rect x="2" y="5.5" width="14" height="7" rx="3.5"/><path d="M6.5 5.5v7M11.5 5.5v7M5 12.5v2M13 12.5v2"/></svg>', "18 px · 1.4 · pill"],
+  ['<svg viewBox="0 0 14 14" style="width:14px;height:14px;stroke-width:1.5;stroke-linecap:round"><path d="M7 11.5v-9M3 6.5l4-4 4 4"/></svg>', "14 px · 1.5"],
+  ['<svg viewBox="0 0 12 12" style="width:12px;height:12px;stroke-width:1.6;stroke-linecap:round"><path d="M2.5 6.3l2.2 2.2L9.5 3.6"/></svg>', "12 px · 1.6"],
+  ['<svg viewBox="0 0 12 12" style="width:12px;height:12px;stroke-width:1.3;stroke-linecap:round"><path d="M4.5 3l3 3-3 3"/></svg>', "12 px · 1.3"],
+];
+PAGES.icons = () => `${head("Foundations", "Icons", "One set: one stroke, two sizes, square like everything else.")}
+<h2 id="before">What the prototype had</h2>
+<p class="sub">Collected from the prototype: three sizes, four stroke widths, round and square corners mixed.</p>
+<div class="ic-old">${OLD_ICONS.map(([svg, t]) => `<div><span class="ic-oldsvg">${svg}</span><span class="mono t-small muted">${t}</span></div>`).join("")}</div>
+<h2 id="set">The set</h2>
+<p class="sub">Each icon at 18 px (menu and page tools) and 14 px (inside buttons and fields).</p>
+<div class="ic-grid">${Object.keys(ICONS).map((n) => `<div class="ic-cell"><div class="ic-pair">${icon(n, 18)}${icon(n, 14)}</div><span class="mono t-small">${n}</span><span class="t-small muted">${ICON_USE[n]}</span></div>`).join("")}</div>
+<h2 id="rules">Rules</h2>
+<div class="nest-notes">
+<div><span class="t-strong">Two sizes: 18 px in the menu and page tools, 14 px inside buttons and fields.</span><span class="t-small muted">Why: 14 px sits level with 13–14 px text; 18 px is for icons that stand alone as targets. A third size would be one more thing to choose.</span></div>
+<div><span class="t-strong">One stroke, 1.5 px, at both sizes.</span><span class="t-small muted">Why: the same weight as focus rings and outlines, so icons read as part of the same drawing. The stroke does not shrink with the icon, so 14 px icons are not fainter.</span></div>
+<div><span class="t-strong">Square corners and square line ends.</span><span class="t-small muted">Why: every surface, button and chip is square. A rounded icon would be the only round thing on screen.</span></div>
+<div><span class="t-strong">Outline in the text colour. Never the accent.</span><span class="t-small muted">Why: the accent means “abnormal” (ISA-101). An orange icon would read as an alarm. The two exceptions are not icons: the AI mark's centre dot, and the state glyphs.</span></div>
+<div><span class="t-strong">An icon always has a word next to it, except Close and Send.</span><span class="t-small muted">Why: people on shift scan words; icons are not a shared vocabulary in a control room. Close and Send are universal, and carry an aria-label.</span></div>
+<div><span class="t-strong">State glyphs are not icons.</span><span class="t-small muted">Square, triangle, diamond and tick are filled, 10 px, and always mean a state. See State tag.</span></div>
+</div>`;
 /* MOTION */
 PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement does, not by component: five curves and nine durations. No other numbers.")}
 <div class="grid2">
@@ -3313,6 +3482,7 @@ PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and wit
 
 /* TEST */
 const CHANGELOG = [
+  { v: "1.11", t: "Icons, sheet heights, replayable motion", why: "Icons had never been collected; sheet heights were picked by eye; motion examples didn't name their tokens and some didn't replay.", items: ["Icons: one set of 16, two sizes, one stroke, square corners. Applied to the prototype.", "Bottom sheets: three heights (fit, medium, large); grabber or close, never both.", "Page frame: all four pages drawn on one shell.", "Every motion example names its tokens and replays; loops show start and stop."], img: [] },
   { v: "1.10", t: "Containers and the page frame", why: "Components had rules; where they sit and how a page is put together did not.", items: ["Containers: four kinds (panel, popover, toast, card), one panel at a time, and the panel in five situations with the grabber rule.", "Page frame: four regions, and which are open on the overview, equipment, actions and reports pages.", "Motion examples fixed: a press returns to rest, the toast and the meter replay, loops use the wave curve."], img: [] },
   { v: "1.9", t: "One rhythm for everything that moves", why: "The docs said one curve, but the prototype used 38 durations and six curves; the site and the motion skill each listed different numbers again.", items: ["Motion is picked by what moves: hover, a chip, a panel, the layout, the drawing, a loop.", "New: an exit curve, so what leaves doesn't linger; leaving is one step shorter than arriving.", "Every transition in the prototype, this site and the component code now uses only these values.", "Motion has its own page under Foundations, and each component page shows which tokens it uses, playable on the component itself."], img: [] },
   { v: "1.8", t: "Components shown where they are used", why: "A do/don't list says little. One sheet on a phone app serves comments, sharing and settings; a component page should show the same: one part, many situations.", items: ["Each component page now shows the component in each situation it meets, with one line on what changes.", "New: AI panel. One frame for every AI answer: a fault, a saving, a draft, a low-confidence check.", "The AI panel shows how it fits a desktop, a tablet and a phone."], img: [] },
@@ -3403,8 +3573,8 @@ PAGES.voice = () => `${head("AI behaviour", "How the AI speaks", "A colleague re
 
 /* ---------- page init hooks ---------- */
 const INIT = {};
-INIT.containers = () => { fitCanvases(); $$(".ct-play").forEach((b) => (b.onclick = () => playSeq(b.closest(".ct").querySelector(".cv"), CT_SEQ[b.dataset.ct]))); };
-INIT.frame = () => { fitCanvases(); const r = $("#frReplay"); if (r) r.onclick = () => { const f = $(".fr-live"); f.src = f.src.split("&r=")[0] + "&r=" + Date.now(); }; };
+INIT.containers = () => { fitCanvases(); $$(".ct-play").forEach((b) => (b.onclick = () => { if (b.disabled) return; const q = CT_SEQ[b.dataset.ct]; lockFor(b, seqEnd(q) + 700); playSeq(b.closest(".ct").querySelector(".cv"), q); })); };
+INIT.frame = () => { fitCanvases(); const t = $("#rgOn"); if (t) t.onchange = () => $(".fr-four").classList.toggle("rg-on", t.checked); const r = $("#frReplay"); if (r) r.onclick = () => { const f = $(".fr-live"); f.src = f.src.split("&r=")[0] + "&r=" + Date.now(); }; };
 INIT.workflow = INIT.skills = () => { if (INIT.agents) INIT.agents(); $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
 INIT.howto = () => {
   const draw = () => { const r = ROLES_HT[htRole];
@@ -3475,7 +3645,7 @@ INIT.color = () => {
 };
 INIT.motion = () => {
   fitCanvases();
-  $$(".mx-play[data-mt]").forEach((b) => { b.onclick = () => { const m = MT.find((x) => x.k === b.dataset.mt), st = b.closest(".mt-tile").querySelector(".cv"); st.classList.remove("go", "hov", "press"); playSeq(st, m.seq); }; });
+  $$(".mx-play[data-mt]").forEach((b) => { b.onclick = () => { if (b.disabled) return; const m = MT.find((x) => x.k === b.dataset.mt), st = b.closest(".mt-tile").querySelector(".cv"); lockFor(b, seqEnd(m.seq) + 700); playSeq(st, m.seq); }; });
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { const b = e.target.querySelector(".mx-play[data-mt]"); if (b) b.click(); io.unobserve(e.target); } }), { threshold: 0.6 });
   $$(".mt-tile").forEach((t) => io.observe(t));
   $("#playMotion").onclick = () => { const box = $("#motionTile"); box.style.setProperty("--w", $("#mt1").clientWidth + "px"); box.classList.toggle("motion-go"); };
@@ -3696,6 +3866,120 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Icons, sheet heights, replayable motion": "图标、弹层高度、可重播的动效",
+  "Icons had never been collected; sheet heights were picked by eye; motion examples didn't name their tokens and some didn't replay.": "图标从没整理过；弹层高度是凭感觉定的；动效示例没写 token 名，有的还不能重播。",
+  "Icons: one set of 16, two sizes, one stroke, square corners. Applied to the prototype.": "图标：一套 16 个，两种尺寸，一种线宽，直角。已用到原型里。",
+  "Bottom sheets: three heights (fit, medium, large); grabber or close, never both.": "底部弹层：三种高度（跟内容、中等、大）；拖动条和关闭按钮只用一个。",
+  "Page frame: all four pages drawn on one shell.": "页面框架：四个页面都画在同一个骨架上。",
+  "Every motion example names its tokens and replays; loops show start and stop.": "每个动效示例都写明 token，并且能重播；循环动画能看到开始和停下。",
+  "Issue → Investigating → Resolved": "问题 → 调查中 → 已解决",
+  "Idle → Thinking → Idle": "空闲 → 思考中 → 空闲",
+  "Planned → Running → Done": "已计划 → 进行中 → 完成",
+  "The loop runs only while the work runs; Play shows it start and stop.": "循环只在事情进行时转；点“播放”看它怎么开始、怎么停下。",
+  "Press": "按下",
+  "Release": "松开",
+  "Slide": "滑动",
+  "Focus": "聚焦",
+  "Loop": "循环",
+  "Hover": "悬停",
+  "Dot": "圆点",
+  "Out": "出",
+  "In": "进",
+  "Each segment": "每一格",
+  "Move": "移动",
+  "Zoom": "缩放",
+  "Hover, press": "悬停、按下",
+  "Show the regions": "显示四个区",
+  "Four regions, four pages": "四个区，四个页面",
+  "Every page is the same shell.": "每一页都是同一个骨架。",
+  "Menu · ": "导航 · ",
+  "Header · ": "页头 · ",
+  "Main · ": "主区 · ",
+  "Panel. Turn the outline off to see the pages plainly.": "面板。关掉框线可以直接看页面。",
+  "Menu": "导航",
+  "Building": "楼宇",
+  "B1 · Shanghai HQ": "B1 · 上海总部",
+  "Ask AI": "问 AI",
+  "B1 / This week · 6 actions": "B1 / 本周 · 6 项行动",
+  "Open": "进行中",
+  "Done": "已完成",
+  "Filters": "筛选",
+  "Action": "行动",
+  "Move 20% to Chiller 1": "把 20% 转到 Chiller 1",
+  "Clean CH-02 tubes": "清洗 CH-02 冷凝管",
+  "Charge BT-01 tonight": "今晚给 BT-01 充电",
+  "Check EL-04 door track": "检查 EL-04 门轨",
+  "Lower AHU-3 fan speed": "调低 AHU-3 风机转速",
+  "No one assigned yet.": "还没有指派人。",
+  "B1 / November": "B1 / 十一月",
+  "Year": "一年",
+  "Export": "导出",
+  "Saved this month": "本月节省",
+  "12 actions · 9 by the AI's plan, 3 by hand": "12 项行动 · 9 项按 AI 方案执行，3 项人工处理",
+  "Medium, not dimmed: the drawing stays visible to check the evidence. Grabber; drag down to lower it.": "中等高度，不加暗色：要对照图纸看证据。有拖动条，往下拖就降下去。",
+  "Medium, not dimmed, like a comments sheet: notes scroll, the text field stays at the bottom.": "中等高度，不加暗色，和评论区一样：留言可以滚动，输入框固定在最下面。",
+  "Shift handover · 3 notes": "交接班留言 · 3 条",
+  "Day · Omar Haddad · 14:05": "白班 · Omar Haddad · 14:05",
+  "Battery BT-01 charged for tomorrow's peak.": "BT-01 已为明天的用电高峰充好电。",
+  "Opens at medium; dragged up to large to read every reading. The page shows above it, so it's clear where you are.": "先以中等高度打开；往上拖到大尺寸看全部读数。上面还露着页面，知道自己在哪。",
+  "months since cleaning": "个月没清洗",
+  "As tall as its content, dimmed, with a close button: pick a person and it's done.": "高度跟内容走，加暗色，有关闭按钮：选好人就完成。",
+  "As tall as its content, dimmed, with a close button. Four settings don't need a full screen.": "高度跟内容走，加暗色，有关闭按钮。四项设置不需要占满整屏。",
+  "Three heights, one rule": "三种高度，一条规则",
+  "Fit": "跟内容走",
+  "As tall as the content, up to half. Pick and go: dimmed, close button, no grabber.": "内容多高就多高，最多半屏。选完就走：加暗色、有关闭按钮、没有拖动条。",
+  "Medium · 50%": "中等 · 50%",
+  "Read while looking at the drawing: not dimmed, grabber, drag down to lower.": "一边看图一边读：不加暗色、有拖动条、往下拖就降下。",
+  "Large · 90%": "大 · 90%",
+  "Dragged up from medium to read everything. The page stays visible above.": "从中等往上拖，读全部内容。上面仍露出页面。",
+  "On a phone, where the panel is a bottom sheet. Same container, different content, like comments, sharing and settings in one sheet.": "以手机为例，面板在这里是底部弹层。同一个容器，装不同内容，就像同一个弹层装评论、分享和设置。",
+  "Frosted glass · rises from the bottom · title at the top · the action or text field pinned at the bottom · its motion.": "磨砂玻璃 · 从底部升起 · 标题在顶部 · 操作按钮或输入框固定在最下面 · 进出动效。",
+  "Changes with the task": "随任务变的",
+  "Height (fit, medium, large) · grabber or close · dimmed or not · text field or button at the bottom.": "高度（跟内容、中等、大）· 拖动条还是关闭按钮 · 加不加暗色 · 最下面是输入框还是按钮。",
+  "Grabber or close, never both": "拖动条和关闭按钮，只用一个",
+  "A sheet you can resize has a grabber and closes by dragging down; nothing behind it is dimmed, so the drawing stays usable. A fixed sheet is dimmed behind and has a close button: finish this first.": "能调高度的弹层有拖动条，往下拖就关；背后不加暗色，图纸还能操作。高度固定的弹层背后加暗色、有关闭按钮：表示先把这件事做完。",
+  "Icons": "图标",
+  "One set: one stroke, two sizes, square like everything else.": "一套图标：一种线宽、两种尺寸，和其他元素一样是直角。",
+  "What the prototype had": "原型里原来的样子",
+  "Collected from the prototype: three sizes, four stroke widths, round and square corners mixed.": "从原型里收集出来的：三种尺寸、四种线宽，圆角和直角混在一起。",
+  "The set": "整理后的一套",
+  "Each icon at 18 px (menu and page tools) and 14 px (inside buttons and fields).": "每个图标都有 18 px（导航和页面工具）和 14 px（按钮和输入框里）两种。",
+  "Menu: Overview": "导航：总览",
+  "Menu: Equipment": "导航：设备",
+  "Menu: Actions": "导航：行动",
+  "Menu: Reports": "导航：报表",
+  "Fold or open the menu": "收起或展开导航",
+  "Night / day": "夜间 / 日间",
+  "Full view of the drawing": "图纸全屏",
+  "Close a panel": "关闭面板",
+  "Back, one level up in a panel": "返回，在面板里回到上一层",
+  "Open a row": "打开一行",
+  "Send a question": "发送问题",
+  "A step or check done": "一步或一项检查完成",
+  "Undo": "撤销",
+  "Assign to someone": "派给同事",
+  "Filters": "筛选",
+  "Export a report": "导出报表",
+  "Rules": "规则",
+  "Two sizes: 18 px in the menu and page tools, 14 px inside buttons and fields.": "两种尺寸：导航和页面工具用 18 px，按钮和输入框里用 14 px。",
+  "Why: 14 px sits level with 13–14 px text; 18 px is for icons that stand alone as targets. A third size would be one more thing to choose.": "原因：14 px 和 13–14 px 的文字齐平；18 px 给单独作为点击目标的图标。再多一种尺寸，就多一件要选的事。",
+  "One stroke, 1.5 px, at both sizes.": "一种线宽：两种尺寸都是 1.5 px。",
+  "Why: the same weight as focus rings and outlines, so icons read as part of the same drawing. The stroke does not shrink with the icon, so 14 px icons are not fainter.": "原因：和聚焦框、描边一样粗，图标看起来和界面是同一套线条。线宽不随图标缩小，所以 14 px 的图标不会变淡。",
+  "Square corners and square line ends.": "直角，线头也是方的。",
+  "Why: every surface, button and chip is square. A rounded icon would be the only round thing on screen.": "原因：所有表面、按钮、标签都是直角。圆角图标会成为屏幕上唯一圆的东西。",
+  "Outline in the text colour. Never the accent.": "线框，用文字颜色，永远不用强调色。",
+  "Why: the accent means “abnormal” (ISA-101). An orange icon would read as an alarm. The two exceptions are not icons: the AI mark's centre dot, and the state glyphs.": "原因：强调色表示“异常”（ISA-101），橙色图标会被当成报警。两个例外都不算图标：AI 标记中间的点，和状态符号。",
+  "An icon always has a word next to it, except Close and Send.": "图标旁边一定有文字，关闭和发送除外。",
+  "Why: people on shift scan words; icons are not a shared vocabulary in a control room. Close and Send are universal, and carry an aria-label.": "原因：值班的人是扫文字的；在控制室里图标不是大家都认的语言。关闭和发送是通用的，并带有 aria-label。",
+  "State glyphs are not icons.": "状态符号不是图标。",
+  "Square, triangle, diamond and tick are filled, 10 px, and always mean a state. See State tag.": "方块、三角、菱形、对勾是实心的、10 px，永远表示一种状态。见“状态标签”。",
+  "In Green Control: the AI checking its third source, then landing.": "在 Green Control 里：AI 在查第三个来源，查完后给出结论。",
+  "Slow, so it never pulls the eye away from a fault. When data stops, the pulse stops.": "放慢，不把眼睛从故障上拉走。数据断了，脉冲就停。",
+  "B1 / No data · 2 min ago": "B1 / 无数据 · 2 分钟前",
+  "Leaves, then arrives": "消失，再出现",
+  "out: small-out 160 ms · exit · in: move 520 ms · spring": "出：160 ms · 离开曲线 · 进：520 ms · 弹簧",
+  "Closes, then opens": "关上，再打开",
+  "out 280 ms · exit · in 420 ms · ease": "出 280 ms · 离开曲线 · 进 420 ms · 移动曲线",
   "Equipment": "设备",
   "Actions": "行动",
   "Reports": "报表",
@@ -5085,7 +5369,7 @@ segInd(document);
  "What's wrong, where, what it costs, and one way in.": "出了什么问题、在哪、多花多少钱，再给一个入口。",
  "A plan, one step at a time.": "一步一步的方案。",
  "Unsure? List the causes and the one check that tells them apart.": "没把握时：列出可能原因，和能分清它们的那项检查。",
- "Green Control · Design System 1.10": "Green Control · 设计系统 1.10",
+ "Green Control · Design System 1.11": "Green Control · 设计系统 1.11",
  "How Green Control looks and how its AI behaves. Built for people and for coding agents.": "Green Control 的视觉规范和 AI 行为规范。设计师、工程师和 AI 编程工具都能直接用。",
  "Figma components": "个 Figma 组件",
  "matched to code": "和代码一一对应",

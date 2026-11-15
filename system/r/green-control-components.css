@@ -150,9 +150,12 @@
 @keyframes edgeIn { from { transform: scaleY(0); } }
 .state.busy i { animation: breathe 1.2s var(--wave) infinite; }
 @keyframes breathe { 50% { opacity: 0.25; transform: scale(0.7); } }
-.spark.is-thinking circle { animation: dot 1200ms var(--wave) infinite; transform-box: fill-box; transform-origin: center; }
+.spark.is-thinking circle { animation: think 1200ms var(--wave) infinite; transform-box: fill-box; transform-origin: center; }
+.spark.is-thinking circle.o { animation: core 1200ms var(--wave) infinite; }
 .spark.is-thinking circle:nth-child(2) { animation-delay: 140ms; } .spark.is-thinking circle:nth-child(3) { animation-delay: 280ms; }
 .spark.is-thinking circle:nth-child(4) { animation-delay: 420ms; } .spark.is-thinking circle:nth-child(5) { animation-delay: 560ms; }
+@keyframes think { 0%, 100% { transform: scale(1); opacity: 1; } 35% { transform: scale(0.35); opacity: 0.35; } }
+@keyframes core { 50% { transform: scale(1.5); } }
 @keyframes dot { 30% { transform: scale(1.5); } 60% { transform: scale(1); } }
 .toast.is-running .timer { width: 100%; transform-origin: left; animation: countdown 6000ms linear infinite; }
 .toast.is-paused .timer { width: 100%; transform: scaleX(0.62); transform-origin: left; }

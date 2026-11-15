@@ -1,7 +1,7 @@
 # Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.10.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.11.
 
 ## The one idea
 
@@ -192,6 +192,17 @@ The rules have been tested with AI agents (see Changelog): can an agent that has
 - **Night as the default.** It differs from ISA-101's light-grey background (see Look). Needs operators on night shifts to confirm.
 
 
+## Icons
+
+One set of 16 outline icons on an 18 px grid (`overview`, `equipment`, `actions`, `reports`, `menu`, `theme`, `expand`, `close`, `back`, `next`, `send`, `check`, `undo`, `person`, `filter`, `export`). [Product]
+
+- **Two sizes: 18 px in the menu and page tools, 14 px inside buttons and fields.** 14 px sits level with 13–14 px text; 18 px is for icons that stand alone as targets.
+- **One stroke, 1.5 px, at both sizes** (`vector-effect: non-scaling-stroke`). The same weight as focus rings and outlines; 14 px icons are not fainter.
+- **Square corners, square line ends.** Every surface, button and chip is square; a rounded icon would be the only round thing.
+- **Outline in the text colour, never the accent.** The accent means abnormal (ISA-101); an orange icon reads as an alarm. The AI mark's centre dot and the state glyphs are not icons.
+- **An icon always has a word next to it**, except Close and Send, which carry an aria-label.
+- Before 1.11 the prototype had icons at 12, 14 and 18 px, strokes from 1.3 to 1.6, and rounded corners.
+
 ## Containers
 
 Four kinds. A feature puts its content into one of them; it never invents a fifth. [Product]
@@ -205,8 +216,9 @@ Four kinds. A feature puts its content into one of them; it never invents a fift
 
 - **One panel at a time.** Opening something from inside a panel opens it one level down in the same panel, with Back at the top left.
   - Why: two panels side by side squeeze the drawing out, and the drawing is what the person is watching.
-- **The panel's height, dimming and bottom bar follow the task.** AI investigation and shift handover: half height, no dimming, ask box at the bottom, because the drawing must stay visible. Assign to someone: short and dimmed, a button at the bottom. Filters and alerts: full height, dimmed, because nobody reads the drawing while changing settings.
-- **Only a panel whose height can change gets a grabber.** A fixed-height one gets a close button only.
+- **On tablet and phone the panel is a bottom sheet with three heights.** *Fit*: as tall as its content, up to half (assign someone, filters). *Medium*, 50%: read while looking at the drawing (AI investigation, shift handover, equipment details). *Large*, 90%: dragged up from medium to read everything; the page stays visible above.
+  - Why: the height follows what the person does next. Pick-and-go tasks need no more room than their content; reading tasks need the drawing in view.
+- **Grabber or close, never both.** A sheet that can be resized has a grabber, closes by dragging down, and dims nothing behind it, so the drawing stays usable. A fit sheet dims what is behind it and has a close button: finish this first.
 - **The alerts floating on the overview are cards, not a panel**, so there is one panel at one width.
 
 ## Page frame
@@ -236,6 +248,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.11** New: Icons (one set, two sizes, one stroke, square). Bottom sheets get three heights (fit, medium, large) and one rule: grabber or close, never both. Page frame shows all four pages on one shell. Every motion example names its tokens and can be replayed; the AI mark's thinking animation matches the prototype.
 - **1.10** New: Containers (panel, popover, toast, card; one panel at a time; the panel in five situations) and Page frame (four regions; which are open on the overview, equipment, actions and reports pages). Fixed the motion examples: a press returns to rest, the toast and the meter replay, loops use `wave` and the `loop` duration.
 - **1.9** Motion is picked by what moves, from one list of curves and durations (`tokens.json` › motion). New: an `exit` curve for anything leaving, `wave` for loops, `linear` for spinners. Every transition in the prototype, the site and the component code now uses these values; `gc-motion` skill rewritten to match.
 - **1.8** Each component is shown in the situations it meets, with one line on what changes, instead of do/don't lists. New: AI panel, one frame for every AI answer (fault, saving, draft, low confidence), on desktop, tablet and phone.
