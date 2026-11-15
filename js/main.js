@@ -372,19 +372,20 @@ async function type(el, text, cps = 70) { if (reduce) { el.textContent = text; r
 
 /* ---------- evidence graph at the bottom of the hero ---------- */
 const evBox = $("#evidence");
-const CW = 232, GAP = 100;
+// cards sit on the equipment grid: 3 cards of 4 columns across the 928px stage, 24px gutters
+const GAP = 24, CW = (928 - 2 * GAP) / 3;
 function buildEvidence() {
   evBox.innerHTML = "";
   script.evidence.forEach((e, i) => {
     const x = i * (CW + GAP);
     const pill = document.createElement("div"); pill.className = "pill"; pill.style.left = x + "px"; pill.innerHTML = `<span class="t-label muted">${e.tab}</span>`; evBox.appendChild(pill);
-    const c = document.createElement("article"); c.className = "ev glass"; c.style.left = x + "px";
+    const c = document.createElement("article"); c.className = "ev glass"; c.style.left = x + "px"; c.style.width = CW + "px";
     const span = (a, b) => `left:${a * 100}%;width:${(b - a) * 100}%`;
     c.innerHTML = `<div class="h"><span class="num">${e.n}</span><span class="t-body">${e.title}</span></div>
       <div class="val"><span class="t-num">${e.value}</span><span class="unit">${e.unit}</span></div>
       <div class="bar"><i class="tr"></i><i class="nm" style="${span(0, e.bar.normal)}"></i><i class="ex" style="${span(e.bar.normal, e.bar.now)}"></i><i class="tk" style="left:calc(${e.bar.now * 100}% - 1px)"></i></div>
       <div class="cap t-small muted">${e.cap}</div>`;
-    c.insertAdjacentHTML("beforeend", drawBox(232, 150));
+    c.insertAdjacentHTML("beforeend", drawBox(CW, 150));
     c.insertAdjacentHTML("beforeend", '<i class="scanl"></i>');
     evBox.appendChild(c);
     c.addEventListener("mouseenter", () => amarks[i].classList.add("hl")); c.addEventListener("mouseleave", () => amarks[i].classList.remove("hl"));

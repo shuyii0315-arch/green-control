@@ -7,7 +7,8 @@
 const $ = (s, r = document) => r.querySelector(s);
 const H = 24, SPAN_ALL = 56 * H;                // hours from Mon Sep 21 00:00
 const DAY0 = Date.UTC(2026, 8, 21);
-const LW = 260, W = 1140 - LW, RH = 60, OPEN = 36;
+const LW = 291, W = 1140 - LW, // names take columns 1–3 (+ gutter), the timeline columns 4–12
+  RH = 60, OPEN = 36;
 const DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const pad = (n) => String(n).padStart(2, "0");

@@ -833,4 +833,12 @@ h1, h3 { margin: 0; font-weight: inherit; }
 #cols i { background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: inset 1px 0 0 color-mix(in srgb, var(--accent) 45%, transparent), inset -1px 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
 #cols i:nth-child(-n+2), #cols i:nth-child(n+9) { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 #app.show-cols #cols { opacity: 1; }
-#app.s2 #cols { display: none; }
+
+/* equipment: the same 24px gutter, 12 columns across the 928px stage (columns flex, gutters stay 24) */
+#app.s2 #head2 { left: 88px; }
+#evidence { left: 0; right: 0; }
+#app.s2 #cols { display: grid; left: 88px; width: 928px; grid-template-columns: repeat(12, 1fr); }
+#app.s2.nav-open #cols { display: none; }
+#app.s2 #cols i:nth-child(n) { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+#app.view-actions #cols i:nth-child(n) { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+#app.view-actions #cols i:nth-child(-n+3) { background: color-mix(in srgb, var(--accent) 20%, transparent); }
