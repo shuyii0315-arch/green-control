@@ -1170,7 +1170,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .sh-rep { padding: 32px; display: grid; gap: 10px; }
 .sh-big { font-size: 56px; line-height: 60px; font-weight: 300; }
 .sh-bars { display: flex; align-items: flex-end; gap: 14px; height: 420px; margin-top: 24px; box-shadow: 0 1px 0 var(--line); }
-.sh-bars span { flex: 1; background: var(--bg-raised); } .sh-bars span.hot { background: var(--accent); }
+.sh-bars span { flex: 1; background: var(--bg-raised); } .sh-bars span.hot { background: var(--text); }
 .rg { position: absolute; pointer-events: none; opacity: 0; transition: opacity 160ms var(--exit); }
 .rg-on .rg { opacity: 1; transition: opacity 240ms var(--ease); box-shadow: inset 0 0 0 3px var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
 .rg b { position: absolute; left: 10px; top: 10px; width: 40px; height: 40px; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font: 500 24px/1 var(--font-mono); }
@@ -1202,6 +1202,57 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 .fframe i { position: absolute; left: 0; top: 0; bottom: 0; width: 18%; background: var(--bg-raised); }
 .fframe b { position: absolute; left: 18%; right: 0; top: 0; height: 18%; box-shadow: inset 0 -1px 0 var(--line); }
 .fframe u { position: absolute; right: 0; top: 0; bottom: 0; width: 28%; background: var(--bg-surface); box-shadow: -1px 0 0 var(--line); }
+
+/* charts */
+.ch-card { display: grid; gap: 14px; padding: 24px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); }
+.ch-head { display: grid; gap: 6px; } .ch-title { font-size: 22px; line-height: 28px; }
+.ch-svg { width: 100%; height: auto; display: block; }
+.ch-axis { stroke: var(--line); stroke-width: 1; }
+.ch-bar { fill: var(--bg-raised); } .ch-hot { fill: var(--accent); } .ch-now { fill: var(--text); }
+.ch-limit { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+.ch-lab { font: 11px var(--font-mono); fill: var(--muted); letter-spacing: .05em; }
+.ch-hotlab { fill: var(--accent); } .ch-nowlab { fill: var(--text); }
+.ch-notes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; margin-top: 20px; }
+.ch-notes > div { display: grid; grid-template-columns: 26px 1fr; gap: 4px 8px; align-items: start; }
+.ch-notes > div > span { grid-column: 2; }
+.ch-notes .rg-key { grid-row: 1 / 3; margin: 2px 0 0; }
+.ch-three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ch-demo { min-height: 170px; display: grid; place-items: center; padding: 20px; background: var(--bg-page); box-shadow: inset 0 0 0 1px var(--line); }
+.ch-demo > * { width: 100%; }
+/* page states */
+.ps-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
+.ps-sk { display: block; background: var(--bg-raised); background-image: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 8%, transparent), transparent); background-size: 200% 100%; animation: psShimmer 1200ms linear infinite; }
+@keyframes psShimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+.ps-card { display: grid; gap: 10px; padding: 16px; }
+.ps-assemble { position: absolute; inset: 0; opacity: .35; }
+.ps-empty { position: absolute; left: 32px; top: 150px; max-width: 520px; display: grid; gap: 10px; justify-items: start; }
+.ps-banner { position: absolute; left: 32px; right: 32px; top: 122px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-surface); box-shadow: inset 0 0 0 1px var(--line); z-index: 2; }
+.ps-banner b { font-weight: 500; } .ps-banner .pbtn { margin-left: auto; }
+.ps-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.ps-stale { opacity: .55; }
+.ps-why { display: block; margin-top: 6px; }
+@media (prefers-reduced-motion: reduce) { .ps-sk { animation: none; } }
+/* layers */
+.ly-wrap { display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: center; }
+.ly-scene { height: 560px; display: grid; place-items: center; overflow: hidden; }
+.ly-stack { position: relative; width: 300px; height: 200px; transform: rotateX(58deg) rotateZ(-38deg); transform-style: preserve-3d; margin-top: 260px; }
+.ly-plate { position: absolute; inset: 0; transform: translateZ(calc(var(--i) * 52px)); background: color-mix(in srgb, var(--bg-surface) 70%, transparent); box-shadow: inset 0 0 0 1px var(--line); }
+.ly-plate:first-child { background: var(--bg-page); }
+.ly-plate img { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; }
+.ly-num { position: absolute; left: -34px; top: 0; width: 24px; height: 24px; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font: 500 12px/1 var(--font-mono); }
+.ly-mark { position: absolute; left: 40%; top: 55%; width: 14px; height: 14px; background: var(--accent); }
+.ly-lab { position: absolute; left: 47%; top: 40%; padding: 3px 6px; font: 10px var(--font-mono); background: var(--bg-raised); color: var(--text); white-space: nowrap; }
+.ly-card { position: absolute; right: 8%; top: 8%; width: 34%; height: 26%; background: var(--bg-raised); box-shadow: inset 2px 0 0 var(--accent); }
+.ly-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 30%; background: var(--bg-raised); }
+.ly-pop { position: absolute; left: 30%; top: 30%; width: 26%; height: 16%; background: var(--bg-raised); box-shadow: 0 0 0 1px var(--muted); }
+.ly-scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
+.ly-sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 42%; background: var(--bg-raised); box-shadow: 0 -1px 0 var(--line); }
+.ly-toast { position: absolute; left: 32%; top: 6%; width: 36%; height: 12%; background: var(--bg-surface); box-shadow: 0 0 0 1px var(--text); }
+.ly-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ly-list li { display: grid; grid-template-columns: 26px 1fr; gap: 0 8px; }
+.ly-list li code { grid-column: 2; background: none; padding: 0; }
+.ly-list .rg-key { grid-row: 1 / 3; margin: 2px 0 0; }
+@media (max-width: 900px) { .ch-notes, .ch-three, .ly-wrap { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1210,7 +1261,7 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
   <button class="menu-btn" id="menuBtn" aria-label="Open navigation">Menu</button>
   <a class="brand" href="#/overview" aria-label="Green Control Design System, home">
     <svg class="logo" viewBox="0 0 28 28" aria-hidden="true" data-logo></svg>
-    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.11</span>
+    <span class="t-strong">Green Control</span><span class="t-label muted">Design System</span><span class="t-label muted ver">v1.12</span>
   </a>
   <div class="right">
     <a class="btn-ghost proto" href="https://shuyii0315-arch.github.io/green-control/" target="_blank" rel="noopener">Prototype ↗</a>
@@ -1730,12 +1781,48 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
       "$value": "1.5px",
       "$description": "Same at both sizes (non-scaling stroke)."
     }
+  },
+  "z": {
+    "$description": "Layer order, bottom to top. Anything new takes one of these.",
+    "page": {
+      "$type": "number",
+      "$value": 0
+    },
+    "label": {
+      "$type": "number",
+      "$value": 10
+    },
+    "card": {
+      "$type": "number",
+      "$value": 20
+    },
+    "panel": {
+      "$type": "number",
+      "$value": 30
+    },
+    "popover": {
+      "$type": "number",
+      "$value": 40
+    },
+    "scrim": {
+      "$type": "number",
+      "$value": 50
+    },
+    "sheet": {
+      "$type": "number",
+      "$value": 60
+    },
+    "toast": {
+      "$type": "number",
+      "$value": 70,
+      "$description": "Always on top, above the dim."
+    }
   }
 }</script>
 <script type="text/plain" id="f-design"># Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.11.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.12.
 
 ## The one idea
 
@@ -1937,6 +2024,30 @@ One set of 16 outline icons on an 18 px grid (`overview`, `equipment`, `actions`
 - **An icon always has a word next to it**, except Close and Send, which carry an aria-label.
 - Before 1.11 the prototype had icons at 12, 14 and 18 px, strokes from 1.3 to 1.6, and rounded corners.
 
+## Layers
+
+Eight layers, always in this order (bottom to top): page and drawing `z.page` 0 · labels and marks on the drawing `z.label` 10 · cards `z.card` 20 · panel `z.panel` 30 · popover `z.popover` 40 · dim `z.scrim` 50 · sheet that must be finished `z.sheet` 60 · toast `z.toast` 70. [Product]
+
+- **The toast is always on top, above the dim**: it confirms what just happened, often the moment a sheet closes.
+- **One dim at a time**, and only under a sheet that must be finished.
+- **Opening a panel or a sheet closes any popover.**
+- **Regions don't overlap on a monitor**; only a sheet on small screens rises over the page.
+
+## Page states
+
+- **Loading:** the frame, menu and title appear at once; the drawing assembles; cards keep their place with grey blocks (shimmer: `motion.loop` + `motion.linear`); the AI mark thinks. Never a blank page or a centred spinner. [Task]
+- **Empty:** one line on what is missing, one on what will fill it, one way out. No illustration; an empty list in a control room is good news.
+- **Offline or stale:** keep the last readings, faded and dated ("2 min old"); a bar says when data stopped and offers Retry; Apply is disabled with its reason. An old value that looks live is the most dangerous thing a monitoring screen can show. [Industry] ISA-101
+
+## Charts
+
+- **The title is the answer** ("Over the limit at 14:00 and 15:00"), not the topic. [Task]
+- **Grey bars; the accent only on values out of range.** "Now" and the current period use the text colour. [Industry] ISA-101
+- **Every value against normal:** a band for the normal range, a tick for the 30-day baseline, a dashed line with a mono label for a limit.
+- **Write the abnormal value next to it** ("+250 kW"); colour is never the only cue. [Industry] WCAG 1.4.1
+- **Quiet axes:** one baseline, a few mono labels, no grid. Bars start at zero, square, flat.
+- **Never** pie charts, 3D, gradients, a colour per series, or a chart where a number would do.
+
 ## Containers
 
 Four kinds. A feature puts its content into one of them; it never invents a fifth. [Product]
@@ -1982,6 +2093,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.12** New: Layers (eight, fixed order, z tokens), Page states (loading, empty, offline), Charts (grey first, against normal, accent only out of range). Fixed from a full review: breakpoints are 1100 / 700 everywhere; on phones the AI panel is a sheet (medium, then large), not full screen, and the menu becomes a tab bar; overview lists every foundation; the overview-to-equipment demo is built on the shell; the site's own icons follow the icon rules; report bars no longer use the accent.
 - **1.11** New: Icons (one set, two sizes, one stroke, square). Bottom sheets get three heights (fit, medium, large) and one rule: grabber or close, never both. Page frame shows all four pages on one shell. Every motion example names its tokens and can be replayed; the AI mark's thinking animation matches the prototype.
 - **1.10** New: Containers (panel, popover, toast, card; one panel at a time; the panel in five situations) and Page frame (four regions; which are open on the overview, equipment, actions and reports pages). Fixed the motion examples: a press returns to rest, the toast and the meter replay, loops use `wave` and the `loop` duration.
 - **1.9** Motion is picked by what moves, from one list of curves and durations (`tokens.json` › motion). New: an `exit` curve for anything leaving, `wave` for loops, `linear` for spinners. Every transition in the prototype, the site and the component code now uses these values; `gc-motion` skill rewritten to match.
@@ -2948,7 +3060,7 @@ const moSection = (c) => MOTIONS[c.id] ? `<h2 id="motion">Motion</h2><p class="s
 /* ---------- pages ---------- */
 const NAV = [
   ["Start", [["overview", "Overview"], ["howto", "How to use"], ["skills", "Skills"]]],
-  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials"], ["motion", "Motion"], ["icons", "Icons"], ["containers", "Containers"], ["frame", "Page frame"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
+  ["Foundations", [["logo", "Logo"], ["color", "Color"], ["typography", "Typography"], ["materials", "Materials"], ["motion", "Motion"], ["icons", "Icons"], ["layers", "Layers"], ["containers", "Containers"], ["frame", "Page frame"], ["pagestates", "Page states"], ["charts", "Charts"], ["illustration", "Illustration"], ["responsive", "Responsive"]]],
   ["AI behaviour", [["rules", "Rules, states, voice"], ["states", "States & confidence", 1], ["voice", "How the AI speaks", 1]]],
   ["Components", COMPONENTS.map((c) => [c.id, c.name])],
   ["Behind the scenes", [["eval", "Eval"], ["changelog", "Changelog"]]],
@@ -2960,7 +3072,7 @@ const head = (crumb, title, lede, acts = "") => `<header class="ph"><span class=
 const PAGES = {};
 
 /* OVERVIEW */
-PAGES.overview = () => `${head("Green Control · Design System 1.11", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
+PAGES.overview = () => `${head("Green Control · Design System 1.12", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
 <div class="hero-fig"><div class="dots"></div><img src="img/proto-investigate.webp" alt="The Green Control prototype: the chiller plant with three numbered evidence marks, and the AI panel"><span class="cap">Prototype · Investigate Chiller 2</span></div>
 <div class="ostats">${[["16", "components", "6 atoms · 6 molecules · 4 organisms"], ["6", "AI states", "watching to undone"], ["3", "confidence bands", "plan · draft · check"], ["2", "themes", "night and day, one set of names"], ["16", "Figma components", "matched to code"]].map(([n, k, d]) => `<div><span class="t-num">${n}</span><span class="t-small muted">${k}</span></div>`).join("")}</div>
 
@@ -3229,6 +3341,79 @@ PAGES.icons = () => `${head("Foundations", "Icons", "One set: one stroke, two si
 <div><span class="t-strong">An icon always has a word next to it, except Close and Send.</span><span class="t-small muted">Why: people on shift scan words; icons are not a shared vocabulary in a control room. Close and Send are universal, and carry an aria-label.</span></div>
 <div><span class="t-strong">State glyphs are not icons.</span><span class="t-small muted">Square, triangle, diamond and tick are filled, 10 px, and always mean a state. See State tag.</span></div>
 </div>`;
+
+/* ---------- CHARTS ---------- */
+const HOURS = [2380, 2320, 2290, 2280, 2300, 2420, 2610, 2790, 2900, 2980, 3020, 3060, 3070, 3080, 3240, 3350, 3060, 3010, 2940, 2810, 2690, 2580, 2470, 2410];
+const LIMIT = 3100;
+const powerChart = () => { const max = 3500, X = (i) => 40 + i * 30, Y = (v) => 250 - (v / max) * 220;
+  let g = `<svg viewBox="0 0 780 290" class="ch-svg" role="img" aria-label="Power today by hour; above the 3,100 kW limit at 14:00 and 15:00">`;
+  g += `<line x1="34" x2="760" y1="250" y2="250" class="ch-axis"/>`;
+  HOURS.forEach((v, i) => { const over = v > LIMIT; g += `<rect x="${X(i)}" y="${Y(v)}" width="22" height="${250 - Y(v)}" class="${over ? "ch-hot" : i === 18 ? "ch-now" : "ch-bar"}"/>`; });
+  g += `<line x1="34" x2="760" y1="${Y(LIMIT)}" y2="${Y(LIMIT)}" class="ch-limit"/><text x="760" y="${Y(LIMIT) - 8}" class="ch-lab" text-anchor="end">LIMIT 3,100 KW</text>`;
+  g += `<text x="${X(15) + 11}" y="${Y(3350) - 10}" class="ch-lab ch-hotlab" text-anchor="middle">+250 KW</text>`;
+  g += `<text x="${X(18) + 11}" y="272" class="ch-lab ch-nowlab" text-anchor="middle">NOW</text>`;
+  [0, 6, 12, 18, 23].forEach((h) => { if (h !== 18) g += `<text x="${X(h) + 11}" y="272" class="ch-lab" text-anchor="middle">${String(h).padStart(2, "0")}</text>`; });
+  return g + "</svg>"; };
+PAGES.charts = () => `${head("Foundations", "Charts", "Grey by default. The accent marks only what is out of range, and every value is shown against what is normal.")}
+<h2 id="example">One chart, every rule</h2>
+<div class="ch-card"><div class="ch-head"><span class="t-label muted">Power today · B1</span><span class="ch-title">Over the limit at 14:00 and 15:00</span><span class="t-small muted">Peak 3,350 kW at 15:00, 250 kW over. Now 2,940 kW.</span></div>${powerChart()}</div>
+<div class="ch-notes">
+<div><b class="rg-key">1</b><span class="t-strong">The title is the answer, not the topic.</span><span class="t-small muted">“Over the limit at 14:00 and 15:00”, not “Power by hour”. Why: a person on shift reads the title and may not read the chart.</span></div>
+<div><b class="rg-key">2</b><span class="t-strong">Grey bars; the accent only on the bars that break the limit.</span><span class="t-small muted">Why: the accent means abnormal (ISA-101). If every series had a colour, the problem would not stand out.</span></div>
+<div><b class="rg-key">3</b><span class="t-strong">The limit is a dashed line with a mono label.</span><span class="t-small muted">Why: a number alone can't say whether it is a problem; the limit says what “too much” is.</span></div>
+<div><b class="rg-key">4</b><span class="t-strong">The abnormal value is written next to it.</span><span class="t-small muted">“+250 kW”. Why: colour is never the only cue (WCAG 1.4.1); the number reads in print and in colour blindness.</span></div>
+<div><b class="rg-key">5</b><span class="t-strong">“Now” is marked with the text colour, not the accent.</span><span class="t-small muted">Why: now is where you are, not a problem. The same goes for the current period in a report.</span></div>
+<div><b class="rg-key">6</b><span class="t-strong">Quiet axes: one baseline, a few mono labels, no grid.</span><span class="t-small muted">Why: the only line across the chart should be the one that matters, the limit.</span></div>
+</div>
+<h2 id="normal">Always against normal</h2>
+<p class="sub">The three ways a reading shows what is normal. Each is a real component.</p>
+<div class="ch-three">
+<div class="ct"><div class="ch-demo">${stOf("evidence-card", 0)}</div><span class="t-strong t-small">A normal range</span><span class="t-small muted">The grey band is normal, the tick is the 30-day baseline, the fill is today. Evidence card.</span></div>
+<div class="ct"><div class="ch-demo">${confBlock(64)}</div><span class="t-strong t-small">Bands with meaning</span><span class="t-small muted">20 segments; below 50 they turn to the accent, because the AI may then only suggest a check. Confidence meter.</span></div>
+<div class="ct"><div class="ch-demo">${powerChart()}</div><span class="t-strong t-small">A limit</span><span class="t-small muted">A dashed line for a contract limit or a target. Overview and reports.</span></div>
+</div>
+<h2 id="never">Never</h2>
+<div class="nest-notes"><div><span class="t-strong">Pie charts, 3D, gradients, rounded bar ends.</span><span class="t-small muted">Why: angles and depth are hard to compare; everything else on screen is flat and square.</span></div><div><span class="t-strong">A colour per series.</span><span class="t-small muted">Why: compare at most two series, the second in the muted grey; more than that is two charts.</span></div><div><span class="t-strong">A chart where a number would do.</span><span class="t-small muted">Why: “2,940 kW, 95% of the limit” answers faster than a gauge.</span></div></div>`;
+
+/* ---------- PAGE STATES ---------- */
+const skel = (w, h = 14) => `<span class="ps-sk" style="width:${w};height:${h}px"></span>`;
+const PS = {
+  loading: () => `${shellNav(false, "equipment")}<div class="sh-main" style="left:64px;right:400px">${shellHead(`Chiller 2`, "B1 / Plant / CH-02", "")}<div class="ps-assemble"><img class="sh-art" src="img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt=""></div><div class="sh-ev">${[0, 1, 2].map(() => `<div class="block ps-card">${skel("40%", 11)}${skel("55%", 28)}${skel("100%", 6)}${skel("70%", 11)}</div>`).join("")}</div></div><div class="sh-panel">${aip("Investigating", "", `<span class="t-small muted">Reading 3 sources…</span>`, "").replace('<div class="glass aip">', '<div class="aip">').replace('class="spark"', 'class="spark is-thinking"')}</div>`,
+  empty: () => `${shellNav(true, "actions")}<div class="sh-main" style="left:232px;right:0">${shellHead("Actions", "B1 / This week", `<div class="seg"><button class="on" aria-pressed="true">All</button><button>Open</button><button>Done</button></div>`)}<div class="ps-empty"><span class="sh-title" style="font-size:22px">No actions this week</span><span class="t-small muted">When someone applies a plan or assigns a check, it is listed here with who did it and when.</span><button class="pbtn">Go to the overview</button></div></div>`,
+  offline: () => `${shellNav(false, "equipment")}<div class="sh-main" style="left:64px;right:400px">${shellHead(`Chiller 2`, "B1 / Plant / CH-02", "")}<div class="ps-banner"><span class="ps-dot"></span><span class="t-small"><b>No data since 15:38.</b> Showing the last readings, 2 min old.</span><button class="pbtn">Retry</button></div><img class="sh-art ps-stale" src="img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt=""><div class="sh-ev ps-stale">${[0, 1, 2].map(() => stOf("evidence-card", 0)).join("")}</div></div><div class="sh-panel">${AIP_PLAN.replace('<div class="glass aip">', '<div class="aip">').replace('<button class="pbtn primary">Apply</button>', '<button class="pbtn primary" disabled>Apply</button><span class="t-small muted ps-why">Can\'t apply while data is 2 min old.</span>')}</div>`,
+};
+PAGES.pagestates = () => `${head("Foundations", "Page states", "Loading, empty and offline. The AI's own states are on States & confidence; this page is about the page around it.")}
+<div class="ps-grid">
+<div class="tb-cell">${cv(1440, 900, `<div class="sh">${PS.loading()}</div>`)}<span class="t-strong t-small">Loading</span><span class="t-small muted">The frame, menu and title appear at once; the drawing assembles; cards hold their place with grey blocks; the AI mark thinks. Never a blank page or a spinner in the middle.</span><span class="t-small muted">Why: the first thing a person on shift needs is where they are.</span></div>
+<div class="tb-cell">${cv(1440, 900, `<div class="sh">${PS.empty()}</div>`)}<span class="t-strong t-small">Empty</span><span class="t-small muted">One line saying what is missing, one saying what will fill it, one way out. No illustration.</span><span class="t-small muted">Why: an empty list in a control room is good news; it should read as calm, not as an error.</span></div>
+<div class="tb-cell">${cv(1440, 900, `<div class="sh">${PS.offline()}</div>`)}<span class="t-strong t-small">Offline or stale</span><span class="t-small muted">Keep the last readings, faded and dated; a bar says when data stopped and offers Retry; Apply is off and says why.</span><span class="t-small muted">Why: an old value that looks live is the most dangerous thing a monitoring screen can show (ISA-101).</span></div>
+</div>
+<h2 id="rules">Rules</h2>
+<div class="nest-notes"><div><span class="t-strong">Placeholders keep the shape of what's coming.</span><span class="t-small muted">Grey blocks the size of the real text; the shimmer uses motion.loop with motion.linear and stops when the data lands.</span></div><div><span class="t-strong">Every stale number carries its age.</span><span class="t-small muted">“2 min old”. Past 15 minutes a reading is marked stale everywhere it appears (evidence chip, card, drawing label).</span></div><div><span class="t-strong">Nothing is applied on stale data.</span><span class="t-small muted">Apply is disabled with its reason next to it, not hidden; the person knows it will come back.</span></div></div>`;
+
+/* ---------- LAYERS ---------- */
+const LAYERS = [
+  ["0", "Page and drawing", "z.page · 0", '<img src="img/plant-' + "${G}" + '.webp" alt="">'],
+  ["1", "Labels and marks on the drawing", "z.label · 10", '<span class="ly-mark">3</span><span class="ly-lab">CH-02 · +14%</span>'],
+  ["2", "Cards", "z.card · 20", '<span class="ly-card"></span>'],
+  ["3", "Panel", "z.panel · 30", '<span class="ly-panel"></span>'],
+  ["4", "Popover", "z.popover · 40", '<span class="ly-pop"></span>'],
+  ["5", "Dim", "z.scrim · 50", '<span class="ly-scrim"></span>'],
+  ["6", "Sheet that must be finished", "z.sheet · 60", '<span class="ly-sheet"></span>'],
+  ["7", "Toast", "z.toast · 70", '<span class="ly-toast"></span>'],
+];
+PAGES.layers = () => { const G = root.dataset.gc === "day" ? "plant-day" : "plant-night";
+  return `${head("Foundations", "Layers", "Eight layers, always in the same order. Anything new takes a layer from this list.")}
+<div class="ly-wrap"><div class="ly-scene"><div class="ly-stack">${LAYERS.map(([n, t, z, h], i) => `<div class="ly-plate" style="--i:${i}">${h.replace("plant-${G}", G).replace("${G}", G.replace("plant-", "plant-"))}<b class="ly-num">${n}</b></div>`).join("")}</div></div>
+<ol class="ly-list">${LAYERS.slice().reverse().map(([n, t, z]) => `<li><b class="rg-key">${n}</b><span class="t-strong t-small">${t}</span><code class="mono t-small muted">${z}</code></li>`).join("")}</ol></div>
+<h2 id="rules">Rules</h2>
+<div class="nest-notes">
+<div><span class="t-strong">The toast is always on top, above the dim.</span><span class="t-small muted">Why: it confirms what just happened, often the moment a sheet closes; it must never be hidden behind the thing that caused it.</span></div>
+<div><span class="t-strong">One dim at a time, and only under a sheet that must be finished.</span><span class="t-small muted">Why: two dims stack into black; a dim means “finish this first”, which only one thing can ask at a time.</span></div>
+<div><span class="t-strong">Opening a panel or a sheet closes any popover.</span><span class="t-small muted">Why: a popover belongs to one point on the drawing; once the task moves elsewhere it would point at nothing.</span></div>
+<div><span class="t-strong">Cards never cover the panel; the panel never covers the menu.</span><span class="t-small muted">Why: the regions of the page frame don't overlap on a monitor; only a sheet on small screens rises over the page.</span></div>
+<div><span class="t-strong">Depth comes from the layer's surface (page, glass, block), not from shadows.</span><span class="t-small muted">See Materials. A shadow appears only under floating glass.</span></div>
+</div>`; };
 /* MOTION */
 PAGES.motion = () => `${head("Foundations", "Motion", "Chosen by what a movement does, not by component: five curves and nine durations. No other numbers.")}
 <div class="grid2">
@@ -3507,6 +3692,7 @@ PAGES.eval = () => `${head("Behind the scenes", "Eval", "Same task, with and wit
 
 /* TEST */
 const CHANGELOG = [
+  { v: "1.12", t: "Layers, page states, charts, and a full review", why: "A review of the whole system found three missing foundations and several pages that disagreed with each other.", items: ["New: Layers, Page states, Charts.", "Breakpoints are 1100 / 700 everywhere. On phones the AI panel is a sheet, and the menu becomes a tab bar.", "Overview lists every foundation; the overview-to-equipment demo is built on the shell; report bars no longer use the accent."], img: [] },
   { v: "1.11", t: "Icons, sheet heights, replayable motion", why: "Icons had never been collected; sheet heights were picked by eye; motion examples didn't name their tokens and some didn't replay.", items: ["Icons: one set of 16, two sizes, one stroke, square corners. Applied to the prototype.", "Bottom sheets: three heights (fit, medium, large); grabber or close, never both.", "Page frame: all four pages drawn on one shell.", "Every motion example names its tokens and replays; loops show start and stop."], img: [] },
   { v: "1.10", t: "Containers and the page frame", why: "Components had rules; where they sit and how a page is put together did not.", items: ["Containers: four kinds (panel, popover, toast, card), one panel at a time, and the panel in five situations with the grabber rule.", "Page frame: four regions, and which are open on the overview, equipment, actions and reports pages.", "Motion examples fixed: a press returns to rest, the toast and the meter replay, loops use the wave curve."], img: [] },
   { v: "1.9", t: "One rhythm for everything that moves", why: "The docs said one curve, but the prototype used 38 durations and six curves; the site and the motion skill each listed different numbers again.", items: ["Motion is picked by what moves: hover, a chip, a panel, the layout, the drawing, a loop.", "New: an exit curve, so what leaves doesn't linger; leaving is one step shorter than arriving.", "Every transition in the prototype, this site and the component code now uses only these values.", "Motion has its own page under Foundations, and each component page shows which tokens it uses, playable on the component itself."], img: [] },
@@ -3891,6 +4077,90 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "Layers, page states, charts, and a full review": "层级、页面状态、图表，以及一次整体检查",
+  "A review of the whole system found three missing foundations and several pages that disagreed with each other.": "整体检查发现缺了三块基础，还有几页彼此说法不一致。",
+  "New: Layers, Page states, Charts.": "新增：层级、页面状态、图表。",
+  "Breakpoints are 1100 / 700 everywhere. On phones the AI panel is a sheet, and the menu becomes a tab bar.": "断点统一为 1100 / 700。手机上 AI 面板是底部弹层，导航变成底部标签栏。",
+  "Overview lists every foundation; the overview-to-equipment demo is built on the shell; report bars no longer use the accent.": "总览列出所有基础；“从总览进入设备页”改用骨架搭建；报表柱子不再用强调色。",
+  "Layers": "层级",
+  "Page states": "页面状态",
+  "Charts": "图表",
+  "Grey by default. The accent marks only what is out of range, and every value is shown against what is normal.": "默认是灰色。强调色只标出超出范围的东西，每个数值都和“正常”放在一起看。",
+  "One chart, every rule": "一张图，用上所有规则",
+  "Power today · B1": "今日用电 · B1",
+  "Over the limit at 14:00 and 15:00": "14:00 和 15:00 超过上限",
+  "Peak 3,350 kW at 15:00, 250 kW over. Now 2,940 kW.": "15:00 峰值 3,350 kW，超出 250 kW。现在 2,940 kW。",
+  "The title is the answer, not the topic.": "标题写结论，不写主题。",
+  "“Over the limit at 14:00 and 15:00”, not “Power by hour”. Why: a person on shift reads the title and may not read the chart.": "写“14:00 和 15:00 超过上限”，不写“每小时用电”。原因：值班的人会读标题，但不一定看图。",
+  "Grey bars; the accent only on the bars that break the limit.": "柱子是灰的；只有超过上限的柱子用强调色。",
+  "Why: the accent means abnormal (ISA-101). If every series had a colour, the problem would not stand out.": "原因：强调色表示异常（ISA-101）。如果每组数据都有颜色，问题就显不出来。",
+  "The limit is a dashed line with a mono label.": "上限是一条虚线，配等宽字体的标签。",
+  "Why: a number alone can't say whether it is a problem; the limit says what “too much” is.": "原因：单看一个数字，说不出它算不算问题；上限告诉你“多少算太多”。",
+  "The abnormal value is written next to it.": "异常的数值直接写在旁边。",
+  "“+250 kW”. Why: colour is never the only cue (WCAG 1.4.1); the number reads in print and in colour blindness.": "比如“+250 kW”。原因：颜色永远不能是唯一的提示（WCAG 1.4.1）；打印出来、色弱的人都能看懂数字。",
+  "“Now” is marked with the text colour, not the accent.": "“现在”用文字颜色标，不用强调色。",
+  "Why: now is where you are, not a problem. The same goes for the current period in a report.": "原因：“现在”只是你所在的位置，不是问题。报表里的当前周期也一样。",
+  "Quiet axes: one baseline, a few mono labels, no grid.": "坐标轴要安静：一条基线、几个等宽标签、不要网格。",
+  "Why: the only line across the chart should be the one that matters, the limit.": "原因：横穿图表的线只应该有那条重要的：上限。",
+  "Always against normal": "永远和“正常”对比",
+  "The three ways a reading shows what is normal. Each is a real component.": "读数表示“正常”的三种方式，都是真实组件。",
+  "A normal range": "正常范围",
+  "The grey band is normal, the tick is the 30-day baseline, the fill is today. Evidence card.": "灰色带是正常范围，竖线是 30 天基线，填充是今天。证据卡片。",
+  "Bands with meaning": "有含义的分段",
+  "20 segments; below 50 they turn to the accent, because the AI may then only suggest a check. Confidence meter.": "20 格；低于 50 变成强调色，因为这时 AI 只能建议检查。把握度条。",
+  "A limit": "上限",
+  "A dashed line for a contract limit or a target. Overview and reports.": "合同上限或目标用虚线。总览和报表。",
+  "Never": "不要这样",
+  "Pie charts, 3D, gradients, rounded bar ends.": "饼图、3D、渐变、圆头柱子。",
+  "Why: angles and depth are hard to compare; everything else on screen is flat and square.": "原因：角度和深度很难比较；屏幕上其他东西都是平的、直角的。",
+  "A colour per series.": "每组数据一个颜色。",
+  "Why: compare at most two series, the second in the muted grey; more than that is two charts.": "原因：最多比两组，第二组用浅灰；再多就该拆成两张图。",
+  "A chart where a number would do.": "一个数字就能说清时却画图。",
+  "Why: “2,940 kW, 95% of the limit” answers faster than a gauge.": "原因：“2,940 kW，上限的 95%”比仪表盘更快给出答案。",
+  "Loading, empty and offline. The AI's own states are on States & confidence; this page is about the page around it.": "加载、空、断网。AI 自己的状态在“状态与把握度”页；这一页讲的是 AI 周围的页面。",
+  "Loading": "加载中",
+  "The frame, menu and title appear at once; the drawing assembles; cards hold their place with grey blocks; the AI mark thinks. Never a blank page or a spinner in the middle.": "骨架、导航和标题立刻出现；图纸开始拼装；卡片用灰块占住位置；AI 标记在思考。永远不出现空白页或屏幕中间的加载圈。",
+  "Why: the first thing a person on shift needs is where they are.": "原因：值班的人第一件要知道的是自己在哪。",
+  "Reading 3 sources…": "正在读 3 个来源…",
+  "Empty": "空",
+  "One line saying what is missing, one saying what will fill it, one way out. No illustration.": "一句话说缺什么，一句话说什么会填上，一个出口。不放插画。",
+  "Why: an empty list in a control room is good news; it should read as calm, not as an error.": "原因：在控制室里，空列表是好消息；它应该显得平静，而不是像出错。",
+  "No actions this week": "本周没有行动",
+  "When someone applies a plan or assigns a check, it is listed here with who did it and when.": "有人执行方案或派人检查时，会列在这里，写明谁做的、什么时候。",
+  "Go to the overview": "去总览",
+  "B1 / This week": "B1 / 本周",
+  "Offline or stale": "断网或数据过期",
+  "Keep the last readings, faded and dated; a bar says when data stopped and offers Retry; Apply is off and says why.": "保留最后的读数，变淡并标上时间；顶部一条横栏说明数据何时中断，并提供重试；“执行”不可用，并写明原因。",
+  "Why: an old value that looks live is the most dangerous thing a monitoring screen can show (ISA-101).": "原因：看起来像实时的旧数据，是监控屏幕最危险的东西（ISA-101）。",
+  "No data since 15:38.": "15:38 之后没有数据。",
+  "Showing the last readings, 2 min old.": "显示的是最后的读数，2 分钟前。",
+  "Retry": "重试",
+  "Can't apply while data is 2 min old.": "数据已是 2 分钟前的，暂不能执行。",
+  "Placeholders keep the shape of what's coming.": "占位块保持将要出现的内容的形状。",
+  "Grey blocks the size of the real text; the shimmer uses motion.loop with motion.linear and stops when the data lands.": "灰块和真实文字一样大；流光用 motion.loop 和 motion.linear，数据一到就停。",
+  "Every stale number carries its age.": "每个过期的数字都带上时间。",
+  "“2 min old”. Past 15 minutes a reading is marked stale everywhere it appears (evidence chip, card, drawing label).": "比如“2 分钟前”。超过 15 分钟，这个读数在所有出现的地方都标为过期（证据标签、卡片、图上标签）。",
+  "Nothing is applied on stale data.": "不在过期数据上执行任何操作。",
+  "Apply is disabled with its reason next to it, not hidden; the person knows it will come back.": "“执行”变为不可用，旁边写原因，而不是藏起来；人知道它会回来。",
+  "Eight layers, always in the same order. Anything new takes a layer from this list.": "八层，顺序永远不变。任何新东西都从这张表里选一层。",
+  "Page and drawing": "页面和图纸",
+  "Labels and marks on the drawing": "图纸上的标签和编号",
+  "Cards": "卡片",
+  "Panel": "面板",
+  "Popover": "小卡",
+  "Dim": "暗色遮罩",
+  "Sheet that must be finished": "要先完成的弹层",
+  "Toast": "Toast",
+  "The toast is always on top, above the dim.": "Toast 永远在最上面，在暗色遮罩之上。",
+  "Why: it confirms what just happened, often the moment a sheet closes; it must never be hidden behind the thing that caused it.": "原因：它确认刚发生的事，常常就在弹层关闭的那一刻；不能被引起它的东西挡住。",
+  "One dim at a time, and only under a sheet that must be finished.": "一次只有一层暗色，而且只放在要先完成的弹层下面。",
+  "Why: two dims stack into black; a dim means “finish this first”, which only one thing can ask at a time.": "原因：两层暗色叠起来会变黑；暗色的意思是“先做完这件事”，同一时间只能有一件事这样要求。",
+  "Opening a panel or a sheet closes any popover.": "打开面板或弹层时，小卡自动关闭。",
+  "Why: a popover belongs to one point on the drawing; once the task moves elsewhere it would point at nothing.": "原因：小卡属于图上的某一个点；任务转移后，它就指向空处了。",
+  "Cards never cover the panel; the panel never covers the menu.": "卡片不盖住面板；面板不盖住导航。",
+  "Why: the regions of the page frame don't overlap on a monitor; only a sheet on small screens rises over the page.": "原因：在显示器上，页面框架的四个区互不重叠；只有小屏幕上的弹层会升到页面之上。",
+  "Depth comes from the layer's surface (page, glass, block), not from shadows.": "层次靠表面材质（页面、玻璃、块）表现，不靠阴影。",
+  "See Materials. A shadow appears only under floating glass.": "见“材质”。只有浮起的玻璃下面才有阴影。",
   "The menu folds (motion.move 520ms) while the AI panel slides in (motion.in 420ms) and the page changes underneath (motion.small-in 240ms).": "导航收起（motion.move 520ms），同时 AI 面板滑进来（motion.in 420ms），下面的页面换成设备页（motion.small-in 240ms）。",
   "Max 50%": "最高 50%",
   "As tall as its content (three people), dimmed, with a close button. The dashed line is the 50% cap: with more people, the list scrolls and Assign stays pinned.": "高度跟内容走（三个人），加暗色，有关闭按钮。虚线是 50% 的上限：人再多，列表在里面滚动，“派人”按钮固定在底部。",
@@ -5409,7 +5679,7 @@ segInd(document);
  "What's wrong, where, what it costs, and one way in.": "出了什么问题、在哪、多花多少钱，再给一个入口。",
  "A plan, one step at a time.": "一步一步的方案。",
  "Unsure? List the causes and the one check that tells them apart.": "没把握时：列出可能原因，和能分清它们的那项检查。",
- "Green Control · Design System 1.11": "Green Control · 设计系统 1.11",
+ "Green Control · Design System 1.12": "Green Control · 设计系统 1.12",
  "How Green Control looks and how its AI behaves. Built for people and for coding agents.": "Green Control 的视觉规范和 AI 行为规范。设计师、工程师和 AI 编程工具都能直接用。",
  "Figma components": "个 Figma 组件",
  "matched to code": "和代码一一对应",

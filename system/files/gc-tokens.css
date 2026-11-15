@@ -52,6 +52,14 @@
   --gc-type-label: 400 11px/14px var(--gc-font-mono);
   --gc-type-label-tracking: 0.05em;
   --gc-type-data: 400 12px/16px var(--gc-font-mono);
+  --gc-z-page: 0;
+  --gc-z-label: 10;
+  --gc-z-card: 20;
+  --gc-z-panel: 30;
+  --gc-z-popover: 40;
+  --gc-z-scrim: 50;
+  --gc-z-sheet: 60;
+  --gc-z-toast: 70;
   --gc-icon-size-md: 18px;
   --gc-icon-size-sm: 14px;
   --gc-icon-stroke: 1.5px;

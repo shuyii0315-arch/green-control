@@ -1,7 +1,7 @@
 # Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.11.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.12.
 
 ## The one idea
 
@@ -203,6 +203,30 @@ One set of 16 outline icons on an 18 px grid (`overview`, `equipment`, `actions`
 - **An icon always has a word next to it**, except Close and Send, which carry an aria-label.
 - Before 1.11 the prototype had icons at 12, 14 and 18 px, strokes from 1.3 to 1.6, and rounded corners.
 
+## Layers
+
+Eight layers, always in this order (bottom to top): page and drawing `z.page` 0 · labels and marks on the drawing `z.label` 10 · cards `z.card` 20 · panel `z.panel` 30 · popover `z.popover` 40 · dim `z.scrim` 50 · sheet that must be finished `z.sheet` 60 · toast `z.toast` 70. [Product]
+
+- **The toast is always on top, above the dim**: it confirms what just happened, often the moment a sheet closes.
+- **One dim at a time**, and only under a sheet that must be finished.
+- **Opening a panel or a sheet closes any popover.**
+- **Regions don't overlap on a monitor**; only a sheet on small screens rises over the page.
+
+## Page states
+
+- **Loading:** the frame, menu and title appear at once; the drawing assembles; cards keep their place with grey blocks (shimmer: `motion.loop` + `motion.linear`); the AI mark thinks. Never a blank page or a centred spinner. [Task]
+- **Empty:** one line on what is missing, one on what will fill it, one way out. No illustration; an empty list in a control room is good news.
+- **Offline or stale:** keep the last readings, faded and dated ("2 min old"); a bar says when data stopped and offers Retry; Apply is disabled with its reason. An old value that looks live is the most dangerous thing a monitoring screen can show. [Industry] ISA-101
+
+## Charts
+
+- **The title is the answer** ("Over the limit at 14:00 and 15:00"), not the topic. [Task]
+- **Grey bars; the accent only on values out of range.** "Now" and the current period use the text colour. [Industry] ISA-101
+- **Every value against normal:** a band for the normal range, a tick for the 30-day baseline, a dashed line with a mono label for a limit.
+- **Write the abnormal value next to it** ("+250 kW"); colour is never the only cue. [Industry] WCAG 1.4.1
+- **Quiet axes:** one baseline, a few mono labels, no grid. Bars start at zero, square, flat.
+- **Never** pie charts, 3D, gradients, a colour per series, or a chart where a number would do.
+
 ## Containers
 
 Four kinds. A feature puts its content into one of them; it never invents a fifth. [Product]
@@ -248,6 +272,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.12** New: Layers (eight, fixed order, z tokens), Page states (loading, empty, offline), Charts (grey first, against normal, accent only out of range). Fixed from a full review: breakpoints are 1100 / 700 everywhere; on phones the AI panel is a sheet (medium, then large), not full screen, and the menu becomes a tab bar; overview lists every foundation; the overview-to-equipment demo is built on the shell; the site's own icons follow the icon rules; report bars no longer use the accent.
 - **1.11** New: Icons (one set, two sizes, one stroke, square). Bottom sheets get three heights (fit, medium, large) and one rule: grabber or close, never both. Page frame shows all four pages on one shell. Every motion example names its tokens and can be replayed; the AI mark's thinking animation matches the prototype.
 - **1.10** New: Containers (panel, popover, toast, card; one panel at a time; the panel in five situations) and Page frame (four regions; which are open on the overview, equipment, actions and reports pages). Fixed the motion examples: a press returns to rest, the toast and the meter replay, loops use `wave` and the `loop` duration.
 - **1.9** Motion is picked by what moves, from one list of curves and durations (`tokens.json` › motion). New: an `exit` curve for anything leaving, `wave` for loops, `linear` for spinners. Every transition in the prototype, the site and the component code now uses these values; `gc-motion` skill rewritten to match.
