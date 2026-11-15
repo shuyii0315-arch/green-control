@@ -71,7 +71,7 @@ Green Control does not show equipment as a table or an icon. It shows the machin
   - Why: icons only, because people spend a shift on one equipment screen and rarely switch sections. 64px fits a 44px tap target with 10px either side and leaves the most room for the drawing.
 - **Stage** in the middle: title + state tag, mono crumbs (`B1 / PLANT / CH-02`), then the **figure**, then the **evidence row** (one card per check, tagged with the questions of this topic, joined by dashed lines).
 - **Panel** (400px) on the right, frosted: the AI thread, an issue band in the accent, the ask box.
-  - Why: on a 1440px screen it leaves 976px for the drawing, so the machine stays the largest thing. At 16px text, 400px less padding gives about 45 characters a line, short enough to take in a headline at a glance. Below 1024px the panel becomes a bottom sheet and the drawing stays on top.
+  - Why: on a 1440px screen it leaves 976px for the drawing, so the machine stays the largest thing. At 16px text, 400px less padding gives about 45 characters a line, short enough to take in a headline at a glance. Below 1100px the panel becomes a bottom sheet and the drawing stays on top; below 700px the menu becomes a tab bar at the bottom, and an open sheet covers it.
 
 ### The figure (建模)
 

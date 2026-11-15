@@ -379,7 +379,7 @@ html[lang="zh-CN"] .t-label { letter-spacing: 0.02em; }
 .ring { width: 10px; height: 10px; border-radius: 99px; border: 1.5px solid var(--line); border-top-color: var(--accent); animation: spin 1200ms linear infinite; flex: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .tick { width: 12px; height: 12px; flex: none; color: var(--muted); }
-.tick path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.tick path { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; }
 .conf { display: grid; gap: 6px; width: 100%; min-width: 220px; }
 .conf-bar { display: flex; gap: 2px; height: 8px; }
 .conf-bar i { flex: 1; background: var(--line); }
@@ -398,7 +398,7 @@ html[lang="zh-CN"] .t-label { letter-spacing: 0.02em; }
 .draft { display: inline-flex; padding: 1px 6px; box-shadow: inset 0 0 0 1px var(--accent); color: var(--accent); }
 .toast { display: flex; align-items: center; gap: 12px; padding: 9px 14px 9px 12px; font-size: 13px; width: max-content; max-width: 100%; }
 .toast .div { width: 1px; height: 14px; background: var(--line); }
-.toast svg { width: 14px; height: 14px; stroke: var(--text); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.toast svg { width: 14px; height: 14px; stroke: var(--text); fill: none; stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; flex: none; }
 .toast-float { position: absolute; left: 50%; top: 64px; transform: translateX(-50%); z-index: 2; animation: toastIn 520ms var(--spring) both; }
 @keyframes toastIn { from { opacity: 0; transform: translate(-50%, -12px); } }
 .acrow { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 8px 12px; width: 100%; max-width: 340px; padding: 12px 14px; box-shadow: inset 0 0 0 1px var(--line); }
@@ -423,7 +423,7 @@ html[lang="zh-CN"] .t-label { letter-spacing: 0.02em; }
 .resp > div { padding: 18px; display: grid; gap: 8px; align-content: start; }
 .resp > div + div { box-shadow: inset 1px 0 0 var(--line); }
 .resp .bp { display: flex; align-items: center; gap: 8px; }
-.resp .bp svg { width: 20px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 1.2; }
+.resp .bp svg { width: 20px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 1.5; }
 
 /* ---------- responsive lab ---------- */
 .rlab-ctl { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -621,7 +621,7 @@ details.more > .codebox { margin-top: 8px; }
 .ask-in::placeholder { color: var(--muted); }
 .ask-in:focus-visible { outline: 0; }
 .ask-send { width: 34px; height: 34px; display: grid; place-items: center; background: var(--cta-bg); color: var(--cta-fg); }
-.ask-send svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+.ask-send svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; }
 .ask-send:disabled { background: var(--bg-raised); color: var(--muted); cursor: not-allowed; }
 .state.watch { color: var(--muted); }
 .state.opportunity { color: var(--text); }
@@ -1180,6 +1180,28 @@ pre.code { margin: 8px 0 0; padding: 16px; background: var(--bg-surface); box-sh
 
 .tk { display: grid; grid-template-columns: auto auto auto 1fr; gap: 4px 10px; align-items: baseline; }
 .tk code { background: none; padding: 0; }
+
+.tb-cap { position: absolute; left: 0; right: 0; top: 50%; border-top: 1.5px dashed var(--accent); z-index: 2; pointer-events: none; }
+.tb-cap span { position: absolute; right: 8px; top: -26px; font: 11px/1 var(--font-mono); padding: 4px 6px; background: var(--accent); color: var(--on-accent); }
+.trn .sh-nav { transition: width 520ms var(--ease), padding 520ms var(--ease); overflow: hidden; }
+.trn .sh-nav span, .trn .sh-bldg { transition: opacity 240ms var(--ease); white-space: nowrap; }
+.trn.go .sh-nav, .go .trn .sh-nav { width: 64px; padding: 22px 12px; }
+.go .trn .sh-nav span, .go .trn .sh-bldg { opacity: 0; transition: opacity 160ms var(--exit); }
+.go .trn .n-ov { background: none; color: var(--muted); } .go .trn .n-eq { background: var(--bg-raised); color: var(--text); }
+.trn .sh-ni { transition: background 240ms var(--ease), color 240ms var(--ease); }
+.trn .trn-eq { opacity: 0; transition: opacity 160ms var(--exit); }
+.trn .trn-ov { transition: opacity 240ms var(--ease) 160ms; }
+.go .trn .trn-ov { opacity: 0; transition: opacity 160ms var(--exit); }
+.go .trn .trn-eq { opacity: 1; transition: opacity 240ms var(--ease) 160ms; }
+.trn .trn-pn { transform: translateX(102%); transition: transform 280ms var(--exit); }
+.go .trn .trn-pn { transform: none; transition: transform 420ms var(--ease); }
+.ficons { display: flex; gap: 14px; color: var(--text); }
+.fcont, .fframe { position: relative; width: 120px; height: 76px; box-shadow: inset 0 0 0 1px var(--line); }
+.fcont i { position: absolute; right: 0; top: 0; bottom: 0; width: 40%; background: var(--bg-raised); }
+.fcont b { position: absolute; left: 12px; top: 12px; width: 34px; height: 14px; background: var(--accent); }
+.fframe i { position: absolute; left: 0; top: 0; bottom: 0; width: 18%; background: var(--bg-raised); }
+.fframe b { position: absolute; left: 18%; right: 0; top: 0; height: 18%; box-shadow: inset 0 -1px 0 var(--line); }
+.fframe u { position: absolute; right: 0; top: 0; bottom: 0; width: 28%; background: var(--bg-surface); box-shadow: -1px 0 0 var(--line); }
 </style>
 </head>
 <body>
@@ -1783,7 +1805,7 @@ Green Control does not show equipment as a table or an icon. It shows the machin
   - Why: icons only, because people spend a shift on one equipment screen and rarely switch sections. 64px fits a 44px tap target with 10px either side and leaves the most room for the drawing.
 - **Stage** in the middle: title + state tag, mono crumbs (`B1 / PLANT / CH-02`), then the **figure**, then the **evidence row** (one card per check, tagged with the questions of this topic, joined by dashed lines).
 - **Panel** (400px) on the right, frosted: the AI thread, an issue band in the accent, the ask box.
-  - Why: on a 1440px screen it leaves 976px for the drawing, so the machine stays the largest thing. At 16px text, 400px less padding gives about 45 characters a line, short enough to take in a headline at a glance. Below 1024px the panel becomes a bottom sheet and the drawing stays on top.
+  - Why: on a 1440px screen it leaves 976px for the drawing, so the machine stays the largest thing. At 16px text, 400px less padding gives about 45 characters a line, short enough to take in a headline at a glance. Below 1100px the panel becomes a bottom sheet and the drawing stays on top; below 700px the menu becomes a tab bar at the bottom, and an open sheet covers it.
 
 ### The figure (建模)
 
@@ -2749,7 +2771,7 @@ const COMPONENTS = [
   { id: "causes-check", group: "Organisms", name: "Causes & suggested check", html: causesS,
     what: "Unsure? List the causes and the one check that tells them apart.",
     use: ["Below 50%, and in the draft band when causes compete."], not: ["Ranking causes it hasn't checked.", "A fix disguised as a check."],
-    resp: ["In the panel.", "In the sheet.", "Full screen; Assign spans the width."],
+    resp: ["In the panel.", "In the sheet.", "In the sheet; Assign spans the width."],
     states: [S("Below 50%", "Causes equally possible; only a check.", causesS), S("Draft band", "A leading cause carries the confidence; the others read 'maybe'.", causesS.replace("What it could be · 41%", "What it could be · 58%").replace('<span>Debris in the door track</span><span class="t-label">possible</span>', '<span>Debris in the door track</span><span class="t-label accent">likely</span>').replace(/<span class="t-label">possible<\/span>/g, '<span class="t-label">maybe</span>'))] },
 ];
 
@@ -2759,11 +2781,11 @@ const AIP_PLAN = aip("Proposed", "Issue · CH-02 · ¥312 today", `<span class="
 const AIP_SAVE = aip("Proposed", "Opportunity · BT-01 · saves ¥21,500", `<span class="t-small">Tomorrow 14:00–17:00 passes the 3,100 kW limit by 250 kW. Charging BT-01 tonight covers it.</span><div class="chips">${chip(1, "Peak tomorrow")}${chip(2, "Battery at 64%")}${chip(3, "250 kW fits")}${chip(4, "Free tomorrow")}</div>${confBlock(88)}`, '<button class="pbtn primary">Apply</button>');
 const AIP_DRAFT = aip("Draft", "Issue · CT-2", `<span class="t-small">Most likely the CT-2 fan (58%). Fouled fill isn't ruled out yet.</span>${chips(2)}${confBlock(58)}`, '<button class="pbtn">Review</button><button class="pbtn primary">Apply</button>');
 const AIP_CHECK = aip("Check", "Issue · EL-04", `<span class="t-small">The data fits three causes equally, so I'm not suggesting a fix.</span><div class="chips">${chip(1, "Door current +18%")}${chip(2, "2 reports")}</div>${confBlock(41)}`, '<button class="pbtn primary">Assign a check</button><button class="pbtn">Keep watching</button>');
-const AIP_DEVICES = `<div class="aip-devices"><div><div class="dv dv-d"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Desktop · 400px column</span></div><div><div class="dv dv-t"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Tablet · sheet over the drawing</span></div><div><div class="dv dv-p"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Phone · full screen</span></div></div>`;
+const AIP_DEVICES = `<div class="aip-devices"><div><div class="dv dv-d"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Desktop · 400px column</span></div><div><div class="dv dv-t"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Tablet · sheet over the drawing</span></div><div><div class="dv dv-p"><i class="art"></i><i class="pn"></i></div><span class="t-small muted">Phone · sheet, medium or large</span></div></div>`;
 const AIP_COMPONENT = { id: "ai-panel", group: "Organisms", name: "AI panel", html: AIP_PLAN,
     what: "Where the AI reports. The frame is fixed: header, band, thread, action bar, ask box. What sits inside follows the situation and the confidence.",
     use: ["Every equipment screen: on the right on a monitor, as a sheet on smaller screens."], not: ["A second panel for the same machine.", "A pop-up dialog instead of the panel."],
-    resp: ["400px column on the right.", "A sheet over the drawing; the drawing stays on top.", "Full screen; the action bar spans the width at the bottom."],
+    resp: ["400px column on the right.", "A sheet over the drawing at medium height; the drawing stays on top.", "A sheet at medium height; drag up to large. The action bar spans the width."],
     states: [S("Checking", "Reads sources one at a time; each lands as a chip.", aip("Investigating", "Issue · CH-02 · ¥312 today", `<span class="t-small muted">Checking 3 sources…</span><div class="chips">${chip(1, "More power")}${chip(2, "Running hot")}${chip(3, "Overdue cleaning", "is-checking")}</div>`, "")), S("Proposed", "Evidence, confidence, one plan.", AIP_PLAN), S("Applied", "Says what changed, with Undo.", aip("Applied", "Issue · CH-02 · ¥312 today", `<span class="t-small">Moved 20% of the load to Chiller 1.</span>${toastS("", "Plan applied")}`, ""))] };
 COMPONENTS.push(AIP_COMPONENT);
 const CMP = (id) => COMPONENTS.find((c) => c.id === id);
@@ -2940,15 +2962,18 @@ const PAGES = {};
 /* OVERVIEW */
 PAGES.overview = () => `${head("Green Control · Design System 1.11", "Evidence first.<br><span class=\"accent\">People decide.</span>", "How Green Control looks and how its AI behaves. Built for people and for coding agents.", `<a class="cta" href="#/howto">How to use</a><a class="btn-ghost" href="#/changelog">Changelog</a>`)}
 <div class="hero-fig"><div class="dots"></div><img src="img/proto-investigate.webp" alt="The Green Control prototype: the chiller plant with three numbered evidence marks, and the AI panel"><span class="cap">Prototype · Investigate Chiller 2</span></div>
-<div class="ostats">${[["15", "components", "6 atoms · 6 molecules · 3 organisms"], ["6", "AI states", "watching to undone"], ["3", "confidence bands", "plan · draft · check"], ["2", "themes", "night and day, one set of names"], ["16", "Figma components", "matched to code"]].map(([n, k, d]) => `<div><span class="t-num">${n}</span><span class="t-small muted">${k}</span></div>`).join("")}</div>
+<div class="ostats">${[["16", "components", "6 atoms · 6 molecules · 4 organisms"], ["6", "AI states", "watching to undone"], ["3", "confidence bands", "plan · draft · check"], ["2", "themes", "night and day, one set of names"], ["16", "Figma components", "matched to code"]].map(([n, k, d]) => `<div><span class="t-num">${n}</span><span class="t-small muted">${k}</span></div>`).join("")}</div>
 
 ${guide("01", "Foundations", "brand")}
 <div class="ftiles">
   <a href="#/logo" class="ftile"><div class="fprev"><div class="dots"></div>${LOGO("logo").replace('class="logo"', 'class="logo" style="width:72px;height:72px"')}</div><span class="t-strong">Logo</span><span class="t-small muted">A 5×5 dot G, one dot lit.</span></a>
   <a href="#/color" class="ftile"><div class="fprev fcolor"><div data-gc="night"><i style="background:var(--bg-page)"></i><i style="background:var(--bg-surface)"></i><i style="background:var(--bg-raised)"></i><i style="background:var(--muted)"></i><i style="background:var(--text)"></i><i class="sig" style="background:var(--accent)"></i></div><div data-gc="day"><i style="background:var(--bg-page)"></i><i style="background:var(--bg-surface)"></i><i style="background:var(--bg-raised)"></i><i style="background:var(--muted)"></i><i style="background:var(--text)"></i><i class="sig" style="background:var(--accent)"></i></div></div><span class="t-strong">Color</span><span class="t-small muted">Greys and one signal per theme.</span></a>
   <a href="#/typography" class="ftile"><div class="fprev ftype"><span class="aa">Hanken Grotesk</span><span class="mo">DM Mono</span></div><span class="t-strong">Typography</span><span class="t-small muted">Hanken Grotesk + DM Mono.</span></a>
-  <a href="#/materials" class="ftile"><div class="fprev"><span class="scanbox">2</span></div><span class="t-strong">Motion</span><span class="t-small muted">One ease, one spring; motion that means something.</span></a>
-  <a href="#/materials" class="ftile"><div class="fprev"><div class="dots"></div><div class="pool"></div><div class="glass" style="position:relative;padding:8px 12px"><span class="t-label muted">glass</span></div></div><span class="t-strong">Materials & particles</span><span class="t-small muted">Glass, dot field, pool, the assemble.</span></a>
+  <a href="#/materials" class="ftile"><div class="fprev"><div class="dots"></div><div class="pool"></div><div class="glass" style="position:relative;padding:8px 12px"><span class="t-label muted">glass</span></div></div><span class="t-strong">Materials</span><span class="t-small muted">Page, glass, block; dot field, pool, the assemble.</span></a>
+  <a href="#/motion" class="ftile"><div class="fprev"><span class="scanbox">2</span></div><span class="t-strong">Motion</span><span class="t-small muted">Picked by what moves: nine durations, five curves.</span></a>
+  <a href="#/icons" class="ftile"><div class="fprev ficons">${["overview", "equipment", "actions", "reports"].map((n) => icon(n, 18)).join("")}</div><span class="t-strong">Icons</span><span class="t-small muted">One set, one stroke, two sizes.</span></a>
+  <a href="#/containers" class="ftile"><div class="fprev"><div class="fcont"><i></i><b></b></div></div><span class="t-strong">Containers</span><span class="t-small muted">Panel, popover, toast, card.</span></a>
+  <a href="#/frame" class="ftile"><div class="fprev"><div class="fframe"><i></i><b></b><u></u></div></div><span class="t-strong">Page frame</span><span class="t-small muted">Four regions on every page.</span></a>
   <a href="#/illustration" class="ftile"><div class="fprev"><div class="crop" data-crop style="position:absolute;inset:0;height:auto;box-shadow:none;background-image:url(img/plant-${root.dataset.gc}.webp);background-position:50% 55%;background-size:78%;background-repeat:no-repeat"></div><span class="alab hot" style="left:36%;top:33%"><span class="k">CH-02</span><span class="v">+14%</span></span></div><span class="t-strong">Illustration</span><span class="t-small muted">The machine, drawn; one part lit.</span></a>
 </div>
 
@@ -3071,7 +3096,7 @@ PAGES.typography = () => `${head("Foundations", "Typography", "Two families with
 const seqEnd = (seq) => Math.max(...seq.map((x) => x[1]));
 function lockFor(b, ms) { b.disabled = true; clearTimeout(b._lk); b._lk = setTimeout(() => (b.disabled = false), ms); }
 function playSeq(st, seq) { (st._t || []).forEach(clearTimeout); st._t = seq.map(([c, t]) => setTimeout(() => (c[0] === "-" ? st.classList.remove(c.slice(1)) : st.classList.add(c)), t)); }
-const CT_SEQ = { nest: [["tap", 0], ["go", 300], ["-tap", 700], ["-go", 2600]] };
+const CT_SEQ = { nest: [["tap", 0], ["go", 300], ["-tap", 700], ["-go", 2600]], trn: [["go", 200], ["-go", 3400]] };
 function fitCanvases() { $$(".cv").forEach((c) => c.style.setProperty("--k", c.clientWidth / +c.dataset.w)); }
 window.addEventListener("resize", () => fitCanvases());
 const cv = (w, h, inner, cls = "") => `<div class="cv ${cls}" data-w="${w}" style="aspect-ratio:${w}/${h}"><div class="cv-in" style="width:${w}px;height:${h}px">${inner}</div></div>`;
@@ -3099,14 +3124,14 @@ const PH_SCENES = [
   { t: "AI investigation", det: "medium", c: "Medium, not dimmed: the drawing stays visible to check the evidence. Grabber; drag down to lower it.", title: "", body: AIP_PLAN.replace('<div class="glass aip">', '<div class="aip">') },
   { t: "Shift handover", det: "medium", c: "Medium, not dimmed, like a comments sheet: notes scroll, the text field stays at the bottom.", title: "Shift handover · 3 notes", body: note("Night · Ana Ruiz · 06:40", "Chiller 2 ran hot after 05:00. Moved 20% of the load to Chiller 1.") + note("Evening · Wei Chen · 22:10", "Condenser cleaning booked for Saturday 08:00.") + note("Day · Omar Haddad · 14:05", "Battery BT-01 charged for tomorrow's peak."), foot: askBox().replace("Ask about Chiller 2…", "Write a note for the next shift…") },
   { t: "Equipment details", det: "large", c: "Opens at medium; dragged up to large to read every reading. The page shows above it, so it's clear where you are.", title: "Chiller 2 · readings", body: stOf("evidence-card", 0) + stOf("evidence-card", 0).replace("+2.8", "+14%").replace("°C above normal", "vs Chiller 1") + stOf("evidence-card", 0).replace("+2.8", "14").replace("°C above normal", "months since cleaning") },
-  { t: "Assign to someone", det: "fit", c: "As tall as its content, dimmed, with a close button: pick a person and it's done.", title: "Assign to", body: person("Ana Ruiz", "Maintenance B", true) + person("Wei Chen", "Maintenance B") + person("Omar Haddad", "Controls"), foot: '<button class="cta tb-wide">Assign</button>' },
-  { t: "Filters and alerts", det: "fit", c: "As tall as its content, dimmed, with a close button. Four settings don't need a full screen.", title: "Filters and alerts", body: optRow("Time", ["Today", "7 days", "30 days"]) + optRow("Systems", ["All", "Cooling", "Power"]) + optRow("Alert me about", ["Issues", "Everything"]) + optRow("Quiet hours", ["On", "Off"], 1), foot: '<button class="cta tb-wide">Apply</button>' },
+  { t: "Assign to someone", det: "fit", c: "As tall as its content (three people), dimmed, with a close button. The dashed line is the 50% cap: with more people, the list scrolls and Assign stays pinned.", title: "Assign to", body: person("Ana Ruiz", "Maintenance B", true) + person("Wei Chen", "Maintenance B") + person("Omar Haddad", "Controls"), foot: '<button class="cta tb-wide">Assign</button>' },
+  { t: "Filters and alerts", det: "fit", c: "Four settings, so a little taller than Assign; still under the cap. Same rule, different content, different height.", title: "Filters and alerts", body: optRow("Time", ["Today", "7 days", "30 days"]) + optRow("Systems", ["All", "Cooling", "Power"]) + optRow("Alert me about", ["Issues", "Everything"]) + optRow("Quiet hours", ["On", "Off"], 1), foot: '<button class="cta tb-wide">Apply</button>' },
 ];
 const phoneCV = (sc) => { const fixed = sc.det === "fit"; const h = fixed ? "" : `height:${Math.round(PH_H * DET[sc.det])}px`;
   return cv(PH_W, PH_H, `<div class="tb">
 <div class="tb-head"><span class="t-headline">Chiller 2</span>${stateTag("issue", "Issue")}</div>
 <img src="img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt="" class="tb-art">
-${fixed ? '<div class="tb-scrim"></div>' : ""}
+${fixed ? '<div class="tb-scrim"></div><div class="tb-cap"><span>Max 50%</span></div>' : ""}
 <div class="glass tb-sheet${fixed ? " fit" : ""}" style="${h}">${fixed ? "" : '<span class="tb-grab"></span>'}${sc.title || fixed ? `<div class="tb-title"><span class="t-strong">${sc.title}</span>${fixed ? `<span class="tb-x">${icon("close", 18)}</span>` : ""}</div>` : ""}<div class="tb-body">${sc.body}</div>${sc.foot ? `<div class="tb-foot">${sc.foot}</div>` : ""}</div></div>`, "tab"); };
 const HEIGHTS = `<div class="tb-cell tb-rules"><span class="t-strong t-small">Three heights, one rule</span>
 <div class="tb-h"><span class="tb-hbar" style="height:18%"></span><div><span class="t-strong t-small">Fit</span><span class="t-small muted">As tall as the content, up to half. Pick and go: dimmed, close button, no grabber.</span></div></div>
@@ -3150,8 +3175,8 @@ PAGES.frame = () => `${head("Foundations", "Page frame", "Every page is built fr
 <table class="table" style="margin-top:20px"><thead><tr><th>Page</th><th>The person is…</th><th>Menu</th><th>Header tools</th><th>Main</th><th>Panel</th></tr></thead><tbody>${FRAMES.map((f) => `<tr><td class="t-strong">${f.t}</td><td>${f.task}</td><td>${f.nav}</td><td>${f.tools}</td><td>${f.m}</td><td>${f.p}</td></tr>`).join("")}</tbody></table>
 <div class="nest-notes" style="margin-top:20px"><div><span class="t-strong">The menu folds only on the equipment page.</span><span class="t-small muted">Why: only that page keeps a panel open, so it needs the width for the drawing and the panel. Elsewhere an open menu tells people where they are.</span></div><div><span class="t-strong">The header has a fixed height; the title is always in the same place.</span><span class="t-small muted">Why: when the page changes, the eye doesn't hunt for the title. The right side holds only that page's tools.</span></div><div><span class="t-strong">Main takes the width that is left. No fixed pixel positions.</span><span class="t-small muted">Why: control-room monitors, tablets and phones are all different widths.</span></div></div>
 <h2 id="switch">From the overview to an equipment page</h2>
-<p class="sub">The real prototype. The menu folds (move 520 ms) while the AI panel slides in (in 420 ms).</p>
-<div class="ct">${cv(1440, 900, `<iframe class="fr-live" title="Green Control prototype" loading="lazy" src="https://shuyii0315-arch.github.io/green-control/?state=s2"></iframe>`)}<button class="pbtn" id="frReplay">Replay</button></div>`;
+<p class="sub">The menu folds (motion.move 520ms) while the AI panel slides in (motion.in 420ms) and the page changes underneath (motion.small-in 240ms).</p>
+<div class="ct">${cv(1440, 900, `<div class="sh trn">${shellNav(true, "overview").replace('<div class="sh-ni on">', '<div class="sh-ni on n-ov">').replace('<div class="sh-ni">' + icon("equipment", 18), '<div class="sh-ni n-eq">' + icon("equipment", 18))}<div class="sh-main trn-ov" style="left:232px;right:0">${shellHead("Overview", "B1 / Live 15:40", "")}<img class="sh-art" src="img/building-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt=""><div class="sh-cards">${alertS("is-new")}</div></div><div class="sh-main trn-eq" style="left:64px;right:400px">${shellHead(`Chiller 2 ${stateTag("issue", "Issue")}`, "B1 / Plant / CH-02", "")}<img class="sh-art" src="img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp" alt=""></div><div class="sh-panel trn-pn">${AIP_PLAN.replace('<div class="glass aip">', '<div class="aip">')}</div></div>`)}<button class="pbtn ct-play" data-ct="trn">Play</button></div>`;
 
 /* motion examples, built from real screens and components */
 const PLANT = () => `img/plant-${root.dataset.gc === "day" ? "day" : "night"}.webp`;
@@ -3360,7 +3385,7 @@ PAGES.responsive = () => `${head("Foundations", "Responsive", "One screen, from 
 <p class="sub">Container queries, not device sniffing: each part answers to the width it actually has.</p><table class="table bp-table"><thead><tr><th>Width</th><th>Drawing</th><th>Evidence</th><th>AI panel</th></tr></thead><tbody>
 <tr><td class="mono">1100+</td><td>Centre stage, with labels and marks</td><td>Three cards under the drawing</td><td>400px column on the right</td></tr>
 <tr><td class="mono">700 – 1099</td><td>Top half, still turnable</td><td>Moves into the sheet as chips</td><td>Bottom sheet over the drawing, frosted</td></tr>
-<tr><td class="mono">under 700</td><td>A strip; tap to open full screen</td><td>Chips in the thread</td><td>The whole screen; Apply spans the width; tab bar at the bottom</td></tr></tbody></table>
+<tr><td class="mono">under 700</td><td>A strip; tap to open full screen</td><td>Chips in the thread</td><td>A sheet at medium height, dragged up to large; Apply spans the width. The menu becomes a tab bar at the bottom; an open sheet covers it.</td></tr></tbody></table>
 <h2 id="keep">What never changes</h2>
 <div class="steps">
   <div><span>The order: evidence, then confidence, then the plan. A small screen gets less of each, never a different order.</span></div>
@@ -3514,7 +3539,7 @@ PAGES.skills = PAGES.workflow = () => `${head("Start", "Skills", "A skill is a s
 <h2 id="flow">The whole AI flow</h2><p class="sub">One skill. It walks the AI through seven steps, from "how sure am I" to "what rule should change". Open a step to see what it changes.</p>
 <div class="sk-main"><div class="sk-main-hd"><span class="sk-id t-data">/green-control</span><span class="t-small muted">For example, you say: <span class="t-strong">“Build me a screen for the elevator fault.”</span></span><button class="pbtn" data-skill="green-control">Copy skill</button></div>
 <div class="sk-list">${FLOW.map(([id, t, kind, what], i) => skRow([id, t, kind, what, null], i + 1)).join("")}</div></div>
-<h2 id="craft">Component details</h2><p class="sub">Five small skills, one job each. Use any of them on any of the 15 components.</p>
+<h2 id="craft">Component details</h2><p class="sub">Five small skills, one job each. Use any of them on any of the 16 components.</p>
 <div class="sk-list">${CRAFT.map((r) => skRow(r)).join("").replace('<details class="sk">', '<details class="sk" open>')}</div>
 <h2 id="trust">What AI can do, and what only you can do</h2>
 <div class="wf-trust wf-two">
@@ -3574,7 +3599,7 @@ PAGES.voice = () => `${head("AI behaviour", "How the AI speaks", "A colleague re
 /* ---------- page init hooks ---------- */
 const INIT = {};
 INIT.containers = () => { fitCanvases(); $$(".ct-play").forEach((b) => (b.onclick = () => { if (b.disabled) return; const q = CT_SEQ[b.dataset.ct]; lockFor(b, seqEnd(q) + 700); playSeq(b.closest(".ct").querySelector(".cv"), q); })); };
-INIT.frame = () => { fitCanvases(); const t = $("#rgOn"); if (t) t.onchange = () => $(".fr-four").classList.toggle("rg-on", t.checked); const r = $("#frReplay"); if (r) r.onclick = () => { const f = $(".fr-live"); f.src = f.src.split("&r=")[0] + "&r=" + Date.now(); }; };
+INIT.frame = () => { fitCanvases(); $$(".ct-play").forEach((b) => (b.onclick = () => { if (b.disabled) return; const q = CT_SEQ[b.dataset.ct]; lockFor(b, seqEnd(q) + 800); playSeq(b.closest(".ct").querySelector(".cv"), q); })); const t = $("#rgOn"); if (t) t.onchange = () => $(".fr-four").classList.toggle("rg-on", t.checked); const r = $("#frReplay"); if (r) r.onclick = () => { const f = $(".fr-live"); f.src = f.src.split("&r=")[0] + "&r=" + Date.now(); }; };
 INIT.workflow = INIT.skills = () => { if (INIT.agents) INIT.agents(); $$("[data-skill]").forEach((b) => (b.onclick = (e) => { e.preventDefault(); copyText(SKILL_SRC[b.dataset.skill], b); })); $$("[data-snip]").forEach((b) => (b.onclick = () => copyText(b.dataset.snip, b))); };
 INIT.howto = () => {
   const draw = () => { const r = ROLES_HT[htRole];
@@ -3866,6 +3891,21 @@ segInd(document);
 /* Chinese version: every English sentence on the page has a translation in ZH; the page itself is written once, in English. */
 (() => {
   const ZH = {
+  "The menu folds (motion.move 520ms) while the AI panel slides in (motion.in 420ms) and the page changes underneath (motion.small-in 240ms).": "导航收起（motion.move 520ms），同时 AI 面板滑进来（motion.in 420ms），下面的页面换成设备页（motion.small-in 240ms）。",
+  "Max 50%": "最高 50%",
+  "As tall as its content (three people), dimmed, with a close button. The dashed line is the 50% cap: with more people, the list scrolls and Assign stays pinned.": "高度跟内容走（三个人），加暗色，有关闭按钮。虚线是 50% 的上限：人再多，列表在里面滚动，“派人”按钮固定在底部。",
+  "Four settings, so a little taller than Assign; still under the cap. Same rule, different content, different height.": "四项设置，所以比“派给”高一点，但仍在上限以内。同一条规则，内容不同，高度就不同。",
+  "Phone · sheet, medium or large": "手机 · 底部弹层，中等或大",
+  "A sheet over the drawing at medium height; the drawing stays on top.": "盖在图纸上的弹层，中等高度；图纸露在上面。",
+  "A sheet at medium height; drag up to large. The action bar spans the width.": "中等高度的弹层，往上拖变大。操作栏占满宽度。",
+  "In the sheet; Assign spans the width.": "在弹层里；“派人”占满宽度。",
+  "A sheet at medium height, dragged up to large; Apply spans the width. The menu becomes a tab bar at the bottom; an open sheet covers it.": "中等高度的弹层，可往上拖到大；“执行”占满宽度。导航变成底部标签栏；弹层打开时盖住它。",
+  "Page, glass, block; dot field, pool, the assemble.": "页面、玻璃、块；点阵、光晕、拼装。",
+  "Picked by what moves: nine durations, five curves.": "按“什么在动”来选：9 个时长、5 条曲线。",
+  "One set, one stroke, two sizes.": "一套、一种线宽、两种尺寸。",
+  "Panel, popover, toast, card.": "面板、小卡、Toast、卡片。",
+  "Four regions on every page.": "每一页都是四个区。",
+  "6 atoms · 6 molecules · 4 organisms": "6 个原子 · 6 个分子 · 4 个组织",
   "Icons, sheet heights, replayable motion": "图标、弹层高度、可重播的动效",
   "Icons had never been collected; sheet heights were picked by eye; motion examples didn't name their tokens and some didn't replay.": "图标从没整理过；弹层高度是凭感觉定的；动效示例没写 token 名，有的还不能重播。",
   "Icons: one set of 16, two sizes, one stroke, square corners. Applied to the prototype.": "图标：一套 16 个，两种尺寸，一种线宽，直角。已用到原型里。",
@@ -5612,7 +5652,7 @@ segInd(document);
  "Ten small instructions for an AI, one job each. Three for components, seven for the AI loop.": "十份给 AI 的小说明书，一份只管一件事。三个管组件，七个管 AI 流程。",
  "Install all ten": "一次装好十个",
  "For components": "管组件",
- "How a part should move, which states it needs, and how to break it. Use them on any of the 15 components.": "组件该怎么动、需要哪些状态、怎么用极端数据测它。15 个组件都能用。",
+ "How a part should move, which states it needs, and how to break it. Use them on any of the 16 components.": "组件该怎么动、需要哪些状态、怎么用极端数据测它。16 个组件都能用。",
  "For the AI loop": "管 AI 流程",
  "Six steps from rule to screen and back. Four of them have skills.": "从规则到页面再回到规则，一共六步，其中四步有 skill。",
  "Animate a component": "给组件加动效",
@@ -5626,7 +5666,7 @@ segInd(document);
  "Read the skill": "看 skill 原文",
  "Twelve small instructions for an AI, one job each. Five for components, seven for the AI loop.": "十二份给 AI 的小说明书，一份只管一件事。五个管组件，七个管 AI 流程。",
  "Install all twelve": "一次装好十二个",
- "How a part moves, which states it needs, how it holds up to bad data, keyboards and small screens. They work on all 15 components.": "组件怎么动、需要哪些状态、扛不扛得住极端数据、键盘和小屏幕。15 个组件都适用。",
+ "How a part moves, which states it needs, how it holds up to bad data, keyboards and small screens. They work on all 16 components.": "组件怎么动、需要哪些状态、扛不扛得住极端数据、键盘和小屏幕。16 个组件都适用。",
  "Make it accessible": "无障碍",
  "Keyboard, focus ring, contrast in both themes, labels a screen reader can read. Never colour alone.": "能用键盘操作、有聚焦框、两套主题对比度都够、读屏软件读得出来。不只靠颜色表达。",
  "“Can someone use this alert card without a mouse?”": "“不用鼠标能操作这张告警卡片吗？”",
@@ -5682,7 +5722,7 @@ segInd(document);
  "For example, you say:": "比如你说：",
  "Copy skill": "复制 skill",
  "Component details": "组件细节",
- "Five small skills, one job each. Use any of them on any of the 15 components.": "五个小 skill，一个只管一件事。15 个组件都能用。",
+ "Five small skills, one job each. Use any of them on any of the 16 components.": "五个小 skill，一个只管一件事。16 个组件都能用。",
  "From its confidence: only suggest a check, draft a plan, or offer a plan.": "按把握度决定：只建议检查、给草稿，还是给方案。",
  "Which cards prove the point, in what order, tagged with the next question.": "用哪几张卡片当证据、按什么顺序，每张标上人接下来会问的问题。",
  "Only our tokens and components, night and day.": "只用我们的 token 和组件，夜间日间都要做。",
