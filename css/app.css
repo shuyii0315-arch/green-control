@@ -102,7 +102,7 @@ h1, h3 { margin: 0; font-weight: inherit; }
 @media (prefers-reduced-motion: reduce) { .anim, .anim * { transition-duration: 1ms !important; } }
 
 /* ---------- navigation ---------- */
-#nav { position: absolute; left: 0; top: 0; bottom: 0; width: 232px; border-right: 1px solid var(--line); background: var(--bg-page); display: flex; flex-direction: column; padding: 20px 16px; overflow: hidden; z-index: 5; }
+#nav { position: absolute; left: 0; top: 0; bottom: 0; width: 252px; border-right: 1px solid var(--line); background: var(--bg-page); display: flex; flex-direction: column; padding: 20px 16px; overflow: hidden; z-index: 5; }
 #app.s2 #nav { width: 64px; padding: 20px 12px; }
 .brand { display: flex; align-items: center; gap: 12px; height: 36px; padding-left: 6px; }
 .brand-text, .nav-label, .who-name { white-space: nowrap; transition: opacity 240ms var(--ease); }
@@ -504,11 +504,11 @@ h1, h3 { margin: 0; font-weight: inherit; }
 #rail .arr { transition: transform 420ms var(--ease); transform-box: fill-box; transform-origin: center; }
 #app.s2 #rail { display: grid; }
 #app.s2.nav-open #rail .arr { transform: scaleX(-1); }
-#app.s2.nav-open #nav { width: 232px; padding: 20px 16px; }
+#app.s2.nav-open #nav { width: 252px; padding: 20px 16px; }
 #app.s2.nav-open .brand-text, #app.s2.nav-open .nav-label, #app.s2.nav-open .bldg, #app.s2.nav-open .who-name { opacity: 1; pointer-events: auto; transition-delay: 160ms; }
 #app.s2.nav-open .nav-foot { flex-direction: row; gap: 10px; }
 #app.s2.nav-open .badge { position: static; }
-#app.s2.nav-open #stage { transform: translateX(168px) scale(0.819); transform-origin: 0 50%; }
+#app.s2.nav-open #stage { transform: translateX(188px) scale(0.7974); transform-origin: 0 50%; }
 #app.s2.nav-open #head2 { left: 276px; }
 #app.s2:not(.nav-open) #nav { overflow: visible; }
 #app.s2:not(.nav-open) .nav-item:hover .nav-label { opacity: 1; position: absolute; left: 50px; padding: 4px 8px; background: var(--bg-raised); color: var(--text); font-size: 12px; box-shadow: var(--drop-sm); pointer-events: none; transition-delay: 300ms; }
@@ -738,7 +738,7 @@ h1, h3 { margin: 0; font-weight: inherit; }
 /* the grid: the page's real axes, dashed; zones numbered on them */
 #grid { position: absolute; inset: 0; pointer-events: none; z-index: 2; transition: opacity 420ms var(--ease); }
 #grid i { position: absolute; display: block; }
-#grid .gh { left: 232px; right: 0; height: 1px; background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--muted) 40%, transparent) 0 2px, transparent 2px 5px); }
+#grid .gh { left: 252px; right: 0; height: 1px; background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--muted) 40%, transparent) 0 2px, transparent 2px 5px); }
 #grid .gh.t { top: 118px; } #grid .gh.b { top: 876px; }
 #grid .gv { top: 118px; height: 758px; width: 1px; background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--muted) 40%, transparent) 0 2px, transparent 2px 5px); transition: left 520ms var(--ease), opacity 280ms var(--ease); }
 #grid .v1 { left: 276px; } #grid .v2 { left: 470px; } #grid .v3 { left: 1040px; }
@@ -823,7 +823,7 @@ h1, h3 { margin: 0; font-weight: inherit; }
 .nav-item svg *, #theme svg *, #rail svg *, .icon-btn svg *, .x svg *, .send svg *, .chev *, .chk *, .pl-dot svg * { vector-effect: non-scaling-stroke; }
 
 /* ---------- 12-column grid (overview) ----------
-   Content runs from the title's left edge (276) to the toolbar's right edge (1416): 1140px.
+   The menu is 252px; content runs from 276 to 1416 (1140px), so the gap after the menu and the right margin are both 24px.
    12 columns of 73px with 24px gutters; 24px is also the page margin, so one number spaces everything.
    Readings take columns 1–2, the building 3–8, insights 9–12. Press G to show the columns. */
 .stage-tools { right: 372px; }                 /* ends at column 8 (1028) */

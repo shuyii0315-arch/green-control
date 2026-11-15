@@ -72,7 +72,7 @@ Green Control does not show equipment as a table or an icon. It shows the machin
 - **Stage** in the middle: title + state tag, mono crumbs (`B1 / PLANT / CH-02`), then the **figure**, then the **evidence row** (one card per check, tagged with the questions of this topic, joined by dashed lines).
 - **Panel** (400px) on the right, frosted: the AI thread, an issue band in the accent, the ask box.
   - Why: on a 1440px screen it leaves 976px for the drawing, so the machine stays the largest thing. At 16px text, 400px less padding gives about 45 characters a line, short enough to take in a headline at a glance. Below 1100px the panel becomes a bottom sheet and the drawing stays on top; below 700px the menu becomes a tab bar at the bottom, and an open sheet covers it.
-- **Overview grid**: 12 columns of 73px with 24px gutters, from the title's left edge to the toolbar's right edge (1140px on a 1440px screen). Readings take columns 1–2, the building 3–8, insights 9–12. Press G in the prototype to see them.
+- **Overview grid**: the menu is 252px, then 24px, then 12 columns of 73px with 24px gutters (1140px), then a 24px margin. On the equipment screen the same 24px sits between the rail, the stage and the panel. Readings take columns 1–2, the building 3–8, insights 9–12. Press G in the prototype to see them.
   - Why: the overview holds three things side by side, so they share columns instead of hand-placed edges. The gutter equals the page margin (24px), so one number spaces the whole page. Equipment screens keep the fixed rail + panel above: they have one subject, the drawing, and nothing else to line up.
 
 ### The figure (建模)
@@ -274,7 +274,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
-- **1.14** New: a 12-column grid on the overview (73px columns, 24px gutters). Readings, building and insights now sit on columns; press G to show them.
+- **1.14** New: a 12-column grid on the overview (73px columns, 24px gutters). The menu widened from 232 to 252px so the gap after it matches the right margin (24px). Readings, building and insights now sit on columns; press G to show them.
 - **1.13** Skills split: the one big skill became seven, one per step (gc-confidence, gc-evidence, gc-build-screen, gc-draw-equipment, gc-ai-voice, gc-review, gc-learn-rule), plus a short index (green-control). New: gc-chart, which turns data into a chart that follows the chart rules with make_chart.py and warns when a rule is broken.
 - **1.12** New: Layers (eight, fixed order, z tokens), Page states (loading, empty, offline), Charts (grey first, against normal, accent only out of range). Fixed from a full review: breakpoints are 1100 / 700 everywhere; on phones the AI panel is a sheet (medium, then large), not full screen, and the menu becomes a tab bar; overview lists every foundation; the overview-to-equipment demo is built on the shell; the site's own icons follow the icon rules; report bars no longer use the accent.
 - **1.11** New: Icons (one set, two sizes, one stroke, square). Bottom sheets get three heights (fit, medium, large) and one rule: grabber or close, never both. Page frame shows all four pages on one shell. Every motion example names its tokens and can be replayed; the AI mark's thinking animation matches the prototype.
