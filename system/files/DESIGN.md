@@ -1,7 +1,7 @@
 # Green Control · DESIGN.md
 
 The design system behind AI GC · Green Control, an AI that watches a building's energy systems with the people who run them.
-Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.12.
+Written for designers, engineers and AI agents. Tokens live in `tokens.json` (W3C DTCG format). Version 1.13.
 
 ## The one idea
 
@@ -272,6 +272,7 @@ AI panel (the frame stays the same; what goes inside changes with the situation)
 
 ## Changelog
 
+- **1.13** Skills split: the one big skill became seven, one per step (gc-confidence, gc-evidence, gc-build-screen, gc-draw-equipment, gc-ai-voice, gc-review, gc-learn-rule), plus a short index (green-control). New: gc-chart, which turns data into a chart that follows the chart rules with make_chart.py and warns when a rule is broken.
 - **1.12** New: Layers (eight, fixed order, z tokens), Page states (loading, empty, offline), Charts (grey first, against normal, accent only out of range). Fixed from a full review: breakpoints are 1100 / 700 everywhere; on phones the AI panel is a sheet (medium, then large), not full screen, and the menu becomes a tab bar; overview lists every foundation; the overview-to-equipment demo is built on the shell; the site's own icons follow the icon rules; report bars no longer use the accent.
 - **1.11** New: Icons (one set, two sizes, one stroke, square). Bottom sheets get three heights (fit, medium, large) and one rule: grabber or close, never both. Page frame shows all four pages on one shell. Every motion example names its tokens and can be replayed; the AI mark's thinking animation matches the prototype.
 - **1.10** New: Containers (panel, popover, toast, card; one panel at a time; the panel in five situations) and Page frame (four regions; which are open on the overview, equipment, actions and reports pages). Fixed the motion examples: a press returns to rest, the toast and the meter replay, loops use `wave` and the `loop` duration.

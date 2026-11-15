@@ -5,7 +5,7 @@
 ## Files
 
 - [DESIGN.md](files/DESIGN.md): the idea, the look, the AI states, the confidence bands and the five rules, in plain words.
-- [SKILL.md](files/SKILL.md): an agent skill. Load it before creating or changing any Green Control screen; it ends with a checklist.
+- [SKILL.md](files/SKILL.md): the index skill. It says which of the 14 Green Control skills to use for each step (confidence, evidence, build, draw, voice, review, learn), plus gc-chart for charts and five component skills.
 - [tokens.json](files/tokens.json): colours, type, space, radius, motion and the AI confidence thresholds, in W3C Design Tokens (DTCG) format. Night is the default value; day is in $extensions.
 - [shell.html](files/shell.html): the screen shell every equipment screen starts from: rail, stage with the figure and evidence row, AI panel.
 - [gc-stage.css](files/gc-stage.css): dot field, pool glow, labels and numbered marks on the drawing, evidence row.
