@@ -650,3 +650,6 @@ const want = want0 === "s2" || want0 === "s3";
 assemble().then(() => preload("bldg")).then(() => bitmaps("bldg")).then(async () => { await sleep(T(900)); if (app.classList.contains("s1") && turn.bldg.az === 62) { spinTo("bldg", 72, 900); await sleep(T(950)); spinTo("bldg", 62, 1100); } preload("plant"); });
 // ?state=s2 or ?state=s3 opens a state directly (for reviews and screenshots)
 if (want) (async () => { await sleep(400); await investigate(); if (want0 === "s3") { await sleep(300); await apply(); await sleep(300); await backToOverview(); } })();
+
+// G shows the 12-column grid of the overview (for reviews)
+document.addEventListener("keydown", (e) => { if (e.key.toLowerCase() !== "g" || e.target.closest("input, textarea")) return; app.classList.toggle("show-cols"); });

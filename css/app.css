@@ -821,3 +821,16 @@ h1, h3 { margin: 0; font-weight: inherit; }
 
 /* icons: one stroke at any size */
 .nav-item svg *, #theme svg *, #rail svg *, .icon-btn svg *, .x svg *, .send svg *, .chev *, .chk *, .pl-dot svg * { vector-effect: non-scaling-stroke; }
+
+/* ---------- 12-column grid (overview) ----------
+   Content runs from the title's left edge (276) to the toolbar's right edge (1416): 1140px.
+   12 columns of 73px with 24px gutters; 24px is also the page margin, so one number spaces everything.
+   Readings take columns 1–2, the building 3–8, insights 9–12. Press G to show the columns. */
+.stage-tools { right: 372px; }                 /* ends at column 8 (1028) */
+#app:not(.s2) #ai { left: 1052px; width: 364px; } /* columns 9–12 */
+#grid .v3 { left: 1040px; }                    /* centre of the gutter between zones 2 and 3 */
+#cols { position: absolute; left: 276px; top: 0; width: 1140px; height: 900px; display: grid; grid-template-columns: repeat(12, 73px); column-gap: 24px; pointer-events: none; z-index: 40; opacity: 0; transition: opacity 240ms var(--ease); }
+#cols i { background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: inset 1px 0 0 color-mix(in srgb, var(--accent) 45%, transparent), inset -1px 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+#cols i:nth-child(-n+2), #cols i:nth-child(n+9) { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+#app.show-cols #cols { opacity: 1; }
+#app.s2 #cols { display: none; }
